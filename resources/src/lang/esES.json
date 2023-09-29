@@ -1,0 +1,33 @@
+{
+  "Home": {
+    "welcome": "Bienvenido a Etendo",
+    "productList": "Lista de productos",
+    "newProduct": "Añadir nuevo producto",
+    "typeProduct": "Buscador de productos",
+    "searchBarcode": "Escanear"
+  },
+  "ProductDetail": {
+    "welcome": "Bienvenido a Etendo",
+    "newProduct": "Añade un nuevo producto",
+    "editProduct": "Editar producto",
+    "products": "Productos",
+    "productExample": "Ej. Lata de atún",
+    "barcode": "Código de barras",
+    "barcodePlaceholder": "Escribe o escanea el código"
+  },
+  "Table": {
+    "products": "Productos",
+    "barcode": "Código de Barras",
+    "barcodeShort": "Cód. Barras",
+    "actions": "Acciones"
+  },
+  "Modal": {
+    "messageDelete": "Esta seguro de eliminar el producto?"
+  },
+  "Common": {
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "accept": "Aceptar",
+    "goBack": "Volver"
+  }
+}
