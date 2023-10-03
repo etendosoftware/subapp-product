@@ -22,6 +22,7 @@ export default {
       strict: false,
       sourcemap: 'inline',
     },
+   
   ],
   plugins: [
     peerDepsExternal(),
@@ -35,3 +36,4 @@ export default {
   ],
   external,
 };
+
