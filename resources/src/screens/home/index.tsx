@@ -1,6 +1,7 @@
 import React from 'react';
 import {Text, View} from 'react-native';
 import {NavigationProp} from '@react-navigation/native';
+import locale from '../../localization/locale';
 
 interface HomeProps {
   navigation: NavigationProp<any>;
@@ -8,10 +9,9 @@ interface HomeProps {
 }
 
 const Home = ({...props}: HomeProps) => {
-  // const {t} = useTranslation()
   return (
     <View>
-      <Text>welcomesdfsd</Text>
+      <Text>{locale.t('Home.welcome')}</Text>
     </View>
   );
 };
