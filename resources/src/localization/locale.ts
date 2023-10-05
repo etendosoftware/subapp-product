@@ -1,11 +1,30 @@
 import i18n from 'i18n-js';
 // @ts-ignore
-import {enUS, esES, format, parseISO} from 'date-fns';
+import {enUS, esES, format, parseISO, Locale} from 'date-fns';
 
 import ES from '../lang/esES.json';
 import EN from '../lang/enUS.json';
 
-const supportedLocales: any = {
+interface Translations {
+  [key: string]: typeof EN | typeof ES;
+}
+
+interface LocaleModule {
+  currentDateLocale: Locale | null;
+  i18n: typeof i18n;
+  init: () => void;
+  t: (key: string, params?: Record<string, unknown>) => string;
+  setCurrentLanguage: (input: string) => void;
+  formatDate: (date: Date | number, formatStr: string) => string;
+  parseISODate: (date: string) => Date;
+  getDeviceLocale: () => string;
+  getDeviceLocaleForDate: () => Locale;
+  formatLanguageUnderscore: (language: string, dash?: boolean) => string;
+  getLanguageName: (language: string) => string | null;
+  languageByDefault: () => string;
+}
+
+const supportedLocales: Translations = {
   'en-US': EN,
   'es-ES': ES,
 };
@@ -16,9 +35,9 @@ const Localization = {
 
 const fallbackLanguage = 'en-US';
 const fallbackDateLocale = enUS;
-const dateLocales: any = {enUS, esES};
+const dateLocales: Record<string, Locale> = {enUS, esES};
 
-const locale = {
+const locale: LocaleModule = {
   currentDateLocale: null,
 
   i18n,
@@ -28,23 +47,22 @@ const locale = {
     i18n.defaultLocale = fallbackLanguage;
     i18n.translations = supportedLocales;
 
-    // Load fallback translation
     if (supportedLocales[Localization.locale]) {
       i18n.translations[Localization.locale] =
         supportedLocales[Localization.locale];
       this.currentDateLocale =
-        dateLocales[Localization.locale.replace('-', '')];
+        dateLocales[Localization.locale.replace('-', '')] || null;
     } else {
       i18n.translations[fallbackLanguage] = supportedLocales[fallbackLanguage];
-      this.currentDateLocale = dateLocales[fallbackLanguage.replace('-', '')];
+      this.currentDateLocale = fallbackDateLocale;
     }
   },
 
-  t(trl: any, params?: any): string {
-    return i18n.t(trl, params);
+  t(key, params) {
+    return i18n.t(key, params);
   },
 
-  setCurrentLanguage(input: any) {
+  setCurrentLanguage(input) {
     const newLocal = input.replace('_', '-');
     i18n.locale = newLocal;
     i18n.translations = {};
@@ -53,7 +71,7 @@ const locale = {
     }
   },
 
-  formatDate(date: any, formatStr: any) {
+  formatDate(date, formatStr) {
     try {
       return format(date, formatStr, {locale: this.getDeviceLocaleForDate()});
     } catch (error: any) {
@@ -63,18 +81,14 @@ const locale = {
     }
   },
 
-  parseISODate(date: any) {
+  parseISODate(date) {
     return parseISO(date);
   },
 
   getDeviceLocale() {
     if (supportedLocales[Localization.locale]) {
-      i18n.translations[Localization.locale] =
-        supportedLocales[Localization.locale].loadTranslations;
       return i18n.locale;
     } else {
-      i18n.translations[fallbackLanguage] =
-        supportedLocales[fallbackLanguage].loadTranslations;
       return fallbackLanguage;
     }
   },
@@ -82,7 +96,8 @@ const locale = {
   getDeviceLocaleForDate() {
     return this.currentDateLocale || fallbackDateLocale;
   },
-  formatLanguageUnderscore(language: string, dash?: boolean): string {
+
+  formatLanguageUnderscore(language, dash) {
     switch (language) {
       case 'en':
       case 'en-US':
@@ -96,12 +111,12 @@ const locale = {
         return dash ? 'en-US' : 'en_US';
     }
   },
-  getLanguageName(language: string) {
+
+  getLanguageName(language) {
     const formattedLanguage = this.formatLanguageUnderscore(language, true);
-    return supportedLocales[formattedLanguage]
-      ? supportedLocales[formattedLanguage].name
-      : null;
+    return supportedLocales[formattedLanguage] ? formattedLanguage : null;
   },
+
   languageByDefault() {
     return this.formatLanguageUnderscore('', true);
   },
