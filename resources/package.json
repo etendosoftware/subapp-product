@@ -1,0 +1,61 @@
+{
+  "name": "ComEtendoRxSubappBase",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
+    "start": "react-native start",
+    "test": "jest",
+    "lint": "eslint .",
+    "dev": "http-server -p 3000 ../web/com.etendorx.subapp.base/"
+  },
+  "dependencies": {
+    "@react-navigation/native": "^6.1.7",
+    "@react-navigation/native-stack": "^6.9.13",
+    "@react-navigation/stack": "^6.3.17",
+    "@types/date-fns": "^2.6.0",
+    "i18n-js": "^3.5.1",
+    "i18next": "^23.5.1",
+    "react": "18.1.0",
+    "react-dom": "16.11.0",
+    "react-i18next": "^13.2.2",
+    "react-native": "0.70.6",
+    "react-native-gesture-handler": "2.9.0",
+    "react-native-reanimated": "2.17.0",
+    "react-native-safe-area-context": "^4.4.1",
+    "react-native-screens": "^3.25.0",
+    "react-native-svg": "^13.9.0",
+    "react-native-svg-transformer": "^1.0.0",
+    "react-native-vision-camera": "2.15.4",
+    "vision-camera-code-scanner": "^0.2.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.9",
+    "@babel/runtime": "^7.12.5",
+    "@react-native-community/eslint-config": "^2.0.0",
+    "@rollup/plugin-image": "^3.0.2",
+    "@rollup/plugin-json": "^5.0.2",
+    "@rollup/plugin-typescript": "^11.1.2",
+    "@tsconfig/react-native": "^3.0.2",
+    "@types/i18n-js": "^3.8.5",
+    "@types/jest": "^29.5.5",
+    "@types/react": "^18.2.22",
+    "@types/react-native": "^0.72.2",
+    "@types/react-test-renderer": "^18.0.2",
+    "@typescript-eslint/eslint-plugin": "^6.7.2",
+    "@typescript-eslint/parser": "^6.7.2",
+    "babel-jest": "^26.6.3",
+    "eslint": "^7.32.0",
+    "http-server": "^14.1.1",
+    "jest": "^26.6.3",
+    "metro-react-native-babel-preset": "0.72.3",
+    "react-test-renderer": "18.1.0",
+    "rollup": "^3.26.2",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "typescript": "^5.2.2"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}
