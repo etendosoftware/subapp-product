@@ -21,7 +21,7 @@ const Home: React.FC<HomeProps> = ({navigationContainer}) => {
         onPress={() => {
           navigationContainer.navigate('Home');
         }}>
-        <Text style={styles.textButton}>{locale.t('Home.back')}</Text>
+        <Text style={styles.textButton}>{locale.t('Common.goBack')}</Text>
       </TouchableOpacity>
     </View>
   );

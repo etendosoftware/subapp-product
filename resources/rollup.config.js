@@ -16,13 +16,12 @@ export default {
   input: './App.tsx',
   output: [
     {
-      file: '../web/com.etendorx.subapp.base/subappexample.js',
+      file: '../web/com.etendorx.subapp.product/productSubapp.js',
       format: 'cjs',
       exports: 'auto',
       strict: false,
       sourcemap: 'inline',
     },
-   
   ],
   plugins: [
     peerDepsExternal(),
@@ -36,4 +35,3 @@ export default {
   ],
   external,
 };
-

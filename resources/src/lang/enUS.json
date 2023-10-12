@@ -1,6 +1,33 @@
 {
   "Home": {
-    "welcome": "Hello to Etendo Sub-application",
-    "back": "Go Back"
+    "welcome": "Welcome To Etendo",
+    "productList": "Product list",
+    "newProduct": "Add new product",
+    "typeProduct": "Product finder",
+    "searchBarcode": "Scan"
+  },
+  "ProductDetail": {
+    "welcome": "Bienvenido a Etendo",
+    "newProduct": "Add new product",
+    "editProduct": "Edit product",
+    "products": "Products",
+    "productExample": "Eg. tuna can",
+    "barcode": "Barcode",
+    "barcodePlaceholder": "Type or scan the code"
+  },
+  "Table": {
+    "products": "Products",
+    "barcode": "Barcode",
+    "barcodeShort": "Barcode",
+    "actions": "Actions"
+  },
+  "Modal": {
+    "messageDelete": "Are you sure to remove the product?"
+  },
+  "Common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "accept": "Accept",
+    "goBack": "Go back"
   }
 }
