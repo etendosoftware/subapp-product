@@ -1,8 +1,7 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import Home from './src/screens/home';
 import {createStackNavigator} from '@react-navigation/stack';
 import locale from './src/localization/locale';
-import {Camera} from 'react-native-vision-camera';
 import ProductDetail from './src/screens/productDetail';
 
 interface NavigationContainerProps {
@@ -19,13 +18,6 @@ const App = ({language, navigationContainer}: HomeProps) => {
 
   locale.init();
   locale.setCurrentLanguage(locale.formatLanguageUnderscore(language));
-  // useEffect(() => {
-  //   // checkPermission();
-  // }, []);
-
-  // const checkPermission = async () => {
-  //   await Camera.requestCameraPermission();
-  // };
 
   // TODO: delete this data and use the data from the API
   const dataUser = {

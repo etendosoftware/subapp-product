@@ -63,7 +63,9 @@ const ProductDetail: React.FC<ProductDetailProps> = ({navigation, route}) => {
         <Navbar
           title={'ProductDetail.welcome'}
           username={dataUser?.username}
-          navigation={navigation}
+          onOptionSelected={(route: any) => {
+            navigation?.navigate(route!);
+          }}
         />
 
         <View style={styles.topSection}>

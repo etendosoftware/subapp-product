@@ -1,28 +1,23 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {Navbar as NavbarUI} from 'etendo-ui-library';
 import {SafeAreaView} from 'react-native';
 import {styles} from './style';
 import {BackIcon} from 'etendo-ui-library';
-import {NavigationProp} from '@react-navigation/native';
 import locale from '../../localization/locale';
 interface NavbarProps {
   username: string;
   title: string;
-  navigation?: NavigationProp<any>;
+  onOptionSelected?: (route: any) => void;
 }
 
-const Navbar = ({username, title, navigation}: NavbarProps) => {
-  useEffect(() => {
-    console.log('navigation', navigation);
-  }, []);
-
+const Navbar = ({username, title, onOptionSelected}: NavbarProps) => {
   return (
     <SafeAreaView style={styles.container}>
       <NavbarUI
         title={title}
         name={username}
         profileOptions={
-          navigation && [
+          onOptionSelected && [
             {
               title: locale.t('Common.goBack'),
               image: <BackIcon />,
@@ -30,9 +25,7 @@ const Navbar = ({username, title, navigation}: NavbarProps) => {
             },
           ]
         }
-        onOptionSelectedProfile={(route: any) => {
-          navigation?.navigate(route!);
-        }}
+        onOptionSelectedProfile={onOptionSelected}
       />
     </SafeAreaView>
   );

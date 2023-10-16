@@ -4,7 +4,7 @@ import Navbar from '../../components/navbar';
 
 import {
   Button as ButtonUI,
-  // TODO: add this item to the library
+  // TODO: add PlusIcon to the library export
   PencilIcon,
 } from 'etendo-ui-library';
 
@@ -32,7 +32,9 @@ const Home = ({navigation, route, navigationContainer}: HomeProps) => {
       <Navbar
         title={locale.t('Home.welcome')}
         username={dataUser?.username}
-        navigation={navigation}
+        onOptionSelected={() => {
+          navigationContainer.navigate('Home');
+        }}
       />
       <View style={styles.topView}>
         <Text style={styles.title}>{locale.t('Home.productList')}</Text>
