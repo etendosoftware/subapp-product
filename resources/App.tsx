@@ -1,7 +1,9 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Home from './src/screens/home';
 import {createStackNavigator} from '@react-navigation/stack';
 import locale from './src/localization/locale';
+import {Camera} from 'react-native-vision-camera';
+import ProductDetail from './src/screens/productDetail';
 
 interface NavigationContainerProps {
   navigate: (screenName: string, params?: any) => void;
@@ -17,11 +19,36 @@ const App = ({language, navigationContainer}: HomeProps) => {
 
   locale.init();
   locale.setCurrentLanguage(locale.formatLanguageUnderscore(language));
+  // useEffect(() => {
+  //   // checkPermission();
+  // }, []);
+
+  // const checkPermission = async () => {
+  //   await Camera.requestCameraPermission();
+  // };
+
+  // TODO: delete this data and use the data from the API
+  const dataUser = {
+    username: 'test',
+    email: 'a@a.com',
+    id: '1',
+    role: 'admin',
+    status: 'active',
+  };
 
   return (
     <Stack.Navigator initialRouteName="Home">
-      <Stack.Screen options={{headerShown: false}} name="Home">
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="Home"
+        initialParams={{dataUser}}>
         {props => <Home {...props} navigationContainer={navigationContainer} />}
+      </Stack.Screen>
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="ProductDetail"
+        initialParams={{dataUser}}>
+        {props => <ProductDetail {...props} />}
       </Stack.Screen>
     </Stack.Navigator>
   );

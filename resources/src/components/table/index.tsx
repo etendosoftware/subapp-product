@@ -1,17 +1,19 @@
 import React, {useState} from 'react';
-import TableUI from 'etendo-ui-library/dist-native/components/table/Table';
 import {styles} from './style';
 import {View} from 'react-native';
-import {TrashIcon} from 'etendo-ui-library/dist-native/assets/images/icons/TrashIcon';
-import {PencilIcon} from 'etendo-ui-library/dist-native/assets/images/icons/PencilIcon';
-import {CancelIcon} from 'etendo-ui-library/dist-native/assets/images/icons/CancelIcon';
-import {CheckIcon} from 'etendo-ui-library/dist-native/assets/images/icons/CheckIcon';
+import {
+  Table as TableUI,
+  TrashIcon,
+  PencilIcon,
+  CancelIcon,
+  CheckIcon,
+} from 'etendo-ui-library';
 import {isTablet} from '../../utils';
-import {useTranslation} from 'react-i18next';
 import {Columns} from 'etendo-ui-library/dist-native/components/table/Table.types';
 import Modal from '../modal';
 import {NavigationProp} from '@react-navigation/native';
 import {IProduct} from '../../interfaces';
+import locale from '../../localization/locale';
 
 interface IIconTouchable {
   action: string;
@@ -58,7 +60,6 @@ interface TableProps {
 const Table = ({navigation}: TableProps) => {
   const [modalActive, setModalActive] = useState(false);
 
-  const {t} = useTranslation();
   const dataTable: IProduct[] = [
     {
       _id: '637289556475c964f56cf7b6',
@@ -115,19 +116,21 @@ const Table = ({navigation}: TableProps) => {
     },
     {
       key: 'name',
-      label: t('Table.products'),
+      label: locale.t('Table.products'),
       visible: true,
       width: '50%',
     },
     {
       key: 'barcode',
-      label: isTablet ? t('Table.barcode') : t('Table.barcodeShort'),
+      label: isTablet
+        ? locale.t('Table.barcode')
+        : locale.t('Table.barcodeShort'),
       visible: true,
       width: '25%',
     },
     {
       key: 'actions',
-      label: isTablet ? t('Table.actions') : '',
+      label: isTablet ? locale.t('Table.actions') : '',
       visible: true,
       width: '25%',
       cellStyle: {
@@ -178,15 +181,15 @@ const Table = ({navigation}: TableProps) => {
         columns={dataColumns}
         data={dataTable}
         tableHeight={'100%'}
-        onRowPress={algo => {
+        onRowPress={(algo: any) => {
           console.log('algo', algo);
         }}
       />
       {modalActive && (
         <Modal
-          textModal={t('Modal.messageDelete')}
-          textConfirm={t('Common.accept')}
-          textCancel={t('Common.cancel')}
+          textModal={locale.t('Modal.messageDelete')}
+          textConfirm={locale.t('Common.accept')}
+          textCancel={locale.t('Common.cancel')}
           visible={modalActive}
           setVisible={closeModal}
           functionConfirm={closeModal}

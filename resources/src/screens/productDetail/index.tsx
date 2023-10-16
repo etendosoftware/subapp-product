@@ -2,37 +2,38 @@ import React, {useEffect, useState} from 'react';
 import {Text, View} from 'react-native';
 import Navbar from '../../components/navbar';
 
-import ButtonUI from 'etendo-ui-library/dist-native/components/button/Button';
-import InputUI from 'etendo-ui-library/dist-native/components/input/Input';
-import {CancelIcon} from 'etendo-ui-library/dist-native/assets/images/icons/CancelIcon';
-import {CheckIcon} from 'etendo-ui-library/dist-native/assets/images/icons/CheckIcon';
+import {
+  Button as ButtonUI,
+  Input as InputUI,
+  CancelIcon,
+  CheckIcon,
+  CameraIcon,
+} from 'etendo-ui-library';
 import {styles} from './style';
 import {NavigationProp} from '@react-navigation/native';
 import {isTablet} from '../../utils';
-import {CameraIcon} from 'etendo-ui-library/dist-native/assets/images/icons/CameraIcon';
 import Camera from '../../components/camera';
-import {useTranslation} from 'react-i18next';
+import locale from '../../localization/locale';
 
 interface ProductDetailProps {
   navigation: NavigationProp<any>;
   route: any;
 }
 
-const ProductDetail = ({navigation, route}: ProductDetailProps) => {
+const ProductDetail: React.FC<ProductDetailProps> = ({navigation, route}) => {
   const [product, setProduct] = useState('');
   const [barcode, setBarcode] = useState('');
   const [title, setTitle] = useState('');
   const [show, setShow] = useState(false);
-  const {t} = useTranslation();
   const {dataUser, productItem} = route.params;
 
   useEffect(() => {
     if (productItem) {
       setProduct(productItem.name);
       setBarcode(productItem.barcode);
-      setTitle(t('ProductDetail.editProduct'));
+      setTitle(locale.t('ProductDetail.editProduct'));
     } else {
-      setTitle(t('ProductDetail.newProduct'));
+      setTitle(locale.t('ProductDetail.newProduct'));
     }
   }, []);
 
@@ -60,7 +61,7 @@ const ProductDetail = ({navigation, route}: ProductDetailProps) => {
       <Camera show={show} setShow={setShow} handleReadCode={handleReadCode} />
       <View style={styles.container}>
         <Navbar
-          title={t('ProductDetail.welcome')}
+          title={'ProductDetail.welcome'}
           username={dataUser?.username}
           navigation={navigation}
         />
@@ -69,7 +70,6 @@ const ProductDetail = ({navigation, route}: ProductDetailProps) => {
           <View
             style={{
               width: isTablet ? '50%' : '100%',
-              // marginLeft: isTablet ? 26 : 0,
             }}>
             <Text style={styles.title}>{title}</Text>
           </View>
@@ -82,7 +82,7 @@ const ProductDetail = ({navigation, route}: ProductDetailProps) => {
                 onPress={() => {
                   handleCancel();
                 }}
-                text={t('Common.cancel')}
+                text={locale.t('Common.cancel')}
                 iconLeft={<CancelIcon style={styles.icon} />}
               />
             </View>
@@ -94,7 +94,7 @@ const ProductDetail = ({navigation, route}: ProductDetailProps) => {
                 onPress={() => {
                   handleSave();
                 }}
-                text={t('Common.save')}
+                text={locale.t('Common.save')}
                 iconLeft={<CheckIcon style={styles.icon} />}
               />
             </View>
@@ -111,11 +111,13 @@ const ProductDetail = ({navigation, route}: ProductDetailProps) => {
               helperText=""
               maxLength={100}
               height={50}
-              placeholder={t('ProductDetail.productExample')}
-              titleLabel={t('ProductDetail.products')}
+              placeholder={locale.t('ProductDetail.productExample')}
+              titleLabel={locale.t('ProductDetail.products')}
               typeField="textInput"
               value={product}
-              onChangeText={value => setProduct(value)}
+              onChangeText={(value: React.SetStateAction<string>) =>
+                setProduct(value)
+              }
             />
           </View>
           <View
@@ -135,11 +137,13 @@ const ProductDetail = ({navigation, route}: ProductDetailProps) => {
                 helperText=""
                 maxLength={100}
                 height={50}
-                placeholder={t('ProductDetail.barcodePlaceholder')}
-                titleLabel={t('ProductDetail.barcode')}
+                placeholder={locale.t('ProductDetail.barcodePlaceholder')}
+                titleLabel={locale.t('ProductDetail.barcode')}
                 typeField="textInput"
                 value={barcode}
-                onChangeText={value => setBarcode(value)}
+                onChangeText={(value: React.SetStateAction<string>) =>
+                  setBarcode(value)
+                }
               />
             </View>
             <View

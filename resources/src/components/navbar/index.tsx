@@ -1,10 +1,10 @@
 import React, {useEffect} from 'react';
-import NavbarUI from 'etendo-ui-library/dist-native/components/navbar/Navbar';
+import {Navbar as NavbarUI} from 'etendo-ui-library';
 import {SafeAreaView} from 'react-native';
 import {styles} from './style';
-import {BackIcon} from 'etendo-ui-library/dist-native/assets/images/icons/BackIcon';
+import {BackIcon} from 'etendo-ui-library';
 import {NavigationProp} from '@react-navigation/native';
-import {useTranslation} from 'react-i18next';
+import locale from '../../localization/locale';
 interface NavbarProps {
   username: string;
   title: string;
@@ -12,7 +12,6 @@ interface NavbarProps {
 }
 
 const Navbar = ({username, title, navigation}: NavbarProps) => {
-  const {t} = useTranslation();
   useEffect(() => {
     console.log('navigation', navigation);
   }, []);
@@ -25,13 +24,13 @@ const Navbar = ({username, title, navigation}: NavbarProps) => {
         profileOptions={
           navigation && [
             {
-              title: t('Common.goBack'),
+              title: locale.t('Common.goBack'),
               image: <BackIcon />,
               route: 'Home',
             },
           ]
         }
-        onOptionSelectedProfile={route => {
+        onOptionSelectedProfile={(route: any) => {
           navigation?.navigate(route!);
         }}
       />

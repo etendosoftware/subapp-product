@@ -1,11 +1,8 @@
 import React from 'react';
 import {Text, View, Modal as ModalRN} from 'react-native';
 import {styles} from './style';
-import ButtonUI from 'etendo-ui-library/dist-native/components/button/Button';
-import {useTranslation} from 'react-i18next';
-import {CancelIcon} from 'etendo-ui-library/dist-native/assets/images/icons/CancelIcon';
+import {Button as ButtonUI, CancelIcon, CheckIcon} from 'etendo-ui-library';
 import {generalStyles} from '../../../styles';
-import {CheckIcon} from 'etendo-ui-library/dist-native/assets/images/icons/CheckIcon';
 interface ModalProps {
   textModal: string;
   textConfirm: string;
@@ -25,7 +22,6 @@ const Modal = ({
   functionConfirm,
   functionCancel,
 }: ModalProps) => {
-  const {t} = useTranslation();
   return (
     <ModalRN
       animationType="fade"

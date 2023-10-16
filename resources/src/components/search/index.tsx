@@ -1,15 +1,16 @@
 import React, {useState} from 'react';
 import {View} from 'react-native';
-import ButtonUI from 'etendo-ui-library/dist-native/components/button/Button';
-import InputUI from 'etendo-ui-library/dist-native/components/input/Input';
-import {CameraIcon} from 'etendo-ui-library/dist-native/assets/images/icons/CameraIcon';
+import {
+  Button as ButtonUI,
+  Input as InputUI,
+  CameraIcon,
+} from 'etendo-ui-library';
 import {styles} from './style';
 import Camera from '../camera';
-import {useTranslation} from 'react-i18next';
 import {isTablet} from '../../utils';
+import locale from '../../localization/locale';
 
 const Search = () => {
-  const {t} = useTranslation();
   const [barcode, setBarcode] = React.useState<string>('');
   const [show, setShow] = useState(false);
   const handleReadCode = (code: string) => {
@@ -26,8 +27,10 @@ const Search = () => {
         <View style={styles.searchInput}>
           <InputUI
             value={barcode}
-            onChangeText={value => setBarcode(value)}
-            placeholder={t('Home.typeProduct')}
+            onChangeText={(value: React.SetStateAction<string>) =>
+              setBarcode(value)
+            }
+            placeholder={locale.t('Home.typeProduct')}
             typeField="textInputSearch"
             height={50}
           />
@@ -41,7 +44,7 @@ const Search = () => {
             onPress={() => {
               setShow(true);
             }}
-            text={t('Home.searchBarcode')}
+            text={locale.t('Home.searchBarcode')}
           />
         </View>
       </View>
