@@ -10,14 +10,12 @@ import {styles} from './style';
 import {NavigationProp} from '@react-navigation/native';
 import {isTablet} from '../../utils';
 import locale from '../../localization/locale';
+import {INavigationContainerProps} from '../../interfaces';
 
-interface NavigationContainerProps {
-  navigate: (screenName: string, params?: any) => void;
-}
 interface HomeProps {
   navigation: NavigationProp<any>;
   route: any;
-  navigationContainer: NavigationContainerProps;
+  navigationContainer: INavigationContainerProps;
 }
 
 const Home = ({navigation, route, navigationContainer}: HomeProps) => {
