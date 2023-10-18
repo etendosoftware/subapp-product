@@ -27,7 +27,6 @@ export const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
     margin: isTablet ? 35 : 24,
-    gap: 12,
   },
   buttonSection: {
     display: 'flex',

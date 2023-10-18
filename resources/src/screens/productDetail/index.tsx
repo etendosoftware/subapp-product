@@ -126,13 +126,13 @@ const ProductDetail: React.FC<ProductDetailProps> = ({navigation, route}) => {
             style={{
               display: 'flex',
               flexDirection: 'row',
-              justifyContent: 'flex-start',
+              justifyContent: 'space-between',
               alignContent: 'center',
               width: isTablet ? '42%' : '100%',
             }}>
             <View
               style={{
-                width: isTablet ? '90%' : '80%',
+                width: isTablet ? '88%' : '80%',
               }}>
               <InputUI
                 backgroundColor=""
@@ -150,16 +150,14 @@ const ProductDetail: React.FC<ProductDetailProps> = ({navigation, route}) => {
             </View>
             <View
               style={{
-                width: 50,
                 marginBottom: 5,
-                marginLeft: 10,
                 display: 'flex',
                 justifyContent: 'flex-end',
                 alignContent: 'center',
               }}>
               <ButtonUI
-                width="100%"
                 height={50}
+                width={50}
                 typeStyle="terciary"
                 onPress={() => {
                   setShow(true);

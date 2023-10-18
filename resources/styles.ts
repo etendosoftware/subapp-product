@@ -31,6 +31,5 @@ export const generalStyles = StyleSheet.create({
     alignItems: 'flex-start',
     marginHorizontal: isTablet ? 35 : 24,
     marginVertical: 24,
-    gap: 12,
   },
 });
