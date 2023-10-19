@@ -5,13 +5,13 @@ import locale from './src/localization/locale';
 import ProductDetail from './src/screens/productDetail';
 import {IData, INavigationContainerProps} from './src/interfaces';
 
-interface HomeProps {
+interface AppProps {
   language: string;
   dataUser: IData;
   navigationContainer: INavigationContainerProps;
 }
 
-const App = ({language, navigationContainer, dataUser}: HomeProps) => {
+const App = ({language, navigationContainer, dataUser}: AppProps) => {
   const Stack = createStackNavigator();
 
   locale.init();
