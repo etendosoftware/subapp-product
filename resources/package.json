@@ -27,8 +27,8 @@
     "react-native-screens": "^3.25.0",
     "react-native-svg": "^13.9.0",
     "react-native-svg-transformer": "^1.0.0",
-    "react-native-vision-camera": "2.15.4",
-    "vision-camera-code-scanner": "^0.2.0"
+    "react-native-vision-camera": "2.15.2",
+    "vision-camera-code-scanner": "0.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
@@ -51,7 +51,7 @@
     "jest": "^26.6.3",
     "metro-react-native-babel-preset": "0.72.3",
     "react-test-renderer": "18.1.0",
-    "rollup": "^3.26.2",
+    "rollup": "2.78.1",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "typescript": "^5.2.2"
   },
