@@ -8,36 +8,33 @@ export const styles = StyleSheet.create({
   container: {
     width: '100%',
     display: 'flex',
+    flex: 1,
   },
   title: {
     fontSize: 29,
     fontWeight: '600',
     textAlign: 'left',
-    marginBottom: 6,
     color: PRIMARY_100,
   },
-  topView: {
+  buttonContainer: {
+    width: isTablet ? '40%' : '60%',
+    margin: 6,
+  },
+
+  inputSection: {
     display: 'flex',
     flexDirection: isTablet ? 'row' : 'column',
-    justifyContent: isTablet ? 'space-between' : 'flex-start',
+    justifyContent: 'flex-start',
     alignItems: 'flex-start',
-    margin: isTablet ? 32 : 24,
+    margin: isTablet ? 35 : 24,
+  },
+  buttonSection: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: isTablet ? 'flex-end' : 'center',
+    alignItems: 'center',
     gap: 12,
-  },
-  text: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#202452',
-  },
-  button: {
-    backgroundColor: '#202452',
-    padding: 10,
-    marginTop: 15,
-    borderRadius: 8,
-  },
-  textButton: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: 'white',
+    marginHorizontal: isTablet ? 0 : 32,
+    width: isTablet ? '40%' : '75%',
   },
 });
