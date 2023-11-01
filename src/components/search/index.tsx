@@ -10,13 +10,19 @@ import Camera from '../camera';
 import {isTablet} from '../../utils';
 import locale from '../../localization/locale';
 
-const Search = () => {
+interface SearchProps {
+  onSubmit: (value?: string) => void;
+}
+
+const Search = ({onSubmit}: SearchProps) => {
   const [barcode, setBarcode] = React.useState<string>('');
   const [show, setShow] = useState(false);
+
   const handleReadCode = (code: string) => {
     if (code) {
       setBarcode(code);
       setShow(false);
+      onSubmit(code);
     }
   };
 

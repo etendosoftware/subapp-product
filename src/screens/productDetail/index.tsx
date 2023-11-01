@@ -53,6 +53,16 @@ const ProductDetail: React.FC<ProductDetailProps> = ({navigation, route}) => {
 
   const handleSave = () => {
     // TODO: add logic to save product
+    // ProductService.FRONT.save({
+    //   name: product,
+    //   barcode: barcode,
+    // });
+    //   .then((result: any) => {
+    //     setProducts(result)
+    //   })
+    //   .catch((err: any) => {
+    //     console.log('err', err);
+    //   });
     navigation.goBack();
   };
 

@@ -14,6 +14,7 @@ import Modal from '../modal';
 import {NavigationProp} from '@react-navigation/native';
 import {IProduct} from '../../interfaces';
 import locale from '../../localization/locale';
+import {Product, ProductList} from '../../../lib/data_gen/product.types';
 
 interface IIconTouchable {
   action: string;
@@ -56,61 +57,14 @@ const IconTouchable = ({action}: IIconTouchable) => {
 
 interface TableProps {
   navigation: NavigationProp<any>;
+  data: ProductList;
 }
-const Table = ({navigation}: TableProps) => {
+const Table = ({navigation, data}: TableProps) => {
   const [modalActive, setModalActive] = useState(false);
-
-  const dataTable: IProduct[] = [
-    {
-      _id: '637289556475c964f56cf7b6',
-      name: 'Gel Facial Nivea Exfoliante Aloe Vera 75ml',
-      barcode: '4005808940001',
-    },
-    {
-      _id: '637289556475c964f56cfasa6',
-      name: 'Alimento Para Gatos en Lata Whiskas Pasta Gatitos 340 Gr',
-      barcode: '4005808940002',
-    },
-    {
-      _id: '637289556475c964f56cf7b7',
-      name: 'Cerveza Quilmes Doble Malta 473cc Sixpack',
-      barcode: '4005808940003',
-    },
-    {
-      _id: '637289556475c964f56cfasa6',
-      name: 'Alimento Para Gatos en Lata Whiskas Pasta Gatitos 340 Gr',
-      barcode: '4005808940002',
-    },
-    {
-      _id: '637289556475c964f56cf7b7',
-      name: 'Cerveza Quilmes Doble Malta 473cc Sixpack',
-      barcode: '4005808940003',
-    },
-    {
-      _id: '637289556475c964f56cfasa6',
-      name: 'Alimento Para Gatos en Lata Whiskas Pasta Gatitos 340 Gr',
-      barcode: '4005808940002',
-    },
-    {
-      _id: '637289556475c964f56cf7b7',
-      name: 'Cerveza Quilmes Doble Malta 473cc Sixpack',
-      barcode: '4005808940003',
-    },
-    {
-      _id: '637289556475c964f56cfasa6',
-      name: 'Alimento Para Gatos en Lata Whiskas Pasta Gatitos 340 Gr',
-      barcode: '4005808940002',
-    },
-    {
-      _id: '637289556475c964f56cf7b7',
-      name: 'Cerveza Quilmes Doble Malta 473cc Sixpack',
-      barcode: '4005808940003',
-    },
-  ];
 
   const dataColumns: Columns[] = [
     {
-      key: '_id',
+      key: 'id',
       primary: true,
       visible: false,
     },
@@ -121,7 +75,7 @@ const Table = ({navigation}: TableProps) => {
       width: '50%',
     },
     {
-      key: 'barcode',
+      key: 'uPCEAN',
       label: isTablet
         ? locale.t('Table.barcode')
         : locale.t('Table.barcodeShort'),
@@ -145,16 +99,14 @@ const Table = ({navigation}: TableProps) => {
           component: <IconTouchable action="edit" />,
           onAction: (item: any) => {
             console.log('item1', item);
-            const itemSelected = dataTable.find(
-              itemData => itemData._id === item,
-            );
+            const itemSelected = data.find(itemData => itemData.id === item);
             if (!itemSelected) {
               return;
             }
-            const productItem: IProduct = {
-              _id: item,
+            const productItem: Product = {
+              id: item,
               name: itemSelected.name,
-              barcode: itemSelected.barcode,
+              uPCEAN: itemSelected.uPCEAN,
             };
 
             navigation.navigate('ProductDetail', {productItem});
@@ -179,7 +131,7 @@ const Table = ({navigation}: TableProps) => {
     <View style={styles.table}>
       <TableUI
         columns={dataColumns}
-        data={dataTable}
+        data={data}
         tableHeight={'100%'}
         onRowPress={(algo: any) => {
           console.log('algo', algo);
