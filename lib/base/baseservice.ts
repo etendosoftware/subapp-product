@@ -5,6 +5,7 @@ export abstract class BaseService<E extends EntityType> {
   abstract getFetchName(): string;
   abstract mapManyToOne(entity: E): void;
   _authToken: string = '';
+  _url: string = '';
 
   async save(entity: E): Promise<E> {
     const _modelName = this.getModelName();
@@ -14,18 +15,15 @@ export abstract class BaseService<E extends EntityType> {
       method = 'PATCH';
       urlId = entity.id;
     }
-    const response = await fetch(
-      `http://192.168.88.254:8092/${_modelName}/${urlId}`,
-      {
-        method: method,
-        body: JSON.stringify(entity),
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          'X-TOKEN': this._authToken,
-        },
+    const response = await fetch(`http://${this._url}/${_modelName}/${urlId}`, {
+      method: method,
+      body: JSON.stringify(entity),
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'X-TOKEN': this._authToken,
       },
-    );
+    });
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -37,7 +35,7 @@ export abstract class BaseService<E extends EntityType> {
 
   async delete(id: string | undefined): Promise<number> {
     const _modelName = this.getModelName();
-    const response = await fetch(`http://127.0.0.1:8092/${_modelName}/${id}`, {
+    const response = await fetch(`http://${this._url}/${_modelName}/${id}`, {
       method: 'DELETE',
       headers: {
         Accept: 'application/json',
@@ -58,7 +56,7 @@ export abstract class BaseService<E extends EntityType> {
       .join('&');
 
     const res = await fetch(
-      `http://192.168.88.254:8092/${_modelName}/search/${search}?${parsedParams}&projection=${projection}`,
+      `http://${this._url}/${_modelName}/search/${search}?${parsedParams}&projection=${projection}`,
       {
         method: 'GET',
         headers: {
@@ -82,5 +80,13 @@ export abstract class BaseService<E extends EntityType> {
 
   public set authToken(authToken: string) {
     this._authToken = authToken;
+  }
+
+  public get url() {
+    return this._url;
+  }
+
+  public set url(url: string) {
+    this._url = url;
   }
 }

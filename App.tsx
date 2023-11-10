@@ -12,14 +12,22 @@ interface AppProps {
   dataUser: IData;
   navigationContainer: INavigationContainerProps;
   token: string;
+  url: string;
 }
 
-const App = ({language, navigationContainer, dataUser, token}: AppProps) => {
+const App = ({
+  language,
+  navigationContainer,
+  dataUser,
+  token,
+  url,
+}: AppProps) => {
   const Stack = createStackNavigator();
 
   locale.init();
   locale.setCurrentLanguage(locale.formatLanguageUnderscore(language));
   ProductService.BACK.authToken = token;
+  ProductService.BACK.url = url;
 
   useEffect(() => {
     const excec = async () => {
