@@ -13,6 +13,7 @@ import locale from '../../localization/locale';
 import {INavigationContainerProps} from '../../interfaces';
 import useProduct from '../../hooks/useProduct';
 import {ProductList} from '../../../lib/data_gen/product.types';
+import {PassDataToParentTable} from '../../components/table/types';
 
 interface HomeProps {
   navigation: NavigationProp<any>;
@@ -28,6 +29,12 @@ const Home = ({navigation, route, navigationContainer}: HomeProps) => {
   const handleData = async (nameFilter?: string) => {
     const data = await getFilteredProducts(nameFilter);
     setProducts(data);
+  };
+
+  const getDataToTable = async ({refresh}: PassDataToParentTable) => {
+    if (refresh) {
+      await handleData();
+    }
   };
 
   useEffect(() => {
@@ -59,7 +66,13 @@ const Home = ({navigation, route, navigationContainer}: HomeProps) => {
         </View>
       </View>
       <Search onSubmit={handleData} />
-      {products.length > 0 && <Table navigation={navigation} data={products} />}
+      {products.length > 0 && (
+        <Table
+          navigation={navigation}
+          data={products}
+          passDataToParent={getDataToTable}
+        />
+      )}
     </View>
   );
 };

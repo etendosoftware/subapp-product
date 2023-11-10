@@ -11,10 +11,11 @@ import {
 import {isTablet} from '../../utils';
 import {Columns} from 'etendo-ui-library/dist-native/components/table/Table.types';
 import Modal from '../modal';
-import {NavigationProp} from '@react-navigation/native';
-import {IProduct} from '../../interfaces';
 import locale from '../../localization/locale';
-import {Product, ProductList} from '../../../lib/data_gen/product.types';
+import {Product} from '../../../lib/data_gen/product.types';
+import useProduct from '../../hooks/useProduct';
+import {Toast} from '../../utils/Toast';
+import {TableProps} from './types';
 
 interface IIconTouchable {
   action: string;
@@ -55,12 +56,11 @@ const IconTouchable = ({action}: IIconTouchable) => {
   );
 };
 
-interface TableProps {
-  navigation: NavigationProp<any>;
-  data: ProductList;
-}
-const Table = ({navigation, data}: TableProps) => {
+const Table = ({navigation, data, passDataToParent}: TableProps) => {
   const [modalActive, setModalActive] = useState(false);
+  const [deleteId, setDeleteId] = useState<string>('');
+
+  const {updateProduct} = useProduct();
 
   const dataColumns: Columns[] = [
     {
@@ -115,7 +115,7 @@ const Table = ({navigation, data}: TableProps) => {
         {
           component: <IconTouchable action="delete" />,
           onAction: (item: any) => {
-            console.log('item2', item);
+            setDeleteId(item);
             setModalActive(true);
           },
         },
@@ -124,6 +124,17 @@ const Table = ({navigation, data}: TableProps) => {
   ];
 
   const closeModal = () => {
+    setModalActive(false);
+  };
+  const functionConfirm = async () => {
+    try {
+      await updateProduct({active: false, id: deleteId});
+      if (passDataToParent) {
+        passDataToParent({refresh: true});
+      }
+    } catch (err) {
+      Toast('Error.barcode');
+    }
     setModalActive(false);
   };
 
@@ -144,7 +155,7 @@ const Table = ({navigation, data}: TableProps) => {
           textCancel={locale.t('Common.cancel')}
           visible={modalActive}
           setVisible={closeModal}
-          functionConfirm={closeModal}
+          functionConfirm={functionConfirm}
           functionCancel={closeModal}
         />
       )}
