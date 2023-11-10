@@ -98,7 +98,6 @@ const Table = ({navigation, data}: TableProps) => {
         {
           component: <IconTouchable action="edit" />,
           onAction: (item: any) => {
-            console.log('item1', item);
             const itemSelected = data.find(itemData => itemData.id === item);
             if (!itemSelected) {
               return;
@@ -107,6 +106,7 @@ const Table = ({navigation, data}: TableProps) => {
               id: item,
               name: itemSelected.name,
               uPCEAN: itemSelected.uPCEAN,
+              searchKey: itemSelected.searchKey,
             };
 
             navigation.navigate('ProductDetail', {productItem});

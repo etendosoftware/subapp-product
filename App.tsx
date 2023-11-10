@@ -5,6 +5,7 @@ import locale from './src/localization/locale';
 import ProductDetail from './src/screens/productDetail';
 import {IData, INavigationContainerProps} from './src/interfaces';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ProductService from './lib/data_gen/productservice';
 
 interface AppProps {
   language: string;
@@ -18,6 +19,7 @@ const App = ({language, navigationContainer, dataUser, token}: AppProps) => {
 
   locale.init();
   locale.setCurrentLanguage(locale.formatLanguageUnderscore(language));
+  ProductService.BACK.authToken = token;
 
   useEffect(() => {
     const excec = async () => {

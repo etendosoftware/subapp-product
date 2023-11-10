@@ -13,4 +13,12 @@ export interface Product extends EntityType {
   id?: string;
   productCategoryId?: string;
   productCategory?: string;
+  active?: boolean;
+  description?: string;
+  organization?: string;
+  productType?: string;
+  productValue?: string;
+  searchKey?: string;
+  taxCategory?: string;
+  uOM?: string;
 }

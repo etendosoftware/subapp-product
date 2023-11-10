@@ -6,36 +6,33 @@ export abstract class BaseService<E extends EntityType> {
   abstract mapManyToOne(entity: E): void;
   _authToken: string = '';
 
-  async save(entity: E, projection: string): Promise<E> {
+  async save(entity: E): Promise<E> {
     const _modelName = this.getModelName();
     let method = 'POST';
     let urlId = '';
-    this.mapManyToOne(entity);
     if (entity.id !== undefined) {
       method = 'PATCH';
       urlId = entity.id;
     }
-
     const response = await fetch(
-      `http://127.0.0.1:8092/${_modelName}/${urlId}?projection=${projection}`,
+      `http://192.168.88.254:8092/${_modelName}/${urlId}`,
       {
         method: method,
+        body: JSON.stringify(entity),
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
           'X-TOKEN': this._authToken,
         },
-        body: JSON.stringify(entity),
       },
     );
-    let responseText;
-    try {
-      responseText = await response.text();
-      const responseEntity = JSON.parse(responseText);
-      return responseEntity;
-    } catch (e) {
-      throw e;
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
+
+    const responseData = await response.json();
+    return responseData;
   }
 
   async delete(id: string | undefined): Promise<number> {
@@ -57,13 +54,11 @@ export abstract class BaseService<E extends EntityType> {
   ) {
     const _modelName = this.getModelName();
     const parsedParams = Object.keys(params)
-      .map(k => {
-        return `${k}=${params[k]}`;
-      })
+      .map(k => `${k}=${encodeURIComponent(params[k])}`)
       .join('&');
 
     const res = await fetch(
-      `http://127.0.0.1:8092/${_modelName}/search/${search}?${parsedParams}&projection=${projection}`,
+      `http://192.168.88.254:8092/${_modelName}/search/${search}?${parsedParams}&projection=${projection}`,
       {
         method: 'GET',
         headers: {
@@ -71,7 +66,6 @@ export abstract class BaseService<E extends EntityType> {
         },
       },
     );
-
     const data = await res.json();
     const k = Object.keys(data._embedded);
 

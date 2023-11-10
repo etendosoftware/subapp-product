@@ -12,11 +12,14 @@
     "editProduct": "Editar producto",
     "products": "Productos",
     "productExample": "Ej. Lata de atún",
+    "searchKeyExample": "Eg. ES/0003",
     "barcode": "Código de barras",
+    "searchKey": "Clave de Búsqueda",
     "barcodePlaceholder": "Escribe o escanea el código"
   },
   "Table": {
     "products": "Productos",
+    "searchKey": "Clave de Búsqueda",
     "barcode": "Código de Barras",
     "barcodeShort": "Cód. Barras",
     "actions": "Acciones"
@@ -29,5 +32,11 @@
     "cancel": "Cancelar",
     "accept": "Aceptar",
     "goBack": "Volver"
+  },
+  "Error": {
+    "product": "Ingrese el nombre del producto",
+    "barcode": "Ingrese el código de barras",
+    "saveProduct": "Error al guardar el producto",
+    "updateProduct": "Error al editar el producto"
   }
 }
