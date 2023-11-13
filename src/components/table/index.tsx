@@ -12,7 +12,6 @@ import {isTablet} from '../../utils';
 import {Columns} from 'etendo-ui-library/dist-native/components/table/Table.types';
 import Modal from '../modal';
 import {NavigationProp} from '@react-navigation/native';
-import {IProduct} from '../../interfaces';
 import locale from '../../localization/locale';
 import {Product, ProductList} from '../../../lib/data_gen/product.types';
 
@@ -98,7 +97,6 @@ const Table = ({navigation, data}: TableProps) => {
         {
           component: <IconTouchable action="edit" />,
           onAction: (item: any) => {
-            console.log('item1', item);
             const itemSelected = data.find(itemData => itemData.id === item);
             if (!itemSelected) {
               return;
@@ -107,6 +105,7 @@ const Table = ({navigation, data}: TableProps) => {
               id: item,
               name: itemSelected.name,
               uPCEAN: itemSelected.uPCEAN,
+              searchKey: itemSelected.searchKey,
             };
 
             navigation.navigate('ProductDetail', {productItem});

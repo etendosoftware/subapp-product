@@ -1,30 +1,32 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import Home from './src/screens/home';
 import {createStackNavigator} from '@react-navigation/stack';
 import locale from './src/localization/locale';
 import ProductDetail from './src/screens/productDetail';
 import {IData, INavigationContainerProps} from './src/interfaces';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import ProductService from './lib/data_gen/productservice';
 
 interface AppProps {
   language: string;
   dataUser: IData;
   navigationContainer: INavigationContainerProps;
   token: string;
+  url: string;
 }
 
-const App = ({language, navigationContainer, dataUser, token}: AppProps) => {
+const App = ({
+  language,
+  navigationContainer,
+  dataUser,
+  token,
+  url,
+}: AppProps) => {
   const Stack = createStackNavigator();
 
   locale.init();
   locale.setCurrentLanguage(locale.formatLanguageUnderscore(language));
-
-  useEffect(() => {
-    const excec = async () => {
-      await AsyncStorage.setItem('tokenSubapp', token);
-    };
-    excec();
-  }, []);
+  ProductService.BACK.authToken = token;
+  ProductService.BACK.url = url;
 
   return (
     <Stack.Navigator initialRouteName="Home">

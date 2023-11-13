@@ -1,10 +1,5 @@
 import {BaseService} from '../base/baseservice';
-import {
-  Product,
-  ProductList,
-  GetAllProductsParams,
-  GetFilteredProductsParams,
-} from './product.types';
+import {Product, ProductList, GetFilteredProductsParams} from './product.types';
 
 class BackService extends BaseService<Product> {
   private static modelName = 'Product';
@@ -35,6 +30,11 @@ class BackService extends BaseService<Product> {
       console.log('falla aca', error);
       throw error;
     }
+  }
+
+  async createProduct(data: Product): Promise<any> {
+    const response = this.save(data);
+    return response;
   }
 }
 

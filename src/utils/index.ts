@@ -4,6 +4,13 @@ import {Dimensions, PixelRatio} from 'react-native';
 const width = Dimensions.get('screen').width;
 const height = Dimensions.get('screen').height;
 
+export const generateRandomNumber = () => {
+  let randomString = Math.floor(
+    1000000000 + Math.random() * 9000000000,
+  ).toString();
+  return randomString;
+};
+
 const isTabletDevice = () => {
   let pixelDensity = PixelRatio.get();
   const adjustedWidth = width * pixelDensity;

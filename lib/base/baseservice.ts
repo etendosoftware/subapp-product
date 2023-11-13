@@ -5,42 +5,37 @@ export abstract class BaseService<E extends EntityType> {
   abstract getFetchName(): string;
   abstract mapManyToOne(entity: E): void;
   _authToken: string = '';
+  _url: string = '';
 
-  async save(entity: E, projection: string): Promise<E> {
+  async save(entity: E): Promise<E> {
     const _modelName = this.getModelName();
     let method = 'POST';
     let urlId = '';
-    this.mapManyToOne(entity);
     if (entity.id !== undefined) {
       method = 'PATCH';
       urlId = entity.id;
     }
-
-    const response = await fetch(
-      `http://127.0.0.1:8092/${_modelName}/${urlId}?projection=${projection}`,
-      {
-        method: method,
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          'X-TOKEN': this._authToken,
-        },
-        body: JSON.stringify(entity),
+    const response = await fetch(`${this._url}/das/${_modelName}/${urlId}`, {
+      method: method,
+      body: JSON.stringify(entity),
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'X-TOKEN': this._authToken,
       },
-    );
-    let responseText;
-    try {
-      responseText = await response.text();
-      const responseEntity = JSON.parse(responseText);
-      return responseEntity;
-    } catch (e) {
-      throw e;
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
+
+    const responseData = await response.json();
+    return responseData;
   }
 
   async delete(id: string | undefined): Promise<number> {
     const _modelName = this.getModelName();
-    const response = await fetch(`http://127.0.0.1:8092/${_modelName}/${id}`, {
+    const response = await fetch(`${this._url}/das/${_modelName}/${id}`, {
       method: 'DELETE',
       headers: {
         Accept: 'application/json',
@@ -61,7 +56,7 @@ export abstract class BaseService<E extends EntityType> {
       .join('&');
 
     const res = await fetch(
-      `http://192.168.88.144:8092/${_modelName}/search/${search}?${parsedParams}&projection=${projection}&size=40`,
+      `${this._url}/das/${_modelName}/search/${search}?${parsedParams}&projection=${projection}`,
       {
         method: 'GET',
         headers: {
@@ -69,7 +64,6 @@ export abstract class BaseService<E extends EntityType> {
         },
       },
     );
-
     const data = await res.json();
     const k = Object.keys(data._embedded);
 
@@ -86,5 +80,13 @@ export abstract class BaseService<E extends EntityType> {
 
   public set authToken(authToken: string) {
     this._authToken = authToken;
+  }
+
+  public get url() {
+    return this._url;
+  }
+
+  public set url(url: string) {
+    this._url = url;
   }
 }

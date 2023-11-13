@@ -12,11 +12,14 @@
     "editProduct": "Edit product",
     "products": "Products",
     "productExample": "Eg. tuna can",
+    "searchKeyExample": "Eg. ES/0003",
     "barcode": "Barcode",
+    "searchKey": "Search Key",
     "barcodePlaceholder": "Type or scan the code"
   },
   "Table": {
     "products": "Products",
+    "searchKey": "Search Key",
     "barcode": "Barcode",
     "barcodeShort": "Barcode",
     "actions": "Actions"
@@ -29,5 +32,11 @@
     "cancel": "Cancel",
     "accept": "Accept",
     "goBack": "Go back"
+  },
+  "Error": {
+    "product": "Enter a product name",
+    "barcode": "Enter a barcode",
+    "saveProduct": "Error saving the product",
+    "updateProduct": "Error editing product"
   }
 }

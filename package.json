@@ -8,7 +8,8 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
-    "dev": "http-server -p 3000 ../web/com.etendorx.subapp.product/"
+    "dev": "http-server -p 3000 ../web/com.etendorx.subapp.product/",
+    "build": "rollup -c"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.19.3",
@@ -29,6 +30,7 @@
     "react-native-screens": "^3.25.0",
     "react-native-svg": "^13.9.0",
     "react-native-svg-transformer": "^1.0.0",
+    "react-native-toast-message": "^2.1.7",
     "react-native-vision-camera": "2.15.2",
     "vision-camera-code-scanner": "0.2.0"
   },

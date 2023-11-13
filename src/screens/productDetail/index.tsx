@@ -14,23 +14,32 @@ import {NavigationProp} from '@react-navigation/native';
 import {isTablet} from '../../utils';
 import Camera from '../../components/camera';
 import locale from '../../localization/locale';
+import useProduct from '../../hooks/useProduct';
+import {Toast} from '../../utils/Toast';
 
 interface ProductDetailProps {
   navigation: NavigationProp<any>;
   route: any;
 }
-
 const ProductDetail: React.FC<ProductDetailProps> = ({navigation, route}) => {
-  const [product, setProduct] = useState('');
-  const [barcode, setBarcode] = useState('');
-  const [title, setTitle] = useState('');
-  const [show, setShow] = useState(false);
+  const [product, setProduct] = useState<string>('');
+  const [barcode, setBarcode] = useState<string>('');
+  const [id, setId] = useState<string>('');
+  const [title, setTitle] = useState<string>('');
+  const [show, setShow] = useState<boolean>(false);
+  const [errorProduct, setErrorProduct] = useState<boolean>(false);
+  const [errorBarcode, setErrorBarcode] = useState<boolean>(false);
+
   const {dataUser, productItem} = route.params;
+
+  const {createProduct, updateProduct} = useProduct();
 
   useEffect(() => {
     if (productItem) {
       setProduct(productItem.name);
-      setBarcode(productItem.barcode);
+      setBarcode(productItem.uPCEAN);
+      setId(productItem.id);
+
       setTitle(locale.t('ProductDetail.editProduct'));
     } else {
       setTitle(locale.t('ProductDetail.newProduct'));
@@ -47,13 +56,46 @@ const ProductDetail: React.FC<ProductDetailProps> = ({navigation, route}) => {
   const handleCancel = () => {
     setProduct('');
     setBarcode('');
+    setId('');
     setShow(false);
     navigation.goBack();
   };
 
-  const handleSave = () => {
-    // TODO: add logic to save product
-    navigation.goBack();
+  const handleSave = async () => {
+    if (typeof product !== 'string' || product.trim() === '') {
+      setErrorProduct(true);
+      Toast('Error.product');
+      return;
+    } else {
+      setErrorProduct(false);
+    }
+
+    if (typeof barcode !== 'string' || barcode.trim() === '') {
+      setErrorBarcode(true);
+      Toast('Error.barcode');
+      return;
+    } else {
+      setErrorBarcode(false);
+    }
+
+    try {
+      if (id) {
+        await updateProduct({
+          id: id,
+          name: product,
+          uPCEAN: barcode,
+        });
+      } else {
+        await createProduct({
+          name: product,
+          uPCEAN: barcode,
+        });
+      }
+      navigation.goBack();
+    } catch (err) {
+      const errorType = id ? 'Error.updateProduct' : 'Error.saveProduct';
+      Toast(errorType);
+    }
   };
 
   return (
@@ -64,7 +106,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({navigation, route}) => {
           title={'ProductDetail.welcome'}
           username={dataUser?.username}
           onOptionSelected={(route: any) => {
-            navigation?.navigate(route!);
+            navigation?.navigate(route);
           }}
         />
 
@@ -93,8 +135,8 @@ const ProductDetail: React.FC<ProductDetailProps> = ({navigation, route}) => {
                 width="100%"
                 height={50}
                 typeStyle="secondary"
-                onPress={() => {
-                  handleSave();
+                onPress={async () => {
+                  await handleSave();
                 }}
                 text={locale.t('Common.save')}
                 iconLeft={<CheckIcon style={styles.icon} />}
@@ -117,6 +159,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({navigation, route}) => {
               titleLabel={locale.t('ProductDetail.products')}
               typeField="textInput"
               value={product}
+              isError={errorProduct}
               onChangeText={(value: React.SetStateAction<string>) =>
                 setProduct(value)
               }
@@ -143,6 +186,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({navigation, route}) => {
                 titleLabel={locale.t('ProductDetail.barcode')}
                 typeField="textInput"
                 value={barcode}
+                isError={errorBarcode}
                 onChangeText={(value: React.SetStateAction<string>) =>
                   setBarcode(value)
                 }
