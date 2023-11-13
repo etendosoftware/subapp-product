@@ -39,6 +39,7 @@ const Search = ({onSubmit}: SearchProps) => {
             placeholder={locale.t('Home.typeProduct')}
             typeField="textInputSearch"
             height={50}
+            onSubmit={() => onSubmit(barcode)}
           />
         </View>
         <View style={[styles.buttonContainer]}>
