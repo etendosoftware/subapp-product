@@ -15,7 +15,7 @@ export abstract class BaseService<E extends EntityType> {
       method = 'PATCH';
       urlId = entity.id;
     }
-    const response = await fetch(`http://${this._url}/${_modelName}/${urlId}`, {
+    const response = await fetch(`${this._url}/das/${_modelName}/${urlId}`, {
       method: method,
       body: JSON.stringify(entity),
       headers: {
@@ -35,7 +35,7 @@ export abstract class BaseService<E extends EntityType> {
 
   async delete(id: string | undefined): Promise<number> {
     const _modelName = this.getModelName();
-    const response = await fetch(`http://${this._url}/${_modelName}/${id}`, {
+    const response = await fetch(`${this._url}/das/${_modelName}/${id}`, {
       method: 'DELETE',
       headers: {
         Accept: 'application/json',
@@ -56,7 +56,7 @@ export abstract class BaseService<E extends EntityType> {
       .join('&');
 
     const res = await fetch(
-      `http://${this._url}/${_modelName}/search/${search}?${parsedParams}&projection=${projection}`,
+      `${this._url}/das/${_modelName}/search/${search}?${parsedParams}&projection=${projection}`,
       {
         method: 'GET',
         headers: {
