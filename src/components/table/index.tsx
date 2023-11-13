@@ -12,7 +12,6 @@ import {isTablet} from '../../utils';
 import {Columns} from 'etendo-ui-library/dist-native/components/table/Table.types';
 import Modal from '../modal';
 import {NavigationProp} from '@react-navigation/native';
-import {IProduct} from '../../interfaces';
 import locale from '../../localization/locale';
 import {Product, ProductList} from '../../../lib/data_gen/product.types';
 

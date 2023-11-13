@@ -9,8 +9,6 @@ export const useProduct = () => {
 
   const getFilteredProducts = async (name: string = '%%') => {
     try {
-      const token = (await AsyncStorage.getItem('tokenSubapp')) || '';
-      ProductService.BACK.authToken = token;
       const products = await ProductService.BACK.getFilteredProducts(name);
       setProductsFiltered(products);
       return products;
