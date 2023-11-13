@@ -57,13 +57,11 @@ export abstract class BaseService<E extends EntityType> {
   ) {
     const _modelName = this.getModelName();
     const parsedParams = Object.keys(params)
-      .map(k => {
-        return `${k}=${params[k]}`;
-      })
+      .map(k => `${k}=${encodeURIComponent(params[k])}`)
       .join('&');
 
     const res = await fetch(
-      `http://127.0.0.1:8092/${_modelName}/search/${search}?${parsedParams}&projection=${projection}`,
+      `http://192.168.88.144:8092/${_modelName}/search/${search}?${parsedParams}&projection=${projection}&size=40`,
       {
         method: 'GET',
         headers: {
