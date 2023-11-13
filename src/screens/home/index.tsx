@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Text, View} from 'react-native';
 import Navbar from '../../components/navbar';
 
@@ -11,6 +11,8 @@ import {NavigationProp} from '@react-navigation/native';
 import {isTablet} from '../../utils';
 import locale from '../../localization/locale';
 import {INavigationContainerProps} from '../../interfaces';
+import useProduct from '../../hooks/useProduct';
+import {ProductList} from '../../../lib/data_gen/product.types';
 
 interface HomeProps {
   navigation: NavigationProp<any>;
@@ -19,7 +21,19 @@ interface HomeProps {
 }
 
 const Home = ({navigation, route, navigationContainer}: HomeProps) => {
+  const {getFilteredProducts} = useProduct();
+  const [products, setProducts] = useState<ProductList>([]);
   const {dataUser} = route.params;
+
+  const handleData = async (nameFilter?: string) => {
+    const data = await getFilteredProducts(nameFilter);
+    setProducts(data);
+  };
+
+  useEffect(() => {
+    handleData();
+  }, []);
+
   return (
     <View style={styles.container}>
       <Navbar
@@ -44,8 +58,8 @@ const Home = ({navigation, route, navigationContainer}: HomeProps) => {
           />
         </View>
       </View>
-      <Search />
-      <Table navigation={navigation} />
+      <Search onSubmit={handleData} />
+      {products.length > 0 && <Table navigation={navigation} data={products} />}
     </View>
   );
 };
