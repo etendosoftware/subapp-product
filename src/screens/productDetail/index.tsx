@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Text, View} from 'react-native';
+import {ActivityIndicator, Text, View} from 'react-native';
 import Navbar from '../../components/navbar';
 
 import {
@@ -16,6 +16,7 @@ import Camera from '../../components/camera';
 import locale from '../../localization/locale';
 import useProduct from '../../hooks/useProduct';
 import {Toast} from '../../utils/Toast';
+import {PRIMARY_100} from '../../styles/colors';
 
 interface ProductDetailProps {
   navigation: NavigationProp<any>;
@@ -28,6 +29,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({navigation, route}) => {
   const [title, setTitle] = useState<string>('');
   const [show, setShow] = useState<boolean>(false);
   const [errorProduct, setErrorProduct] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const {dataUser, productItem} = route.params;
 
@@ -61,9 +63,11 @@ const ProductDetail: React.FC<ProductDetailProps> = ({navigation, route}) => {
   };
 
   const handleSave = async () => {
+    setLoading(true);
     if (typeof product !== 'string' || product.trim() === '') {
       setErrorProduct(true);
       Toast('Error.product');
+      setLoading(false);
       return;
     } else {
       setErrorProduct(false);
@@ -76,14 +80,18 @@ const ProductDetail: React.FC<ProductDetailProps> = ({navigation, route}) => {
           name: product,
           uPCEAN: barcode,
         });
+        Toast('Success.saveProduct', {type: 'success'});
       } else {
         await createProduct({
           name: product,
           uPCEAN: barcode,
         });
+        Toast('Success.updateProduct', {type: 'success'});
       }
+      setLoading(false);
       navigation.goBack();
     } catch (err) {
+      setLoading(false);
       const errorType = id ? 'Error.updateProduct' : 'Error.saveProduct';
       Toast(errorType);
     }
@@ -109,6 +117,9 @@ const ProductDetail: React.FC<ProductDetailProps> = ({navigation, route}) => {
             <Text style={styles.title}>{title}</Text>
           </View>
           <View style={[styles.buttonSection]}>
+            {loading && (
+              <ActivityIndicator color={PRIMARY_100} size={'large'} />
+            )}
             <View style={styles.buttonContainer}>
               <ButtonUI
                 width="100%"

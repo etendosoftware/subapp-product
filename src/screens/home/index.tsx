@@ -25,7 +25,6 @@ const Home = ({navigation, route, navigationContainer}: HomeProps) => {
   const {getFilteredProducts} = useProduct();
   const [products, setProducts] = useState<ProductList>([]);
   const [inputValue, setInputValue] = useState<string | undefined>('');
-  const [hasFetchedData, setHasFetchedData] = useState(false);
   const {dataUser} = route.params;
 
   const handleData = async (nameFilter?: string) => {

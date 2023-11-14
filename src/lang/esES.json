@@ -35,8 +35,13 @@
   },
   "Error": {
     "product": "Ingrese el nombre del producto",
-    "saveProduct": "Error al guardar el producto",
-    "updateProduct": "Error al editar el producto",
-    "deleteProduct": "Error al borrar el producto"
+    "saveProduct": "error de conexión a la red",
+    "updateProduct": "Error de conexión a la red",
+    "deleteProduct": "Error de conexión a la red"
+  },
+  "Success": {
+    "saveProduct": "Producto creado correctamente",
+    "updateProduct": "Producto editado correctamente",
+    "deleteProduct": "Producto borrado correctamente"
   }
 }

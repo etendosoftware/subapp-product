@@ -35,8 +35,13 @@
   },
   "Error": {
     "product": "Enter a product name",
-    "saveProduct": "Error saving the product",
-    "updateProduct": "Error editing product",
-    "deleteProduct": "Error deleting product"
+    "saveProduct": "Network connection error",
+    "updateProduct": "Network connection error",
+    "deleteProduct": "Network connection error"
+  },
+  "Success": {
+    "saveProduct": "Product successfully created",
+    "updateProduct": "Product successfully edited",
+    "deleteProduct": "Product successfully deleted"
   }
 }

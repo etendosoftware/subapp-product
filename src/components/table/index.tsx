@@ -130,6 +130,7 @@ const Table = ({navigation, data, passDataToParent}: TableProps) => {
   const functionConfirm = async () => {
     try {
       await updateProduct({id: deleteId, active: false});
+      Toast('Success.deleteProduct', {type: 'success'});
       if (passDataToParent) {
         passDataToParent({refresh: true});
       }
