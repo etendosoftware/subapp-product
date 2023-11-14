@@ -35,7 +35,6 @@
   },
   "Error": {
     "product": "Enter a product name",
-    "barcode": "Enter a barcode",
     "saveProduct": "Error saving the product",
     "updateProduct": "Error editing product",
     "deleteProduct": "Error deleting product"

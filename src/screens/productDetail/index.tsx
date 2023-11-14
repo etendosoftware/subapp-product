@@ -28,7 +28,6 @@ const ProductDetail: React.FC<ProductDetailProps> = ({navigation, route}) => {
   const [title, setTitle] = useState<string>('');
   const [show, setShow] = useState<boolean>(false);
   const [errorProduct, setErrorProduct] = useState<boolean>(false);
-  const [errorBarcode, setErrorBarcode] = useState<boolean>(false);
 
   const {dataUser, productItem} = route.params;
 
@@ -68,14 +67,6 @@ const ProductDetail: React.FC<ProductDetailProps> = ({navigation, route}) => {
       return;
     } else {
       setErrorProduct(false);
-    }
-
-    if (typeof barcode !== 'string' || barcode.trim() === '') {
-      setErrorBarcode(true);
-      Toast('Error.barcode');
-      return;
-    } else {
-      setErrorBarcode(false);
     }
 
     try {
@@ -186,7 +177,6 @@ const ProductDetail: React.FC<ProductDetailProps> = ({navigation, route}) => {
                 titleLabel={locale.t('ProductDetail.barcode')}
                 typeField="textInput"
                 value={barcode}
-                isError={errorBarcode}
                 onChangeText={(value: React.SetStateAction<string>) =>
                   setBarcode(value)
                 }

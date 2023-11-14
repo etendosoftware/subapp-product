@@ -35,7 +35,6 @@
   },
   "Error": {
     "product": "Ingrese el nombre del producto",
-    "barcode": "Ingrese el código de barras",
     "saveProduct": "Error al guardar el producto",
     "updateProduct": "Error al editar el producto",
     "deleteProduct": "Error al borrar el producto"
