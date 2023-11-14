@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Text, View} from 'react-native';
 import Navbar from '../../components/navbar';
 
@@ -7,7 +7,7 @@ import {Button as ButtonUI, MoreIcon} from 'etendo-ui-library';
 import Search from '../../components/search';
 import Table from '../../components/table';
 import {styles} from './style';
-import {NavigationProp} from '@react-navigation/native';
+import {NavigationProp, useFocusEffect} from '@react-navigation/native';
 import {isTablet} from '../../utils';
 import locale from '../../localization/locale';
 import {INavigationContainerProps} from '../../interfaces';
@@ -24,22 +24,39 @@ interface HomeProps {
 const Home = ({navigation, route, navigationContainer}: HomeProps) => {
   const {getFilteredProducts} = useProduct();
   const [products, setProducts] = useState<ProductList>([]);
+  const [inputValue, setInputValue] = useState<string | undefined>('');
+  const [hasFetchedData, setHasFetchedData] = useState(false);
   const {dataUser} = route.params;
 
   const handleData = async (nameFilter?: string) => {
+    setInputValue(nameFilter);
     const data = await getFilteredProducts(nameFilter);
     setProducts(data);
   };
 
+  useFocusEffect(
+    React.useCallback(() => {
+      handleData(inputValue);
+    }, [inputValue]),
+  );
+
+  React.useEffect(() => {
+    const unsubscribe = navigation.addListener('beforeRemove', () => {
+      if (navigation.isFocused()) {
+        handleData(inputValue);
+      }
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [inputValue, navigation]);
+
   const getDataToTable = async ({refresh}: PassDataToParentTable) => {
     if (refresh) {
-      await handleData();
+      await handleData(inputValue);
     }
   };
-
-  useEffect(() => {
-    handleData();
-  }, []);
 
   return (
     <View style={styles.container}>

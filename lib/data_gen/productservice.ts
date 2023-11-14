@@ -19,21 +19,16 @@ class BackService extends BaseService<Product> {
   }
 
   async getFilteredProducts(name: string): Promise<ProductList> {
-    try {
-      const resp = await this._fetchSearch<GetFilteredProductsParams>(
-        'getFilteredProducts',
-        {name},
-        'ProdSubApp',
-      );
-      return resp;
-    } catch (error) {
-      console.log('falla aca', error);
-      throw error;
-    }
+    const response = await this._fetchSearch<GetFilteredProductsParams>(
+      'getFilteredProducts',
+      {name},
+      'ProdSubApp',
+    );
+    return response;
   }
 
-  async createProduct(data: Product): Promise<any> {
-    const response = this.save(data);
+  async saveProduct(data: Product): Promise<any> {
+    const response = await this.save(data);
     return response;
   }
 }
@@ -48,14 +43,6 @@ class FrontService extends BaseService<Product> {
   mapManyToOne(entity: Product): void {
     throw new Error('Method not implemented.');
   }
-  // to ignore
-  // async save(data: Product): Promise<Product> {
-  //   const req = await fetch(`/api/Product/${data.id}`, {
-  //     method: 'POST',
-  //     body: JSON.stringify(data),
-  //   });
-  //   return await req.json();
-  // }
 }
 
 export default class ProductService {

@@ -126,14 +126,15 @@ const Table = ({navigation, data, passDataToParent}: TableProps) => {
   const closeModal = () => {
     setModalActive(false);
   };
+
   const functionConfirm = async () => {
     try {
-      await updateProduct({active: false, id: deleteId});
+      await updateProduct({id: deleteId, active: false});
       if (passDataToParent) {
         passDataToParent({refresh: true});
       }
     } catch (err) {
-      Toast('Error.barcode');
+      Toast('Error.deleteProduct');
     }
     setModalActive(false);
   };
@@ -144,9 +145,7 @@ const Table = ({navigation, data, passDataToParent}: TableProps) => {
         columns={dataColumns}
         data={data}
         tableHeight={'100%'}
-        onRowPress={(algo: any) => {
-          console.log('algo', algo);
-        }}
+        onRowPress={(row: any) => {}}
       />
       {modalActive && (
         <Modal
