@@ -35,13 +35,12 @@ const Search = ({onSubmit}: SearchProps) => {
             value={barcode}
             onChangeText={(value: React.SetStateAction<string>) => {
               setBarcode(value);
-              onSubmit(value);
+              onSubmit(String(value));
             }}
             onSubmit={() => onSubmit(barcode)}
             placeholder={locale.t('Home.typeProduct')}
             typeField="textInputSearch"
             height={50}
-            onSubmit={() => onSubmit(barcode)}
           />
         </View>
         <View style={[styles.buttonContainer]}>

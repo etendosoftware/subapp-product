@@ -27,7 +27,6 @@ class BackService extends BaseService<Product> {
       );
       return resp;
     } catch (error) {
-      console.log('falla aca', error);
       throw error;
     }
   }

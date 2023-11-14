@@ -59,7 +59,7 @@ const Home = ({navigation, route, navigationContainer}: HomeProps) => {
         </View>
       </View>
       <Search onSubmit={handleData} />
-      {products.length > 0 && <Table navigation={navigation} data={products} />}
+      <Table navigation={navigation} data={products} />
     </View>
   );
 };

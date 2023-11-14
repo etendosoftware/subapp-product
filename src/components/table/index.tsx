@@ -7,6 +7,7 @@ import {
   PencilIcon,
   CancelIcon,
   CheckIcon,
+  SkeletonItem,
 } from 'etendo-ui-library';
 import {isTablet} from '../../utils';
 import {Columns} from 'etendo-ui-library/dist-native/components/table/Table.types';
@@ -128,14 +129,23 @@ const Table = ({navigation, data}: TableProps) => {
 
   return (
     <View style={styles.table}>
-      <TableUI
-        columns={dataColumns}
-        data={data}
-        tableHeight={'100%'}
-        onRowPress={(algo: any) => {
-          console.log('algo', algo);
-        }}
-      />
+      {!!data.length ? (
+        <TableUI
+          columns={dataColumns}
+          data={data}
+          tableHeight={'100%'}
+          onRowPress={() => {}}
+        />
+      ) : (
+        <SkeletonItem
+          animationSpeed={600}
+          borderRadius={4}
+          color="#E5E5E5"
+          delay={10}
+          height={450}
+          width={isTablet ? 1150 : 350}
+        />
+      )}
       {modalActive && (
         <Modal
           textModal={locale.t('Modal.messageDelete')}
