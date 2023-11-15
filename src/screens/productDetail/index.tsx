@@ -117,9 +117,6 @@ const ProductDetail: React.FC<ProductDetailProps> = ({navigation, route}) => {
             <Text style={styles.title}>{title}</Text>
           </View>
           <View style={[styles.buttonSection]}>
-            {loading && (
-              <ActivityIndicator color={PRIMARY_100} size={'large'} />
-            )}
             <View style={styles.buttonContainer}>
               <ButtonUI
                 width="100%"
@@ -140,6 +137,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({navigation, route}) => {
                 onPress={async () => {
                   await handleSave();
                 }}
+                loading={loading}
                 text={locale.t('Common.save')}
                 iconLeft={<CheckIcon style={styles.icon} />}
               />
