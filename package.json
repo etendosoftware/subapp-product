@@ -17,7 +17,7 @@
     "@react-navigation/native-stack": "^6.9.13",
     "@react-navigation/stack": "^6.3.17",
     "@types/date-fns": "^2.6.0",
-    "etendo-ui-library": "1.2.54",
+    "etendo-ui-library": "1.2.56",
     "i18n-js": "^3.5.1",
     "i18next": "^23.5.1",
     "react": "18.1.0",

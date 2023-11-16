@@ -94,7 +94,7 @@ const Table = ({navigation, data, passDataToParent}: TableProps) => {
         alignItems: 'center',
         height: '100%',
       },
-      actions: [
+      components: [
         {
           component: <IconTouchable action="edit" />,
           onAction: (item: any) => {
