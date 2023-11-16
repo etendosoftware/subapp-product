@@ -138,7 +138,7 @@ const Table = ({navigation, data, passDataToParent}: TableProps) => {
       }
     } catch (err: any) {
       if (err.status === 500) {
-        return Toast('Error.server');
+        return Toast('Error.deleteProduct');
       }
       Toast('Error.connection');
     }

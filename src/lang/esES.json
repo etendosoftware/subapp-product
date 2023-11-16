@@ -35,7 +35,7 @@
   },
   "Error": {
     "product": "Ingrese el nombre del producto",
-    "server": "Error interno del servidor",
+    "deleteProduct": "Ocurrió un error al eliminar el producto",
     "connection": "Error de conexión a la red"
   },
   "Success": {
