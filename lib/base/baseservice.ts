@@ -26,7 +26,7 @@ export abstract class BaseService<E extends EntityType> {
       },
     });
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response}`);
+      throw response;
     }
 
     const responseData = await response.json();
