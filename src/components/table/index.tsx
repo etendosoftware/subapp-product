@@ -137,7 +137,6 @@ const Table = ({navigation, data, passDataToParent}: TableProps) => {
         passDataToParent({refresh: true});
       }
     } catch (err: any) {
-      console.log({err});
       if (err.status === 500) {
         return Toast('Error.server');
       }
