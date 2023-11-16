@@ -35,9 +35,8 @@
   },
   "Error": {
     "product": "Ingrese el nombre del producto",
-    "saveProduct": "error de conexión a la red",
-    "updateProduct": "Error de conexión a la red",
-    "deleteProduct": "Error de conexión a la red"
+    "server": "Error interno del servidor",
+    "connection": "Error de conexión a la red"
   },
   "Success": {
     "saveProduct": "Producto creado correctamente",

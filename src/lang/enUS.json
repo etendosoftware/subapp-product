@@ -34,10 +34,9 @@
     "goBack": "Go back"
   },
   "Error": {
-    "product": "Enter a product name",
-    "saveProduct": "Network connection error",
-    "updateProduct": "Network connection error",
-    "deleteProduct": "Network connection error"
+    "product": "Enter the product name",
+    "server": "Internal server error",
+    "connection": "Network connection error"
   },
   "Success": {
     "saveProduct": "Product successfully created",

@@ -128,16 +128,20 @@ const Table = ({navigation, data, passDataToParent}: TableProps) => {
   };
 
   const functionConfirm = async () => {
+    setModalActive(false);
+
     try {
       await updateProduct({id: deleteId, active: false});
       Toast('Success.deleteProduct', {type: 'success'});
       if (passDataToParent) {
         passDataToParent({refresh: true});
       }
-    } catch (err) {
-      Toast('Error.deleteProduct');
+    } catch (err: any) {
+      if (err.includes('Internal Server Error')) {
+        return Toast('Error.server');
+      }
+      Toast('Error.connection');
     }
-    setModalActive(false);
   };
 
   return (

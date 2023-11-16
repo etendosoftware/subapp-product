@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {ActivityIndicator, Text, View} from 'react-native';
+import {Text, View} from 'react-native';
 import Navbar from '../../components/navbar';
 
 import {
@@ -16,7 +16,6 @@ import Camera from '../../components/camera';
 import locale from '../../localization/locale';
 import useProduct from '../../hooks/useProduct';
 import {Toast} from '../../utils/Toast';
-import {PRIMARY_100} from '../../styles/colors';
 
 interface ProductDetailProps {
   navigation: NavigationProp<any>;
@@ -80,20 +79,19 @@ const ProductDetail: React.FC<ProductDetailProps> = ({navigation, route}) => {
           name: product,
           uPCEAN: barcode,
         });
-        Toast('Success.saveProduct', {type: 'success'});
+        Toast('Success.updateProduct', {type: 'success'});
       } else {
         await createProduct({
           name: product,
           uPCEAN: barcode,
         });
-        Toast('Success.updateProduct', {type: 'success'});
+        Toast('Success.saveProduct', {type: 'success'});
       }
       setLoading(false);
       navigation.goBack();
     } catch (err) {
       setLoading(false);
-      const errorType = id ? 'Error.updateProduct' : 'Error.saveProduct';
-      Toast(errorType);
+      Toast('Error.connection');
     }
   };
 
