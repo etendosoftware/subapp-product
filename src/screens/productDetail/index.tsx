@@ -151,7 +151,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({navigation, route}) => {
             <InputUI
               backgroundColor=""
               helperText=""
-              maxLength={100}
+              maxLength={60}
               height={50}
               placeholder={locale.t('ProductDetail.productExample')}
               titleLabel={locale.t('ProductDetail.products')}
@@ -178,7 +178,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({navigation, route}) => {
               <InputUI
                 backgroundColor=""
                 helperText=""
-                maxLength={100}
+                maxLength={30}
                 height={50}
                 placeholder={locale.t('ProductDetail.barcodePlaceholder')}
                 titleLabel={locale.t('ProductDetail.barcode')}
