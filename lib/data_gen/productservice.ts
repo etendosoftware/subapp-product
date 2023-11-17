@@ -25,10 +25,6 @@ class BackService extends BaseService<Product> {
       'ProdSubApp',
     );
   }
-
-  async saveProduct(data: Product): Promise<any> {
-    return this.save(data);
-  }
 }
 
 class FrontService extends BaseService<Product> {

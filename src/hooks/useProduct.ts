@@ -26,12 +26,12 @@ export const useProduct = () => {
       taxCategory: '/E020A69A1E784DC39BE57C41D6D5DB4E',
       uOM: '/100',
     };
-    const res = await ProductService.BACK.saveProduct(defaultValues);
+    const res = await ProductService.BACK.save(defaultValues);
     return res;
   };
 
   const updateProduct = async (body: Product) => {
-    const res = await ProductService.BACK.saveProduct(body);
+    const res = await ProductService.BACK.save(body);
     return res;
   };
 
