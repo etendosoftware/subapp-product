@@ -34,9 +34,13 @@
     "goBack": "Go back"
   },
   "Error": {
-    "product": "Enter a product name",
-    "barcode": "Enter a barcode",
-    "saveProduct": "Error saving the product",
-    "updateProduct": "Error editing product"
+    "product": "Enter the product name",
+    "deleteProduct": "An error occurred while deleting the product",
+    "connection": "Network connection error"
+  },
+  "Success": {
+    "saveProduct": "Product successfully created",
+    "updateProduct": "Product successfully edited",
+    "deleteProduct": "Product successfully deleted"
   }
 }

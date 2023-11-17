@@ -35,8 +35,12 @@
   },
   "Error": {
     "product": "Ingrese el nombre del producto",
-    "barcode": "Ingrese el código de barras",
-    "saveProduct": "Error al guardar el producto",
-    "updateProduct": "Error al editar el producto"
+    "deleteProduct": "Ocurrió un error al eliminar el producto",
+    "connection": "Error de conexión a la red"
+  },
+  "Success": {
+    "saveProduct": "Producto creado correctamente",
+    "updateProduct": "Producto editado correctamente",
+    "deleteProduct": "Producto borrado correctamente"
   }
 }

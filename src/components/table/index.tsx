@@ -11,9 +11,11 @@ import {
 import {isTablet} from '../../utils';
 import {Columns} from 'etendo-ui-library/dist-native/components/table/Table.types';
 import Modal from '../modal';
-import {NavigationProp} from '@react-navigation/native';
 import locale from '../../localization/locale';
-import {Product, ProductList} from '../../../lib/data_gen/product.types';
+import {Product} from '../../../lib/data_gen/product.types';
+import useProduct from '../../hooks/useProduct';
+import {Toast} from '../../utils/Toast';
+import {TableProps} from './types';
 
 interface IIconTouchable {
   action: string;
@@ -54,12 +56,11 @@ const IconTouchable = ({action}: IIconTouchable) => {
   );
 };
 
-interface TableProps {
-  navigation: NavigationProp<any>;
-  data: ProductList;
-}
-const Table = ({navigation, data}: TableProps) => {
+const Table = ({navigation, data, passDataToParent}: TableProps) => {
   const [modalActive, setModalActive] = useState(false);
+  const [deleteId, setDeleteId] = useState<string>('');
+
+  const {updateProduct} = useProduct();
 
   const dataColumns: Columns[] = [
     {
@@ -93,7 +94,7 @@ const Table = ({navigation, data}: TableProps) => {
         alignItems: 'center',
         height: '100%',
       },
-      actions: [
+      components: [
         {
           component: <IconTouchable action="edit" />,
           onAction: (item: any) => {
@@ -114,7 +115,7 @@ const Table = ({navigation, data}: TableProps) => {
         {
           component: <IconTouchable action="delete" />,
           onAction: (item: any) => {
-            console.log('item2', item);
+            setDeleteId(item);
             setModalActive(true);
           },
         },
@@ -126,15 +127,30 @@ const Table = ({navigation, data}: TableProps) => {
     setModalActive(false);
   };
 
+  const functionConfirm = async () => {
+    setModalActive(false);
+
+    try {
+      await updateProduct({id: deleteId, active: false});
+      Toast('Success.deleteProduct', {type: 'success'});
+      if (passDataToParent) {
+        passDataToParent({refresh: true});
+      }
+    } catch (err: any) {
+      if (err.status === 500) {
+        return Toast('Error.deleteProduct');
+      }
+      Toast('Error.connection');
+    }
+  };
+
   return (
     <View style={styles.table}>
       <TableUI
         columns={dataColumns}
         data={data}
         tableHeight={'100%'}
-        onRowPress={(algo: any) => {
-          console.log('algo', algo);
-        }}
+        onRowPress={(row: any) => {}}
       />
       {modalActive && (
         <Modal
@@ -143,7 +159,7 @@ const Table = ({navigation, data}: TableProps) => {
           textCancel={locale.t('Common.cancel')}
           visible={modalActive}
           setVisible={closeModal}
-          functionConfirm={closeModal}
+          functionConfirm={functionConfirm}
           functionCancel={closeModal}
         />
       )}

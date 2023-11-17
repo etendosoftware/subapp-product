@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Text, View} from 'react-native';
 import Navbar from '../../components/navbar';
 
@@ -7,12 +7,13 @@ import {Button as ButtonUI, MoreIcon} from 'etendo-ui-library';
 import Search from '../../components/search';
 import Table from '../../components/table';
 import {styles} from './style';
-import {NavigationProp} from '@react-navigation/native';
+import {NavigationProp, useFocusEffect} from '@react-navigation/native';
 import {isTablet} from '../../utils';
 import locale from '../../localization/locale';
 import {INavigationContainerProps} from '../../interfaces';
 import useProduct from '../../hooks/useProduct';
 import {ProductList} from '../../../lib/data_gen/product.types';
+import {PassDataToParentTable} from '../../components/table/types';
 
 interface HomeProps {
   navigation: NavigationProp<any>;
@@ -23,16 +24,38 @@ interface HomeProps {
 const Home = ({navigation, route, navigationContainer}: HomeProps) => {
   const {getFilteredProducts} = useProduct();
   const [products, setProducts] = useState<ProductList>([]);
+  const [inputValue, setInputValue] = useState<string | undefined>('');
   const {dataUser} = route.params;
 
   const handleData = async (nameFilter?: string) => {
+    setInputValue(nameFilter);
     const data = await getFilteredProducts(nameFilter);
     setProducts(data);
   };
 
-  useEffect(() => {
-    handleData();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      handleData(inputValue);
+    }, [inputValue]),
+  );
+
+  React.useEffect(() => {
+    const unsubscribe = navigation.addListener('beforeRemove', () => {
+      if (navigation.isFocused()) {
+        handleData(inputValue);
+      }
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [inputValue, navigation]);
+
+  const getDataToTable = async ({refresh}: PassDataToParentTable) => {
+    if (refresh) {
+      await handleData(inputValue);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -59,7 +82,13 @@ const Home = ({navigation, route, navigationContainer}: HomeProps) => {
         </View>
       </View>
       <Search onSubmit={handleData} />
-      {products.length > 0 && <Table navigation={navigation} data={products} />}
+      {products.length > 0 && (
+        <Table
+          navigation={navigation}
+          data={products}
+          passDataToParent={getDataToTable}
+        />
+      )}
     </View>
   );
 };

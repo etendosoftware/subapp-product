@@ -15,6 +15,7 @@ export abstract class BaseService<E extends EntityType> {
       method = 'PATCH';
       urlId = entity.id;
     }
+
     const response = await fetch(`${this._url}/das/${_modelName}/${urlId}`, {
       method: method,
       body: JSON.stringify(entity),
@@ -24,9 +25,8 @@ export abstract class BaseService<E extends EntityType> {
         'X-TOKEN': this._authToken,
       },
     });
-
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      throw response;
     }
 
     const responseData = await response.json();
