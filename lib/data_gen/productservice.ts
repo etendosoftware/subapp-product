@@ -19,17 +19,15 @@ class BackService extends BaseService<Product> {
   }
 
   async getFilteredProducts(name: string): Promise<ProductList> {
-    const response = await this._fetchSearch<GetFilteredProductsParams>(
+    return this._fetchSearch<GetFilteredProductsParams>(
       'getFilteredProducts',
       {name},
       'ProdSubApp',
     );
-    return response;
   }
 
   async saveProduct(data: Product): Promise<any> {
-    const response = await this.save(data);
-    return response;
+    return this.save(data);
   }
 }
 
