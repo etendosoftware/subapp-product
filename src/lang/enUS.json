@@ -22,7 +22,9 @@
     "searchKey": "Search Key",
     "barcode": "Barcode",
     "barcodeShort": "Barcode",
-    "actions": "Actions"
+    "actions": "Actions",
+    "textEmptyTable": "There are no records to display.",
+    "commentEmptyTable": "Start adding new records and they will be displayed here."
   },
   "Modal": {
     "messageDelete": "Are you sure to remove the product?"

@@ -10,12 +10,11 @@ import {
   SkeletonItem,
 } from 'etendo-ui-library';
 import {isTablet} from '../../utils';
-import {Columns} from 'etendo-ui-library/dist-native/components/table/Table.types';
 import Modal from '../modal';
 import {NavigationProp} from '@react-navigation/native';
 import locale from '../../localization/locale';
 import {Product, ProductList} from '../../../lib/data_gen/product.types';
-
+import {Columns} from 'etendo-ui-library/dist-native/components/table/Table.types';
 interface IIconTouchable {
   action: string;
 }
@@ -58,8 +57,10 @@ const IconTouchable = ({action}: IIconTouchable) => {
 interface TableProps {
   navigation: NavigationProp<any>;
   data: ProductList;
+  isLoading: boolean;
+  pagination: number;
 }
-const Table = ({navigation, data}: TableProps) => {
+const Table = ({navigation, data, isLoading, pagination}: TableProps) => {
   const [modalActive, setModalActive] = useState(false);
 
   const dataColumns: Columns[] = [
@@ -94,7 +95,7 @@ const Table = ({navigation, data}: TableProps) => {
         alignItems: 'center',
         height: '100%',
       },
-      actions: [
+      components: [
         {
           component: <IconTouchable action="edit" />,
           onAction: (item: any) => {
@@ -129,23 +130,17 @@ const Table = ({navigation, data}: TableProps) => {
 
   return (
     <View style={styles.table}>
-      {!!data.length ? (
-        <TableUI
-          columns={dataColumns}
-          data={data}
-          tableHeight={'100%'}
-          onRowPress={() => {}}
-        />
-      ) : (
-        <SkeletonItem
-          animationSpeed={600}
-          borderRadius={4}
-          color="#E5E5E5"
-          delay={10}
-          height={450}
-          width={isTablet ? 1150 : 350}
-        />
-      )}
+      <TableUI
+        columns={dataColumns}
+        data={data}
+        tableHeight={'100%'}
+        onRowPress={() => {}}
+        isLoading={isLoading}
+        pageSize={pagination}
+        currentPage={1}
+        commentEmptyTable={locale.t('Table.textEmptyTable')}
+        textEmptyTable={locale.t('Table.commentEmptyTable')}
+      />
       {modalActive && (
         <Modal
           textModal={locale.t('Modal.messageDelete')}

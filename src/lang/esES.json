@@ -22,7 +22,9 @@
     "searchKey": "Clave de Búsqueda",
     "barcode": "Código de Barras",
     "barcodeShort": "Cód. Barras",
-    "actions": "Acciones"
+    "actions": "Acciones",
+    "textEmptyTable": "Aún no has creado ningún registro.",
+    "commentEmptyTable": "Empieza añadiendo nuevos registros y se verán aquí."
   },
   "Modal": {
     "messageDelete": "Esta seguro de eliminar el producto?"

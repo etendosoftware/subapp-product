@@ -24,10 +24,14 @@ const Home = ({navigation, route, navigationContainer}: HomeProps) => {
   const {getFilteredProducts} = useProduct();
   const [products, setProducts] = useState<ProductList>([]);
   const {dataUser} = route.params;
+  const [loading, setLoading] = useState(true);
 
   const handleData = async (nameFilter?: string) => {
-    const data = await getFilteredProducts(nameFilter);
-    setProducts(data);
+    setLoading(true);
+    getFilteredProducts(nameFilter).then((data: ProductList) => {
+      setLoading(false);
+      setProducts(data);
+    });
   };
 
   useEffect(() => {
@@ -59,7 +63,12 @@ const Home = ({navigation, route, navigationContainer}: HomeProps) => {
         </View>
       </View>
       <Search onSubmit={handleData} />
-      <Table navigation={navigation} data={products} />
+      <Table
+        navigation={navigation}
+        data={products}
+        isLoading={loading}
+        pagination={20}
+      />
     </View>
   );
 };
