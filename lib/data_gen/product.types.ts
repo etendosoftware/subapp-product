@@ -1,4 +1,4 @@
-import {DASResponse, EntityType, KV} from '../base/baseservice.types';
+import {EntityType, KV} from '../base/baseservice.types';
 
 export type GetAllProductsParams = KV & {};
 export type GetFilteredProductsParams = KV & {

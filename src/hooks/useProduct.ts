@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useState} from 'react';
 import {Product} from '../../lib/data_gen/product.types';
 import ProductService from '../../lib/data_gen/productservice';
@@ -8,13 +7,9 @@ export const useProduct = () => {
   const [productsFiltered, setProductsFiltered] = useState<Product[]>([]);
 
   const getFilteredProducts = async (name: string = '%%') => {
-    try {
-      const products = await ProductService.BACK.getFilteredProducts(name);
-      setProductsFiltered(products);
-      return products;
-    } catch (error: any) {
-      throw new Error(error);
-    }
+    const products = await ProductService.BACK.getFilteredProducts(name);
+    setProductsFiltered(products);
+    return products;
   };
 
   const createProduct = async (body: Product) => {
@@ -31,12 +26,12 @@ export const useProduct = () => {
       taxCategory: '/E020A69A1E784DC39BE57C41D6D5DB4E',
       uOM: '/100',
     };
-    const res = await ProductService.BACK.createProduct(defaultValues);
+    const res = await ProductService.BACK.save(defaultValues);
     return res;
   };
 
   const updateProduct = async (body: Product) => {
-    const res = await ProductService.BACK.createProduct(body);
+    const res = await ProductService.BACK.save(body);
     return res;
   };
 

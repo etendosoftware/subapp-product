@@ -7,14 +7,16 @@ import {
   PencilIcon,
   CancelIcon,
   CheckIcon,
-  SkeletonItem,
 } from 'etendo-ui-library';
 import {isTablet} from '../../utils';
 import Modal from '../modal';
-import {NavigationProp} from '@react-navigation/native';
 import locale from '../../localization/locale';
-import {Product, ProductList} from '../../../lib/data_gen/product.types';
+import {Product} from '../../../lib/data_gen/product.types';
+import useProduct from '../../hooks/useProduct';
+import {Toast} from '../../utils/Toast';
 import {Columns} from 'etendo-ui-library/dist-native/components/table/Table.types';
+import {TableProps} from './types';
+
 interface IIconTouchable {
   action: string;
 }
@@ -54,14 +56,17 @@ const IconTouchable = ({action}: IIconTouchable) => {
   );
 };
 
-interface TableProps {
-  navigation: NavigationProp<any>;
-  data: ProductList;
-  isLoading: boolean;
-  pagination: number;
-}
-const Table = ({navigation, data, isLoading, pagination}: TableProps) => {
+const Table = ({
+  navigation,
+  data,
+  isLoading,
+  pagination,
+  passDataToParent,
+}: TableProps) => {
   const [modalActive, setModalActive] = useState(false);
+  const [deleteId, setDeleteId] = useState<string>('');
+
+  const {updateProduct} = useProduct();
 
   const dataColumns: Columns[] = [
     {
@@ -116,7 +121,7 @@ const Table = ({navigation, data, isLoading, pagination}: TableProps) => {
         {
           component: <IconTouchable action="delete" />,
           onAction: (item: any) => {
-            console.log('item2', item);
+            setDeleteId(item);
             setModalActive(true);
           },
         },
@@ -126,6 +131,23 @@ const Table = ({navigation, data, isLoading, pagination}: TableProps) => {
 
   const closeModal = () => {
     setModalActive(false);
+  };
+
+  const functionConfirm = async () => {
+    setModalActive(false);
+
+    try {
+      await updateProduct({id: deleteId, active: false});
+      Toast('Success.deleteProduct', {type: 'success'});
+      if (passDataToParent) {
+        passDataToParent({refresh: true});
+      }
+    } catch (err: any) {
+      if (err.status === 500) {
+        return Toast('Error.deleteProduct');
+      }
+      Toast('Error.connection');
+    }
   };
 
   return (
@@ -148,7 +170,7 @@ const Table = ({navigation, data, isLoading, pagination}: TableProps) => {
           textCancel={locale.t('Common.cancel')}
           visible={modalActive}
           setVisible={closeModal}
-          functionConfirm={closeModal}
+          functionConfirm={functionConfirm}
           functionCancel={closeModal}
         />
       )}

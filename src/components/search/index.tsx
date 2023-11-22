@@ -35,7 +35,6 @@ const Search = ({onSubmit}: SearchProps) => {
             value={barcode}
             onChangeText={(value: React.SetStateAction<string>) => {
               setBarcode(value);
-              onSubmit(String(value));
             }}
             onSubmit={() => onSubmit(barcode)}
             placeholder={locale.t('Home.typeProduct')}

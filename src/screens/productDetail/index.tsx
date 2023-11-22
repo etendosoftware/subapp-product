@@ -28,7 +28,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({navigation, route}) => {
   const [title, setTitle] = useState<string>('');
   const [show, setShow] = useState<boolean>(false);
   const [errorProduct, setErrorProduct] = useState<boolean>(false);
-  const [errorBarcode, setErrorBarcode] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const {dataUser, productItem} = route.params;
 
@@ -62,20 +62,14 @@ const ProductDetail: React.FC<ProductDetailProps> = ({navigation, route}) => {
   };
 
   const handleSave = async () => {
+    setLoading(true);
     if (typeof product !== 'string' || product.trim() === '') {
       setErrorProduct(true);
       Toast('Error.product');
+      setLoading(false);
       return;
     } else {
       setErrorProduct(false);
-    }
-
-    if (typeof barcode !== 'string' || barcode.trim() === '') {
-      setErrorBarcode(true);
-      Toast('Error.barcode');
-      return;
-    } else {
-      setErrorBarcode(false);
     }
 
     try {
@@ -85,16 +79,19 @@ const ProductDetail: React.FC<ProductDetailProps> = ({navigation, route}) => {
           name: product,
           uPCEAN: barcode,
         });
+        Toast('Success.updateProduct', {type: 'success'});
       } else {
         await createProduct({
           name: product,
           uPCEAN: barcode,
         });
+        Toast('Success.saveProduct', {type: 'success'});
       }
+      setLoading(false);
       navigation.goBack();
     } catch (err) {
-      const errorType = id ? 'Error.updateProduct' : 'Error.saveProduct';
-      Toast(errorType);
+      setLoading(false);
+      Toast('Error.connection');
     }
   };
 
@@ -138,6 +135,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({navigation, route}) => {
                 onPress={async () => {
                   await handleSave();
                 }}
+                loading={loading}
                 text={locale.t('Common.save')}
                 iconLeft={<CheckIcon style={styles.icon} />}
               />
@@ -153,7 +151,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({navigation, route}) => {
             <InputUI
               backgroundColor=""
               helperText=""
-              maxLength={100}
+              maxLength={60}
               height={50}
               placeholder={locale.t('ProductDetail.productExample')}
               titleLabel={locale.t('ProductDetail.products')}
@@ -180,13 +178,12 @@ const ProductDetail: React.FC<ProductDetailProps> = ({navigation, route}) => {
               <InputUI
                 backgroundColor=""
                 helperText=""
-                maxLength={100}
+                maxLength={30}
                 height={50}
                 placeholder={locale.t('ProductDetail.barcodePlaceholder')}
                 titleLabel={locale.t('ProductDetail.barcode')}
                 typeField="textInput"
                 value={barcode}
-                isError={errorBarcode}
                 onChangeText={(value: React.SetStateAction<string>) =>
                   setBarcode(value)
                 }
