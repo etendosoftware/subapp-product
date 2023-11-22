@@ -7,5 +7,7 @@ export type PassDataToParentTable = {
 export interface TableProps {
   navigation: NavigationProp<any>;
   data: ProductList;
+  isLoading: boolean;
+  pagination: number;
   passDataToParent?: (params: PassDataToParentTable) => void;
 }

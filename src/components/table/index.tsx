@@ -9,12 +9,12 @@ import {
   CheckIcon,
 } from 'etendo-ui-library';
 import {isTablet} from '../../utils';
-import {Columns} from 'etendo-ui-library/dist-native/components/table/Table.types';
 import Modal from '../modal';
 import locale from '../../localization/locale';
 import {Product} from '../../../lib/data_gen/product.types';
 import useProduct from '../../hooks/useProduct';
 import {Toast} from '../../utils/Toast';
+import {Columns} from 'etendo-ui-library/dist-native/components/table/Table.types';
 import {TableProps} from './types';
 
 interface IIconTouchable {
@@ -56,7 +56,13 @@ const IconTouchable = ({action}: IIconTouchable) => {
   );
 };
 
-const Table = ({navigation, data, passDataToParent}: TableProps) => {
+const Table = ({
+  navigation,
+  data,
+  isLoading,
+  pagination,
+  passDataToParent,
+}: TableProps) => {
   const [modalActive, setModalActive] = useState(false);
   const [deleteId, setDeleteId] = useState<string>('');
 
@@ -150,7 +156,12 @@ const Table = ({navigation, data, passDataToParent}: TableProps) => {
         columns={dataColumns}
         data={data}
         tableHeight={'100%'}
-        onRowPress={(row: any) => {}}
+        onRowPress={() => {}}
+        isLoading={isLoading}
+        pageSize={pagination}
+        currentPage={1}
+        commentEmptyTable={locale.t('Table.textEmptyTable')}
+        textEmptyTable={locale.t('Table.commentEmptyTable')}
       />
       {modalActive && (
         <Modal

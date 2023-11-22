@@ -26,11 +26,14 @@ const Home = ({navigation, route, navigationContainer}: HomeProps) => {
   const [products, setProducts] = useState<ProductList>([]);
   const [inputValue, setInputValue] = useState<string | undefined>('');
   const {dataUser} = route.params;
+  const [loading, setLoading] = useState(true);
 
   const handleData = async (nameFilter?: string) => {
-    setInputValue(nameFilter);
-    const data = await getFilteredProducts(nameFilter);
-    setProducts(data);
+    setLoading(true);
+    getFilteredProducts(nameFilter).then((data: ProductList) => {
+      setLoading(false);
+      setProducts(data);
+    });
   };
 
   useFocusEffect(
@@ -82,13 +85,12 @@ const Home = ({navigation, route, navigationContainer}: HomeProps) => {
         </View>
       </View>
       <Search onSubmit={handleData} />
-      {products.length > 0 && (
-        <Table
-          navigation={navigation}
-          data={products}
-          passDataToParent={getDataToTable}
-        />
-      )}
+      <Table
+        navigation={navigation}
+        data={products}
+        isLoading={loading}
+        pagination={20}
+      />
     </View>
   );
 };

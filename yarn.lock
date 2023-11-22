@@ -3538,10 +3538,10 @@ etag@~1.8.1:
   resolved "https://registry.yarnpkg.com/etag/-/etag-1.8.1.tgz#41ae2eeb65efa62268aebfea83ac7d79299b0887"
   integrity sha512-aIL5Fx7mawVa300al2BnEE4iNvo1qETxLrPI/o05L7z6go7fCw1J6EQmbK4FmJ2AS7kgVF/KEZWufBfdClMcPg==
 
-etendo-ui-library@1.2.56:
-  version "1.2.56"
-  resolved "https://registry.yarnpkg.com/etendo-ui-library/-/etendo-ui-library-1.2.56.tgz#a7154f65dc8caf6f914911bd76c88e6a1adde2a8"
-  integrity sha512-PWVHoHsfQhQM+vzTOvbFHfsvDFW85ghbcifHEcwkPjx3ED8o2hHk9b4DXmVFgvaxgcFRzZwOznlIHhfQqkb45A==
+etendo-ui-library@1.2.63:
+  version "1.2.63"
+  resolved "https://registry.yarnpkg.com/etendo-ui-library/-/etendo-ui-library-1.2.63.tgz#a00fadae39e0c793dc058c0ba7ba6ac643f4f901"
+  integrity sha512-NwNzTMAsHySYMk28zjmeqD9xKhK2bBQWT4h+HCo7zmKmJoDNkeBAqa/Kv1ih0yKAY1AdUMSyTAA5qyMcT0tX9g==
 
 event-target-shim@^5.0.0, event-target-shim@^5.0.1:
   version "5.0.1"
@@ -6781,10 +6781,10 @@ react-native-svg-transformer@^1.0.0:
     "@svgr/plugin-svgo" "^8.0.1"
     path-dirname "^1.0.2"
 
-react-native-svg@^13.9.0:
-  version "13.14.0"
-  resolved "https://registry.yarnpkg.com/react-native-svg/-/react-native-svg-13.14.0.tgz#879930cfe10e877e51ebb77dfcc2cd65fc6b0d21"
-  integrity sha512-27ZnxUkHgWICimhuj6MuqBkISN53lVvgWJB7pIypjXysAyM+nqgQBPh4vXg+7MbqLBoYvR4PiBgKfwwGAqVxHg==
+react-native-svg@^14.0.0:
+  version "14.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-svg/-/react-native-svg-14.0.0.tgz#ea1974dec9a91a09c6a38b7bf58d85e857c291f5"
+  integrity sha512-17W/gWXRUMS7p7PSHu/WyGkZUc1NzRTGxxXc0VqBLjzKSchyb0EmgsiWf9aKmfC6gmY0wcsmKZcGV41bCcNfBA==
   dependencies:
     css-select "^5.1.0"
     css-tree "^1.1.3"

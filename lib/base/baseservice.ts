@@ -56,7 +56,7 @@ export abstract class BaseService<E extends EntityType> {
       .join('&');
 
     const res = await fetch(
-      `${this._url}/das/${_modelName}/search/${search}?${parsedParams}&projection=${projection}`,
+      `${this._url}/das/${_modelName}/search/${search}?${parsedParams}&projection=${projection}&size=40`,
       {
         method: 'GET',
         headers: {
