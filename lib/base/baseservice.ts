@@ -45,18 +45,16 @@ export abstract class BaseService<E extends EntityType> {
     });
     return response.status;
   }
-  async _fetchSearch<S extends KV>(
-    search: string,
-    params: S,
-    projection: string,
-  ) {
+  async _fetchSearch<S extends KV>(search: string, params?: S) {
     const _modelName = this.getModelName();
-    const parsedParams = Object.keys(params)
-      .map(k => `${k}=${encodeURIComponent(params[k])}`)
-      .join('&');
-
+    let parsedParams: string = '';
+    if (params) {
+      parsedParams = Object.keys(params)
+        .map(k => `${k}=${params[k]}`)
+        .join('&');
+    }
     const res = await fetch(
-      `${this._url}/das/${_modelName}/search/${search}?${parsedParams}&projection=${projection}&size=40`,
+      `${this._url}/das/${_modelName}/search/${search}?${parsedParams}`,
       {
         method: 'GET',
         headers: {
@@ -64,6 +62,7 @@ export abstract class BaseService<E extends EntityType> {
         },
       },
     );
+
     const data = await res.json();
     const k = Object.keys(data._embedded);
 

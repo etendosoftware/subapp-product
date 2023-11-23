@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     margin: isTablet ? 32 : 24,
-    height: '55%',
+    flex: 1,
   },
   icon: {
     height: isTablet ? 25 : 20,

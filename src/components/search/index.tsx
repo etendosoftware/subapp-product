@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View} from 'react-native';
 import {
   Button as ButtonUI,
@@ -12,19 +12,24 @@ import locale from '../../localization/locale';
 
 interface SearchProps {
   onSubmit: (value?: string) => void;
+  value?: string;
 }
 
-const Search = ({onSubmit}: SearchProps) => {
-  const [barcode, setBarcode] = React.useState<string>('');
+const Search = ({onSubmit, value}: SearchProps) => {
+  const [text, setText] = useState<string>('');
   const [show, setShow] = useState(false);
 
-  const handleReadCode = (code: string) => {
-    if (code) {
-      setBarcode(code);
+  const handleReadCode = (text: string) => {
+    if (text) {
+      setText(text);
       setShow(false);
-      onSubmit(code);
+      onSubmit(text);
     }
   };
+
+  useEffect(() => {
+    setText(value ?? '');
+  }, [value]);
 
   return (
     <>
@@ -32,11 +37,11 @@ const Search = ({onSubmit}: SearchProps) => {
       <View style={styles.container}>
         <View style={styles.searchInput}>
           <InputUI
-            value={barcode}
+            value={text}
             onChangeText={(value: React.SetStateAction<string>) => {
-              setBarcode(value);
+              setText(value);
             }}
-            onSubmit={() => onSubmit(barcode)}
+            onSubmit={() => onSubmit(text)}
             placeholder={locale.t('Home.typeProduct')}
             typeField="textInputSearch"
             height={50}

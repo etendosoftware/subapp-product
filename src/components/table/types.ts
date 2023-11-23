@@ -8,6 +8,9 @@ export interface TableProps {
   navigation: NavigationProp<any>;
   data: ProductList;
   isLoading: boolean;
-  pagination: number;
-  passDataToParent?: (params: PassDataToParentTable) => void;
+  pageSize: number;
+  loadMoreData?: (currentPage: number, pageSize: number) => void;
+  currentPage?: number;
+  isLoadingMoreData?: boolean;
+  deleteData?: (nameFilter?: string) => void;
 }

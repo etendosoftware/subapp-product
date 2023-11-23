@@ -36,7 +36,6 @@ const IconTouchable = ({action}: IIconTouchable) => {
     case 'check':
       icon = <CheckIcon style={styles.icon} />;
       break;
-
     default:
       icon = <CheckIcon style={styles.icon} />;
       break;
@@ -60,8 +59,11 @@ const Table = ({
   navigation,
   data,
   isLoading,
-  pagination,
-  passDataToParent,
+  loadMoreData,
+  pageSize,
+  currentPage,
+  isLoadingMoreData,
+  deleteData,
 }: TableProps) => {
   const [modalActive, setModalActive] = useState(false);
   const [deleteId, setDeleteId] = useState<string>('');
@@ -137,11 +139,12 @@ const Table = ({
     setModalActive(false);
 
     try {
-      await updateProduct({id: deleteId, active: false});
-      Toast('Success.deleteProduct', {type: 'success'});
-      if (passDataToParent) {
-        passDataToParent({refresh: true});
-      }
+      await updateProduct({id: deleteId, active: false}).then(() => {
+        Toast('Success.deleteProduct', {type: 'success'});
+        if (deleteData) {
+          deleteData('');
+        }
+      });
     } catch (err: any) {
       if (err.status === 500) {
         return Toast('Error.deleteProduct');
@@ -158,10 +161,12 @@ const Table = ({
         tableHeight={'100%'}
         onRowPress={() => {}}
         isLoading={isLoading}
-        pageSize={pagination}
-        currentPage={1}
+        loadMoreData={loadMoreData}
         commentEmptyTable={locale.t('Table.textEmptyTable')}
         textEmptyTable={locale.t('Table.commentEmptyTable')}
+        currentPage={currentPage}
+        pageSize={pageSize}
+        isLoadingMoreData={isLoadingMoreData}
       />
       {modalActive && (
         <Modal

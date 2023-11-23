@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {Text, View} from 'react-native';
 import Navbar from '../../components/navbar';
 
@@ -13,7 +13,6 @@ import locale from '../../localization/locale';
 import {INavigationContainerProps} from '../../interfaces';
 import useProduct from '../../hooks/useProduct';
 import {ProductList} from '../../../lib/data_gen/product.types';
-import {PassDataToParentTable} from '../../components/table/types';
 
 interface HomeProps {
   navigation: NavigationProp<any>;
@@ -27,69 +26,97 @@ const Home = ({navigation, route, navigationContainer}: HomeProps) => {
   const [inputValue, setInputValue] = useState<string | undefined>('');
   const {dataUser} = route.params;
   const [loading, setLoading] = useState(true);
+  const [pageTable, setPageTable] = useState<number>(0);
+  const [isLoadingMoreData, setIsLoadingMoreData] = useState<boolean>(true);
 
-  const handleData = async (nameFilter?: string) => {
+  const PAGE_SIZE = 20;
+
+  const handleData = async (
+    nameFilter?: string,
+    page: number = 0,
+    size: number = 20,
+    reset: boolean = false,
+  ) => {
     setLoading(true);
-    getFilteredProducts(nameFilter).then((data: ProductList) => {
-      setLoading(false);
-      setProducts(data);
-    });
+    setInputValue(nameFilter);
+    if (reset) {
+      setProducts([]);
+      setPageTable(0);
+      setIsLoadingMoreData(true);
+    }
+    await getFilteredProducts(nameFilter, page, size).then(
+      (newData: ProductList) => {
+        setLoading(false);
+        if (size !== newData.length) {
+          setIsLoadingMoreData(false);
+        }
+        setProducts(prevProducts => {
+          return newData ? [...prevProducts, ...newData] : [];
+        });
+        setPageTable(page);
+      },
+    );
+  };
+
+  const deleteDataTable = async () => {
+    await handleData(inputValue, 0, PAGE_SIZE, true);
+  };
+
+  const resetTable = async (nameFilter?: string) => {
+    await handleData(nameFilter, 0, PAGE_SIZE, true);
+  };
+
+  const loadMoreData = async (currentPage: number, pageSize: number) => {
+    await handleData(inputValue, currentPage, pageSize);
+  };
+
+  const resetInput = () => {
+    setInputValue('');
   };
 
   useFocusEffect(
-    React.useCallback(() => {
-      handleData(inputValue);
-    }, [inputValue]),
+    useCallback(() => {
+      resetInput();
+      resetTable(inputValue);
+    }, []),
   );
-
-  React.useEffect(() => {
-    const unsubscribe = navigation.addListener('beforeRemove', () => {
-      if (navigation.isFocused()) {
-        handleData(inputValue);
-      }
-    });
-
-    return () => {
-      unsubscribe();
-    };
-  }, [inputValue, navigation]);
-
-  const getDataToTable = async ({refresh}: PassDataToParentTable) => {
-    if (refresh) {
-      await handleData(inputValue);
-    }
-  };
 
   return (
     <View style={styles.container}>
-      <Navbar
-        title={locale.t('Home.welcome')}
-        username={dataUser?.username}
-        onOptionSelected={() => {
-          navigationContainer.navigate('Home');
-        }}
-      />
-      <View style={styles.topView}>
-        <Text style={styles.title}>{locale.t('Home.productList')}</Text>
-        <View style={styles.buttonContainer}>
-          <ButtonUI
-            width={isTablet ? '100%' : '60%'}
-            height={50}
-            typeStyle="secondary"
-            onPress={() => {
-              navigation.navigate('ProductDetail');
-            }}
-            text={locale.t('Home.newProduct')}
-            iconLeft={<MoreIcon style={styles.icon} />}
-          />
+      <View>
+        <Navbar
+          title={locale.t('Home.welcome')}
+          username={dataUser?.username}
+          onOptionSelected={() => {
+            navigationContainer.navigate('Home');
+          }}
+        />
+        <View style={styles.topView}>
+          <Text style={styles.title}>{locale.t('Home.productList')}</Text>
+          <View style={styles.buttonContainer}>
+            <ButtonUI
+              width={isTablet ? '100%' : '60%'}
+              height={50}
+              typeStyle="secondary"
+              onPress={() => {
+                navigation.navigate('ProductDetail');
+              }}
+              text={locale.t('Home.newProduct')}
+              iconLeft={<MoreIcon style={styles.icon} />}
+            />
+          </View>
         </View>
+        <Search onSubmit={resetTable} value={inputValue} />
       </View>
-      <Search onSubmit={handleData} />
       <Table
         navigation={navigation}
         data={products}
         isLoading={loading}
-        pagination={20}
+        pageSize={PAGE_SIZE}
+        loadMoreData={loadMoreData}
+        currentPage={pageTable}
+        isLoadingMoreData={isLoadingMoreData}
+        deleteData={deleteDataTable}
       />
     </View>
   );
