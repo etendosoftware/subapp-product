@@ -6,8 +6,16 @@ import {generateRandomNumber} from '../utils';
 export const useProduct = () => {
   const [productsFiltered, setProductsFiltered] = useState<Product[]>([]);
 
-  const getFilteredProducts = async (name: string = '%%') => {
-    const products = await ProductService.BACK.getFilteredProducts(name);
+  const getFilteredProducts = async (
+    name: string = '%%',
+    page?: number,
+    size?: number,
+  ) => {
+    const products = await ProductService.BACK.getFilteredProducts(
+      name,
+      page,
+      size,
+    );
     setProductsFiltered(products);
     return products;
   };

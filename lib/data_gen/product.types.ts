@@ -3,6 +3,9 @@ import {EntityType, KV} from '../base/baseservice.types';
 export type GetAllProductsParams = KV & {};
 export type GetFilteredProductsParams = KV & {
   name: string;
+  page?: number;
+  size?: number;
+  projection?: string;
 };
 
 export type ProductList = Array<Product>;

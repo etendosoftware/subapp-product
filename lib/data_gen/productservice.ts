@@ -18,12 +18,17 @@ class BackService extends BaseService<Product> {
     }
   }
 
-  async getFilteredProducts(name: string): Promise<ProductList> {
-    return this._fetchSearch<GetFilteredProductsParams>(
-      'getFilteredProducts',
-      {name},
-      'ProdSubApp',
-    );
+  async getFilteredProducts(
+    name: string,
+    page?: number,
+    size?: number,
+  ): Promise<ProductList> {
+    return this._fetchSearch<GetFilteredProductsParams>('getFilteredProducts', {
+      name,
+      projection: 'ProdSubApp',
+      page,
+      size,
+    });
   }
 }
 
