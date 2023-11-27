@@ -9,7 +9,7 @@ export interface TableProps {
   data: ProductList;
   isLoading: boolean;
   pageSize: number;
-  loadMoreData?: (currentPage: number, pageSize: number) => void;
+  onLoadMoreData?: (currentPage: number, pageSize: number) => void;
   currentPage?: number;
   isLoadingMoreData?: boolean;
   deleteData?: (nameFilter?: string) => void;

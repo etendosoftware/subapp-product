@@ -59,7 +59,7 @@ const Table = ({
   navigation,
   data,
   isLoading,
-  loadMoreData,
+  onLoadMoreData,
   pageSize,
   currentPage,
   isLoadingMoreData,
@@ -161,7 +161,7 @@ const Table = ({
         tableHeight={'100%'}
         onRowPress={() => {}}
         isLoading={isLoading}
-        loadMoreData={loadMoreData}
+        onLoadMoreData={onLoadMoreData}
         commentEmptyTable={locale.t('Table.textEmptyTable')}
         textEmptyTable={locale.t('Table.commentEmptyTable')}
         currentPage={currentPage}

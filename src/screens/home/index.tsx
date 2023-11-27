@@ -25,7 +25,7 @@ const Home = ({navigation, route, navigationContainer}: HomeProps) => {
   const [products, setProducts] = useState<ProductList>([]);
   const [inputValue, setInputValue] = useState<string | undefined>('');
   const {dataUser} = route.params;
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState<boolean>(true);
   const [pageTable, setPageTable] = useState<number>(0);
   const [isLoadingMoreData, setIsLoadingMoreData] = useState<boolean>(true);
 
@@ -66,7 +66,7 @@ const Home = ({navigation, route, navigationContainer}: HomeProps) => {
     await handleData(nameFilter, 0, PAGE_SIZE, true);
   };
 
-  const loadMoreData = async (currentPage: number, pageSize: number) => {
+  const onLoadMoreData = async (currentPage: number, pageSize: number) => {
     await handleData(inputValue, currentPage, pageSize);
   };
 
@@ -113,7 +113,7 @@ const Home = ({navigation, route, navigationContainer}: HomeProps) => {
         data={products}
         isLoading={loading}
         pageSize={PAGE_SIZE}
-        loadMoreData={loadMoreData}
+        onLoadMoreData={onLoadMoreData}
         currentPage={pageTable}
         isLoadingMoreData={isLoadingMoreData}
         deleteData={deleteDataTable}
