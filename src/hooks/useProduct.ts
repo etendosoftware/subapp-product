@@ -1,7 +1,9 @@
-import {useState} from 'react';
-import {Product} from '../../lib/data_gen/product.types';
+import { useState } from 'react';
+import { Product, ProductList } from '../../lib/data_gen/product.types';
 import ProductService from '../../lib/data_gen/productservice';
-import {generateRandomNumber} from '../utils';
+import { generateRandomNumber, isTablet } from '../utils';
+import locale from '../localization/locale';
+import { Columns } from 'etendo-ui-library/dist-native/components/table/Table.types';
 
 export const useProduct = () => {
   const [productsFiltered, setProductsFiltered] = useState<Product[]>([]);
@@ -30,12 +32,50 @@ export const useProduct = () => {
     return res;
   };
 
+  const columns : Columns[] = [
+    {
+      key: 'id',
+      primary: true,
+      visible: false,
+    },
+    {
+      key: 'name',
+      label: locale.t('Table.products'),
+      visible: true,
+      width: '50%',
+    },
+    {
+      key: 'uPCEAN',
+      label: isTablet
+        ? locale.t('Table.barcode')
+        : locale.t('Table.barcodeShort'),
+      visible: true,
+      width: '25%',
+    },
+  ]
+
   const updateProduct = async (body: Product) => {
     const res = await ProductService.BACK.save(body);
     return res;
   };
 
-  return {productsFiltered, getFilteredProducts, createProduct, updateProduct};
-};
+  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState<ProductList>([]);
+
+  const doSearch = async (nameFilter?: string) => {
+    try {
+      setLoading(true);
+      const filteredProducts = await getFilteredProducts(nameFilter);
+      setData(filteredProducts);
+    } catch (error) {
+      console.error("Error while fetching filtered products:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  return { doSearch, data, loading, columns, updateProduct};
+
+  //return {productsFiltered, getFilteredProducts, createProduct, updateProduct};
+}
 
 export default useProduct;
