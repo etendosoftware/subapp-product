@@ -36,10 +36,10 @@ const CameraBarCode = ({ableToRead, handleReadCode}: CameraBarCodeProps) => {
       const backCamera = devicesAvailable.filter(
         item => item.position == SIDE_CAMERA,
       );
-      const algo = backCamera.length
+      const backCameraSelected = backCamera.length
         ? (backCamera.shift() as CameraDevice)
         : null;
-      setDevicesSelected(algo as CameraDevice);
+      setDevicesSelected(backCameraSelected as CameraDevice);
     })();
     handleCameraPermission();
   }, []);
