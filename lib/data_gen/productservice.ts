@@ -2,20 +2,18 @@ import {BaseService} from '../base/baseservice';
 import {Product, ProductList, GetFilteredProductsParams} from './product.types';
 
 class BackService extends BaseService<Product> {
-  private static modelName = 'Product';
+  private static projection = 'prodsubapp';
+  private static modelName = 'M_Product';
   private static fetchName = 'product';
 
   getModelName(): string {
-    return BackService.modelName;
+    return BackService.projection + "/" + BackService.modelName;
   }
   getFetchName(): string {
     return BackService.fetchName;
   }
 
   mapManyToOne(entity: Product): void {
-    if (entity.productCategoryId) {
-      entity.productCategory = `productCategory/${entity.productCategoryId}`;
-    }
   }
 
   async getFilteredProducts(
@@ -24,8 +22,7 @@ class BackService extends BaseService<Product> {
     size?: number,
   ): Promise<ProductList> {
     return this._fetchSearch<GetFilteredProductsParams>('getFilteredProducts', {
-      name,
-      projection: 'ProdSubApp',
+      name, 
       page,
       size,
     });

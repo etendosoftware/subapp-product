@@ -12,11 +12,11 @@ export abstract class BaseService<E extends EntityType> {
     let method = 'POST';
     let urlId = '';
     if (entity.id !== undefined) {
-      method = 'PATCH';
-      urlId = entity.id;
+      method = 'PUT';
+      urlId = "/" + entity.id;
     }
 
-    const response = await fetch(`${this._url}/das/${_modelName}/${urlId}`, {
+    const response = await fetch(`${this._url}/das/${_modelName}${urlId}`, {
       method: method,
       body: JSON.stringify(entity),
       headers: {
@@ -54,7 +54,7 @@ export abstract class BaseService<E extends EntityType> {
         .join('&');
     }
     const res = await fetch(
-      `${this._url}/das/${_modelName}/search/${search}?${parsedParams}`,
+      `${this._url}/das/${_modelName}/searches/${search}?${parsedParams}`,
       {
         method: 'GET',
         headers: {
@@ -64,13 +64,7 @@ export abstract class BaseService<E extends EntityType> {
     );
 
     const data = await res.json();
-    const k = Object.keys(data._embedded);
-
-    const returnedData = data._embedded[k[0]].map((u: DASResponse) => {
-      delete u._links;
-      return u;
-    });
-    return returnedData;
+    return data;
   }
 
   public get authToken() {
