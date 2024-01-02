@@ -91,26 +91,11 @@ const Home = ({ navigation, route, navigationContainer }: HomeProps) => {
             navigationContainer.navigate('Home');
           }}
         />
-        {/* <View style={styles.topView}>
-          <Text style={styles.title}>{locale.t('Home.productList')}</Text>
-          <View style={styles.buttonContainer}>
-            <ButtonUI
-              width={isTablet ? '100%' : '60%'}
-              height={50}
-              typeStyle="secondary"
-              onPress={() => {
-                navigation.navigate('ProductDetail');
-              }}
-              text={locale.t('Home.newProduct')}
-              iconLeft={<MoreIcon style={styles.icon} />}
-            />
-          </View>
-        </View> */}
         <TitleContainer
           title={locale.t('Home.productList')}
+          style={styles.topSection}
           buttons={[
             <ButtonUI
-              // width={isTablet ? '100%' : '60%'}
               height={50}
               typeStyle="secondary"
               onPress={() => {
