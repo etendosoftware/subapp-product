@@ -1,6 +1,7 @@
-import {EntityType, KV} from '../base/baseservice.types';
+import {DASResponse, EntityType, KV} from '../base/baseservice.types';
 
-export type GetAllProductsParams = KV & {};
+export type GetAllProductParams = KV & {};
+
 export type GetFilteredProductsParams = KV & {
   name: string;
   page?: number;
@@ -8,7 +9,7 @@ export type GetFilteredProductsParams = KV & {
   projection?: string;
 };
 
-export type ProductList = Array<Product>;
+export type ProductList = DASResponse<Product>;
 
 export interface Product extends EntityType {
   uPCEAN?: string;
@@ -16,12 +17,4 @@ export interface Product extends EntityType {
   id?: string;
   productCategoryId?: string;
   productCategory?: string;
-  active?: boolean;
-  description?: string;
-  organization?: string;
-  productType?: string;
-  productValue?: string;
-  searchKey?: string;
-  taxCategory?: string;
-  uOM?: string;
 }

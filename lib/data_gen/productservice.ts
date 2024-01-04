@@ -14,6 +14,9 @@ class BackService extends BaseService<Product> {
   }
 
   mapManyToOne(entity: Product): void {
+    if (entity.productCategoryId) {
+      entity.productCategory = `productCategory/${entity.productCategoryId}`;
+    }
   }
 
   async getFilteredProducts(
@@ -27,6 +30,7 @@ class BackService extends BaseService<Product> {
       size,
     });
   }
+
 }
 
 class FrontService extends BaseService<Product> {

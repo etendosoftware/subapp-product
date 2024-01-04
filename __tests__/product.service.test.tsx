@@ -8,18 +8,18 @@ ProductService.BACK._authToken =
 describe('ProductService', () => {
   test('get all products', async () => {
     await ProductService.BACK.getFilteredProducts('').then(products => {
-      expect(products.length).toBeGreaterThan(79);
+      expect(products.content.length).toBe(20);
     });
   });
   test('get products by upcean', async () => {
     await ProductService.BACK.getFilteredProducts('3344456').then(products => {
-      expect(products).toStrictEqual([
-        {
+      expect(products.content[0]).toEqual(
+        expect.objectContaining({
           id: '4028E6C72959682B01295ADC1FD50234',
           name: 'B BOM',
           uPCEAN: '3344456',
-        },
-      ]);
+        }),
+      );
     });
   });
   test('save product', async () => {
