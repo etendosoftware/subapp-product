@@ -50,7 +50,27 @@ export abstract class BaseService<E extends EntityType> {
     let parsedParams: string = '';
     if (params) {
       parsedParams = Object.keys(params)
-        .map(k => `${k}=${params[k]}`)
+        .map(k => { 
+          let v = params[k];
+          if(v === null) {
+            return '';
+          }
+          if(v instanceof Date) {
+            // Transform date to string dd/mm/yyyy
+            v = v.toLocaleDateString('es-AR');
+          }
+          if(k === 'page') {
+            if(v === undefined) {
+              v = 0;
+            }
+          }
+          if(k === 'size') {
+            if(v === undefined) {
+              v = 20;
+            }
+          }
+          return `${k}=${v}` 
+        })
         .join('&');
     }
     const res = await fetch(
@@ -64,7 +84,19 @@ export abstract class BaseService<E extends EntityType> {
     );
 
     const data = await res.json();
-    return data;
+    const response : DASResponse<E> = {
+      content: data.content,
+      pageable: data.pageable,
+      totalElements: data.totalElements,
+      totalPages: data.totalPages,
+      last: data.last,
+      size: data.size,
+      sort: data.sort,
+      numberOfElements: data.numberOfElements,
+      first: data.first,
+      empty: data.empty,
+    };
+    return response;
   }
 
   public get authToken() {
