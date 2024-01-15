@@ -1,7 +1,7 @@
-import {StyleSheet} from 'react-native';
-import {generalStyles} from '../../../styles';
-import {isTablet} from '../../utils';
-import {PRIMARY_100} from '../../styles/colors';
+import { StyleSheet } from 'react-native';
+import { generalStyles } from '../../../styles';
+import { isTablet } from '../../utils';
+import { PRIMARY_100 } from '../../styles/colors';
 
 export const styles = StyleSheet.create({
   ...generalStyles,
@@ -17,11 +17,7 @@ export const styles = StyleSheet.create({
     marginBottom: 6,
     color: PRIMARY_100,
   },
-  topView: {
-    display: 'flex',
-    flexDirection: isTablet ? 'row' : 'column',
-    justifyContent: isTablet ? 'space-between' : 'flex-start',
-    alignItems: 'flex-start',
+  topSection: {
     margin: isTablet ? 32 : 24,
     gap: 12,
   },

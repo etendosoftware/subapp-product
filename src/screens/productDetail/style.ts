@@ -1,7 +1,6 @@
-import {StyleSheet} from 'react-native';
-import {generalStyles} from '../../../styles';
-import {isTablet} from '../../utils';
-import {PRIMARY_100} from '../../styles/colors';
+import { StyleSheet } from 'react-native';
+import { generalStyles } from '../../../styles';
+import { isTablet } from '../../utils';
 
 export const styles = StyleSheet.create({
   ...generalStyles,
@@ -10,17 +9,6 @@ export const styles = StyleSheet.create({
     display: 'flex',
     flex: 1,
   },
-  title: {
-    fontSize: 29,
-    fontWeight: '600',
-    textAlign: 'left',
-    color: PRIMARY_100,
-  },
-  buttonContainer: {
-    width: isTablet ? '40%' : '60%',
-    margin: 6,
-  },
-
   inputSection: {
     display: 'flex',
     flexDirection: isTablet ? 'row' : 'column',
@@ -28,13 +16,8 @@ export const styles = StyleSheet.create({
     alignItems: 'flex-start',
     margin: isTablet ? 35 : 24,
   },
-  buttonSection: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: isTablet ? 'flex-end' : 'center',
-    alignItems: 'center',
-    gap: 12,
-    marginHorizontal: isTablet ? 0 : 32,
-    width: isTablet ? '40%' : '75%',
+  topSection: {
+    marginHorizontal: isTablet ? 35 : 24,
+    marginVertical: 24,
   },
 });

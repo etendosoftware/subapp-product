@@ -1,59 +1,20 @@
-import React, {useState} from 'react';
-import {styles} from './style';
-import {View} from 'react-native';
+import React, { useState } from 'react';
+import { styles } from './style';
+import { View } from 'react-native';
 import {
   Table as TableUI,
   TrashIcon,
   PencilIcon,
-  CancelIcon,
-  CheckIcon,
+  Button,
 } from 'etendo-ui-library';
-import {isTablet} from '../../utils';
+import { isTablet } from '../../utils';
 import Modal from '../modal';
 import locale from '../../localization/locale';
-import {Product} from '../../../lib/data_gen/product.types';
+import { Product } from '../../../lib/data_gen/product.types';
 import useProduct from '../../hooks/useProduct';
-import {Toast} from '../../utils/Toast';
-import {Columns} from 'etendo-ui-library/dist-native/components/table/Table.types';
-import {TableProps} from './types';
-
-interface IIconTouchable {
-  action: string;
-}
-
-const IconTouchable = ({action}: IIconTouchable) => {
-  let icon;
-  switch (action) {
-    case 'edit':
-      icon = <PencilIcon style={styles.icon} />;
-      break;
-    case 'cancel':
-      icon = <CancelIcon style={styles.icon} />;
-      break;
-    case 'delete':
-      icon = <TrashIcon style={styles.icon} />;
-      break;
-    case 'check':
-      icon = <CheckIcon style={styles.icon} />;
-      break;
-    default:
-      icon = <CheckIcon style={styles.icon} />;
-      break;
-  }
-  return (
-    <View
-      style={{
-        display: 'flex',
-        flexDirection: isTablet ? 'row' : 'column',
-        alignItems: 'center',
-        justifyContent: 'space-evenly',
-        flex: 1,
-        marginRight: isTablet ? '10%' : '5%',
-      }}>
-      {icon}
-    </View>
-  );
-};
+import { Toast } from '../../utils/Toast';
+import { TableProps } from './types';
+import { ColumnsMetadata } from 'etendo-ui-library/dist-native/components/table/Table.types';
 
 const Table = ({
   navigation,
@@ -68,9 +29,9 @@ const Table = ({
   const [modalActive, setModalActive] = useState(false);
   const [deleteId, setDeleteId] = useState<string>('');
 
-  const {updateProduct} = useProduct();
+  const { updateProduct } = useProduct();
 
-  const dataColumns: Columns[] = [
+  const dataColumns: ColumnsMetadata[] = [
     {
       key: 'id',
       primary: true,
@@ -91,10 +52,44 @@ const Table = ({
       width: '25%',
     },
     {
-      key: 'actions',
-      label: isTablet ? locale.t('Table.actions') : '',
       visible: true,
+      key: 'about',
       width: '25%',
+      label: 'Actions',
+      components: [
+        <Button
+          height={50}
+          width={isTablet ? 50 : '120%'}
+          typeStyle="white"
+          onPress={item => {
+            const itemSelected = data.find(itemData => itemData.id === item.id);
+            if (!itemSelected) {
+              return;
+            }
+            const productItem: Product = {
+              id: item.id,
+              name: itemSelected.name,
+              uPCEAN: itemSelected.uPCEAN,
+              searchKey: itemSelected.searchKey,
+            };
+
+            navigation.navigate('ProductDetail', { productItem });
+          }}
+          text=""
+          iconLeft={<PencilIcon style={styles.icon} />}
+        />,
+        <Button
+          height={50}
+          width={isTablet ? 50 : '120%'}
+          typeStyle="white"
+          onPress={row => {
+            setDeleteId(row.id);
+            setModalActive(true);
+          }}
+          text=""
+          iconLeft={<TrashIcon style={styles.icon} />}
+        />,
+      ],
       cellStyle: {
         display: 'flex',
         flexDirection: 'row',
@@ -102,32 +97,6 @@ const Table = ({
         alignItems: 'center',
         height: '100%',
       },
-      components: [
-        {
-          component: <IconTouchable action="edit" />,
-          onAction: (item: any) => {
-            const itemSelected = data.find(itemData => itemData.id === item);
-            if (!itemSelected) {
-              return;
-            }
-            const productItem: Product = {
-              id: item,
-              name: itemSelected.name,
-              uPCEAN: itemSelected.uPCEAN,
-              searchKey: itemSelected.searchKey,
-            };
-
-            navigation.navigate('ProductDetail', {productItem});
-          },
-        },
-        {
-          component: <IconTouchable action="delete" />,
-          onAction: (item: any) => {
-            setDeleteId(item);
-            setModalActive(true);
-          },
-        },
-      ],
     },
   ];
 
@@ -139,8 +108,8 @@ const Table = ({
     setModalActive(false);
 
     try {
-      await updateProduct({id: deleteId, active: false}).then(() => {
-        Toast('Success.deleteProduct', {type: 'success'});
+      await updateProduct({ id: deleteId, active: false }).then(() => {
+        Toast('Success.deleteProduct', { type: 'success' });
         if (deleteData) {
           deleteData('');
         }
