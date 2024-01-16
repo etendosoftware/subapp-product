@@ -33,7 +33,6 @@
     "react-native-screens": "^3.25.0",
     "react-native-svg": "^14.0.0",
     "react-native-svg-transformer": "^1.0.0",
-    "react-native-toast-message": "^2.1.7",
     "react-native-vision-camera": "2.15.2",
     "vision-camera-code-scanner": "0.2.0"
   },
