@@ -12,9 +12,9 @@ import Modal from '../modal';
 import locale from '../../localization/locale';
 import { Product } from '../../../lib/data_gen/product.types';
 import useProduct from '../../hooks/useProduct';
-import { Toast } from '../../utils/Toast';
 import { TableProps } from './types';
 import { ColumnsMetadata } from 'etendo-ui-library/dist-native/components/table/Table.types';
+import { show } from 'etendo-ui-library';
 
 const Table = ({
   navigation,
@@ -105,20 +105,20 @@ const Table = ({
   };
 
   const functionConfirm = async () => {
-    setModalActive(false);
-
+    closeModal();
     try {
       await updateProduct({ id: deleteId, active: false }).then(() => {
-        Toast('Success.deleteProduct', { type: 'success' });
+        show(locale.t('Success.deleteProduct'), 'success');
         if (deleteData) {
           deleteData('');
         }
       });
     } catch (err: any) {
       if (err.status === 500) {
-        return Toast('Error.deleteProduct');
+        show(locale.t('Error.deleteProduct'), 'error');
+        return;
       }
-      Toast('Error.connection');
+      show(locale.t('Error.connection'), 'error');
     }
   };
 
