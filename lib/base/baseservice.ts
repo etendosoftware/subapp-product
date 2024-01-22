@@ -1,4 +1,4 @@
-import {DASResponse, EntityType, KV} from './baseservice.types';
+import { DASResponse, EntityType, KV } from './baseservice.types';
 
 export abstract class BaseService<E extends EntityType> {
   abstract getModelName(): string;

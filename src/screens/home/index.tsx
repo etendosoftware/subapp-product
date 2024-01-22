@@ -1,19 +1,22 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {Text, View} from 'react-native';
+import React, { useCallback, useState } from 'react';
+import { View } from 'react-native';
 import Navbar from '../../components/navbar';
 
-import {Button as ButtonUI, MoreIcon} from 'etendo-ui-library';
+import {
+  Button as ButtonUI,
+  MoreIcon,
+  TitleContainer,
+} from 'etendo-ui-library';
 
 import Search from '../../components/search';
-import Table from '../../components/table';
-import {styles} from './style';
-import {NavigationProp, useFocusEffect} from '@react-navigation/native';
-import {isTablet} from '../../utils';
+import { styles } from './style';
+import { NavigationProp, useFocusEffect } from '@react-navigation/native';
 import locale from '../../localization/locale';
-import {INavigationContainerProps} from '../../interfaces';
+import { INavigationContainerProps } from '../../interfaces';
 import useProduct from '../../hooks/useProduct';
-import {ProductList} from '../../../lib/data_gen/product.types';
-import {EntityType} from '../../../lib/base/baseservice.types';
+import { ProductList } from '../../../lib/data_gen/product.types';
+import { EntityType } from '../../../lib/base/baseservice.types';
+import Table from '../../components/table';
 
 interface HomeProps {
   navigation: NavigationProp<any>;
@@ -21,11 +24,11 @@ interface HomeProps {
   navigationContainer: INavigationContainerProps;
 }
 
-const Home = ({navigation, route, navigationContainer}: HomeProps) => {
-  const {getFilteredProducts} = useProduct();
+const Home = ({ navigation, route, navigationContainer }: HomeProps) => {
+  const { getFilteredProducts } = useProduct();
   const [products, setProducts] = useState<EntityType[]>([]);
   const [inputValue, setInputValue] = useState<string | undefined>('');
-  const {dataUser} = route.params;
+  const { dataUser } = route.params;
   const [loading, setLoading] = useState<boolean>(true);
   const [pageTable, setPageTable] = useState<number>(0);
   const [isLoadingMoreData, setIsLoadingMoreData] = useState<boolean>(true);
@@ -51,7 +54,7 @@ const Home = ({navigation, route, navigationContainer}: HomeProps) => {
         if (size !== newData.content.length) {
           setIsLoadingMoreData(false);
         }
-        setProducts(prevProducts => {
+        setProducts((prevProducts: Array<EntityType>) => {
           return newData ? [...prevProducts, ...newData.content] : [];
         });
         setPageTable(page);
@@ -92,11 +95,11 @@ const Home = ({navigation, route, navigationContainer}: HomeProps) => {
             navigationContainer.navigate('Home');
           }}
         />
-        <View style={styles.topView}>
-          <Text style={styles.title}>{locale.t('Home.productList')}</Text>
-          <View style={styles.buttonContainer}>
+        <TitleContainer
+          title={locale.t('Home.productList')}
+          style={styles.topSection}
+          buttons={[
             <ButtonUI
-              width={isTablet ? '100%' : '60%'}
               height={50}
               typeStyle="secondary"
               onPress={() => {
@@ -104,9 +107,9 @@ const Home = ({navigation, route, navigationContainer}: HomeProps) => {
               }}
               text={locale.t('Home.newProduct')}
               iconLeft={<MoreIcon style={styles.icon} />}
-            />
-          </View>
-        </View>
+            />,
+          ]}
+        />
         <Search onSubmit={resetTable} value={inputValue} />
       </View>
       <Table

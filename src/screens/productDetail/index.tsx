@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {Text, View} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Dimensions, StyleSheet, View } from 'react-native';
 import Navbar from '../../components/navbar';
 
 import {
@@ -8,20 +8,25 @@ import {
   CancelIcon,
   CheckIcon,
   CameraIcon,
+  TitleContainer,
 } from 'etendo-ui-library';
-import {styles} from './style';
-import {NavigationProp} from '@react-navigation/native';
-import {isTablet} from '../../utils';
+import { styles } from './style';
+import { NavigationProp } from '@react-navigation/native';
+import { isTablet } from '../../utils';
 import Camera from '../../components/camera';
 import locale from '../../localization/locale';
 import useProduct from '../../hooks/useProduct';
-import {Toast} from '../../utils/Toast';
+import { Button, PermissionsAndroid, Platform, Text } from 'react-native';
+import Pdf from 'react-native-pdf';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Share from 'react-native-share';
+import { show as showAlert } from 'etendo-ui-library';
 
 interface ProductDetailProps {
   navigation: NavigationProp<any>;
   route: any;
 }
-const ProductDetail: React.FC<ProductDetailProps> = ({navigation, route}) => {
+const ProductDetail: React.FC<ProductDetailProps> = ({ navigation, route }) => {
   const [product, setProduct] = useState<string>('');
   const [barcode, setBarcode] = useState<string>('');
   const [id, setId] = useState<string>('');
@@ -30,9 +35,9 @@ const ProductDetail: React.FC<ProductDetailProps> = ({navigation, route}) => {
   const [errorProduct, setErrorProduct] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const {dataUser, productItem} = route.params;
+  const { dataUser, productItem } = route.params;
 
-  const {createProduct, updateProduct} = useProduct();
+  const { createProduct, updateProduct } = useProduct();
 
   useEffect(() => {
     if (productItem) {
@@ -65,7 +70,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({navigation, route}) => {
     setLoading(true);
     if (typeof product !== 'string' || product.trim() === '') {
       setErrorProduct(true);
-      Toast('Error.product');
+      showAlert(locale.t('Error.product'), 'error');
       setLoading(false);
       return;
     } else {
@@ -79,19 +84,19 @@ const ProductDetail: React.FC<ProductDetailProps> = ({navigation, route}) => {
           name: product,
           uPCEAN: barcode,
         });
-        Toast('Success.updateProduct', {type: 'success'});
+        showAlert(locale.t('Success.updateProduct'), 'success');
       } else {
         await createProduct({
           name: product,
           uPCEAN: barcode,
         });
-        Toast('Success.saveProduct', {type: 'success'});
+        showAlert(locale.t('Success.saveProduct'), 'success');
       }
       setLoading(false);
       navigation.goBack();
     } catch (err) {
       setLoading(false);
-      Toast('Error.connection');
+      showAlert(locale.t('Error.connection'), 'error');
     }
   };
 
@@ -106,42 +111,33 @@ const ProductDetail: React.FC<ProductDetailProps> = ({navigation, route}) => {
             navigation?.navigate(route);
           }}
         />
-
-        <View style={styles.topSection}>
-          <View
-            style={{
-              width: isTablet ? '50%' : '100%',
-            }}>
-            <Text style={styles.title}>{title}</Text>
-          </View>
-          <View style={[styles.buttonSection]}>
-            <View style={styles.buttonContainer}>
-              <ButtonUI
-                width="100%"
-                height={50}
-                typeStyle="whiteBorder"
-                onPress={() => {
-                  handleCancel();
-                }}
-                text={locale.t('Common.cancel')}
-                iconLeft={<CancelIcon style={styles.icon} />}
-              />
-            </View>
-            <View style={styles.buttonContainer}>
-              <ButtonUI
-                width="100%"
-                height={50}
-                typeStyle="secondary"
-                onPress={async () => {
-                  await handleSave();
-                }}
-                loading={loading}
-                text={locale.t('Common.save')}
-                iconLeft={<CheckIcon style={styles.icon} />}
-              />
-            </View>
-          </View>
-        </View>
+        <TitleContainer
+          title={title}
+          style={styles.topSection}
+          buttons={[
+            <ButtonUI
+              height={50}
+              width={141}
+              typeStyle="whiteBorder"
+              onPress={() => {
+                handleCancel();
+              }}
+              text={locale.t('Common.cancel')}
+              iconLeft={<CancelIcon style={styles.icon} />}
+            />,
+            <ButtonUI
+              height={50}
+              width={141}
+              typeStyle="secondary"
+              onPress={async () => {
+                await handleSave();
+              }}
+              loading={loading}
+              text={locale.t('Common.save')}
+              iconLeft={<CheckIcon style={styles.icon} />}
+            />,
+          ]}
+        />
         <View style={[styles.inputSection]}>
           <View
             style={{

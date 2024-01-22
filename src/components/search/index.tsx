@@ -1,13 +1,11 @@
-import React, {useEffect, useState} from 'react';
-import {View} from 'react-native';
+import React, { useEffect, useState } from 'react';
 import {
   Button as ButtonUI,
-  Input as InputUI,
   CameraIcon,
+  SearchContainer,
 } from 'etendo-ui-library';
-import {styles} from './style';
+import { styles, widthButton } from './style';
 import Camera from '../camera';
-import {isTablet} from '../../utils';
 import locale from '../../localization/locale';
 
 interface SearchProps {
@@ -15,7 +13,7 @@ interface SearchProps {
   value?: string;
 }
 
-const Search = ({onSubmit, value}: SearchProps) => {
+const Search = ({ onSubmit, value }: SearchProps) => {
   const [text, setText] = useState<string>('');
   const [show, setShow] = useState(false);
 
@@ -34,22 +32,14 @@ const Search = ({onSubmit, value}: SearchProps) => {
   return (
     <>
       <Camera show={show} setShow={setShow} handleReadCode={handleReadCode} />
-      <View style={styles.container}>
-        <View style={styles.searchInput}>
-          <InputUI
-            value={text}
-            onChangeText={(value: React.SetStateAction<string>) => {
-              setText(value);
-            }}
-            onSubmit={() => onSubmit(text)}
-            placeholder={locale.t('Home.typeProduct')}
-            typeField="textInputSearch"
-            height={50}
-          />
-        </View>
-        <View style={[styles.buttonContainer]}>
+      <SearchContainer
+        style={styles.container}
+        placeholder={locale.t('Home.typeProduct')}
+        onSubmit={() => onSubmit(text)}
+        value={text}
+        buttons={[
           <ButtonUI
-            width={isTablet ? '70%' : '100%'}
+            width={widthButton}
             height={50}
             typeStyle="terciary"
             iconLeft={<CameraIcon style={styles.icon} />}
@@ -57,9 +47,9 @@ const Search = ({onSubmit, value}: SearchProps) => {
               setShow(true);
             }}
             text={locale.t('Home.searchBarcode')}
-          />
-        </View>
-      </View>
+          />,
+        ]}
+      />
     </>
   );
 };

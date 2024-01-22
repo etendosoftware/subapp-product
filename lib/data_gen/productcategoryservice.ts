@@ -1,22 +1,19 @@
-import {BaseService} from '../base/baseservice';
-import {ProductCategory, ProductCategoryList, } from './productcategory.types';
+import { BaseService } from '../base/baseservice';
+import { ProductCategory } from './productcategory.types';
 
 class BackService extends BaseService<ProductCategory> {
   private static projection = 'prodsubapp';
-  private static modelName = 'M_Product_Category';
+  private static modelName = 'Product_Category';
   private static fetchName = 'productCategory';
 
   getModelName(): string {
-    return BackService.projection + "/" + BackService.modelName;
+    return BackService.projection + '/' + BackService.modelName;
   }
   getFetchName(): string {
     return BackService.fetchName;
   }
 
-  mapManyToOne(entity: ProductCategory): void {
-  }
-
-
+  mapManyToOne(entity: ProductCategory): void {}
 }
 
 class FrontService extends BaseService<ProductCategory> {

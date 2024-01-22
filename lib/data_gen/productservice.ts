@@ -1,9 +1,13 @@
-import {BaseService} from '../base/baseservice';
-import {Product, ProductList, GetFilteredProductsParams} from './product.types';
+import { BaseService } from '../base/baseservice';
+import {
+  Product,
+  ProductList,
+  GetFilteredProductsParams,
+} from './product.types';
 
 class BackService extends BaseService<Product> {
   private static projection = 'prodsubapp';
-  private static modelName = 'M_Product';
+  private static modelName = 'Product';
   private static fetchName = 'product';
 
   getModelName(): string {
