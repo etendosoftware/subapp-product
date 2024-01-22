@@ -1,17 +1,18 @@
 import {useState} from 'react';
-import {Product} from '../../lib/data_gen/product.types';
+import {Product, ProductList} from '../../lib/data_gen/product.types';
 import ProductService from '../../lib/data_gen/productservice';
-import {generateRandomNumber} from '../utils';
 
 export const useProduct = () => {
-  const [productsFiltered, setProductsFiltered] = useState<Product[]>([]);
+  const [productsFiltered, setProductsFiltered] = useState<ProductList | null>(
+    null,
+  );
 
   const getFilteredProducts = async (
     name: string = '%%',
     page?: number,
     size?: number,
   ) => {
-    const products = await ProductService.BACK.getFilteredProducts(
+    const products: ProductList = await ProductService.BACK.getFilteredProducts(
       name,
       page,
       size,
