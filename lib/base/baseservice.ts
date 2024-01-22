@@ -13,9 +13,8 @@ export abstract class BaseService<E extends EntityType> {
     let urlId = '';
     if (entity.id !== undefined) {
       method = 'PUT';
-      urlId = "/" + entity.id;
+      urlId = '/' + entity.id;
     }
-
     const response = await fetch(`${this._url}/das/${_modelName}${urlId}`, {
       method: method,
       body: JSON.stringify(entity),
@@ -35,6 +34,7 @@ export abstract class BaseService<E extends EntityType> {
 
   async delete(id: string | undefined): Promise<number> {
     const _modelName = this.getModelName();
+    console.log(`${this._url}/das/${_modelName}/${id}`);
     const response = await fetch(`${this._url}/das/${_modelName}/${id}`, {
       method: 'DELETE',
       headers: {
@@ -50,29 +50,30 @@ export abstract class BaseService<E extends EntityType> {
     let parsedParams: string = '';
     if (params) {
       parsedParams = Object.keys(params)
-        .map(k => { 
+        .map(k => {
           let v = params[k];
-          if(v === null) {
+          if (v === null) {
             return '';
           }
-          if(v instanceof Date) {
+          if (v instanceof Date) {
             // Transform date to string dd/mm/yyyy
             v = v.toLocaleDateString('es-AR');
           }
-          if(k === 'page') {
-            if(v === undefined) {
+          if (k === 'page') {
+            if (v === undefined) {
               v = 0;
             }
           }
-          if(k === 'size') {
-            if(v === undefined) {
+          if (k === 'size') {
+            if (v === undefined) {
               v = 20;
             }
           }
-          return `${k}=${v}` 
+          return `${k}=${v}`;
         })
         .join('&');
     }
+
     const res = await fetch(
       `${this._url}/das/${_modelName}/searches/${search}?${parsedParams}`,
       {
@@ -84,7 +85,7 @@ export abstract class BaseService<E extends EntityType> {
     );
 
     const data = await res.json();
-    const response : DASResponse<E> = {
+    const response: DASResponse<E> = {
       content: data.content,
       pageable: data.pageable,
       totalElements: data.totalElements,

@@ -7,17 +7,13 @@ class BackService extends BaseService<Product> {
   private static fetchName = 'product';
 
   getModelName(): string {
-    return BackService.projection + "/" + BackService.modelName;
+    return BackService.projection + '/' + BackService.modelName;
   }
   getFetchName(): string {
     return BackService.fetchName;
   }
 
-  mapManyToOne(entity: Product): void {
-    if (entity.productCategoryId) {
-      entity.productCategory = `productCategory/${entity.productCategoryId}`;
-    }
-  }
+  mapManyToOne(entity: Product): void {}
 
   async getFilteredProducts(
     name: string,
@@ -25,12 +21,11 @@ class BackService extends BaseService<Product> {
     size?: number,
   ): Promise<ProductList> {
     return this._fetchSearch<GetFilteredProductsParams>('getFilteredProducts', {
-      name, 
+      name,
       page,
       size,
     });
   }
-
 }
 
 class FrontService extends BaseService<Product> {

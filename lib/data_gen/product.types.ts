@@ -14,7 +14,6 @@ export type ProductList = DASResponse<Product>;
 export interface Product extends EntityType {
   uPCEAN?: string;
   name?: string;
+  active?: boolean;
   id?: string;
-  productCategoryId?: string;
-  productCategory?: string;
 }

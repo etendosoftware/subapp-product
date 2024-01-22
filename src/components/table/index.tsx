@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {styles} from './style';
 import {View} from 'react-native';
 import {
@@ -66,7 +66,7 @@ const Table = ({
   deleteData,
 }: TableProps) => {
   const [modalActive, setModalActive] = useState(false);
-  const [deleteId, setDeleteId] = useState<string>('');
+  const [deleteItem, setdeleteItem] = useState<Product>({});
 
   const {updateProduct} = useProduct();
 
@@ -106,7 +106,9 @@ const Table = ({
         {
           component: <IconTouchable action="edit" />,
           onAction: (item: any) => {
-            const itemSelected = data.find(itemData => itemData.id === item);
+            const itemSelected: Product | undefined = data.find(
+              itemData => itemData.id === item,
+            );
             if (!itemSelected) {
               return;
             }
@@ -114,7 +116,7 @@ const Table = ({
               id: item,
               name: itemSelected.name,
               uPCEAN: itemSelected.uPCEAN,
-              searchKey: itemSelected.searchKey,
+              active: itemSelected.active,
             };
 
             navigation.navigate('ProductDetail', {productItem});
@@ -123,7 +125,19 @@ const Table = ({
         {
           component: <IconTouchable action="delete" />,
           onAction: (item: any) => {
-            setDeleteId(item);
+            const itemSelected: Product | undefined = data.find(
+              itemData => itemData.id === item,
+            );
+            if (!itemSelected) {
+              return;
+            }
+            const productItem: Product = {
+              id: item,
+              name: itemSelected.name,
+              uPCEAN: itemSelected.uPCEAN,
+              active: itemSelected.active,
+            };
+            setdeleteItem(productItem);
             setModalActive(true);
           },
         },
@@ -139,7 +153,7 @@ const Table = ({
     setModalActive(false);
 
     try {
-      await updateProduct({id: deleteId, active: false}).then(() => {
+      await updateProduct({...deleteItem, active: false}).then(() => {
         Toast('Success.deleteProduct', {type: 'success'});
         if (deleteData) {
           deleteData('');
@@ -152,6 +166,9 @@ const Table = ({
       Toast('Error.connection');
     }
   };
+  useEffect(() => {
+    console.log({data});
+  }, [data]);
 
   return (
     <View style={styles.table}>
