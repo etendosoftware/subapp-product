@@ -84,7 +84,7 @@ const Table = ({
               active: item.active,
             };
             setDeleteItem(productItem);
-            navigation.navigate('ProductDetail', { productItem });
+            setModalActive(true);
           }}
           iconLeft={<TrashIcon style={styles.icon} />}
         />,
