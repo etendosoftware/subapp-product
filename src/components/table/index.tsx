@@ -89,6 +89,13 @@ const Table = ({
           iconLeft={<TrashIcon style={styles.icon} />}
         />,
       ],
+      cellStyle: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100%',
+      },
     },
   ];
 
