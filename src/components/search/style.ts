@@ -9,6 +9,5 @@ export const styles = StyleSheet.create({
   ...generalStyles,
   container: {
     marginHorizontal: isTablet ? 32 : 24,
-    gap: 12,
   },
 });

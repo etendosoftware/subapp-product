@@ -2,17 +2,21 @@ import React, { useCallback, useState } from 'react';
 import { View } from 'react-native';
 import Navbar from '../../components/navbar';
 
-import { Button as ButtonUI, MoreIcon } from 'etendo-ui-library';
+import {
+  Button as ButtonUI,
+  MoreIcon,
+  TitleContainer,
+} from 'etendo-ui-library';
 
 import Search from '../../components/search';
-import Table from '../../components/table';
 import { styles } from './style';
 import { NavigationProp, useFocusEffect } from '@react-navigation/native';
 import locale from '../../localization/locale';
 import { INavigationContainerProps } from '../../interfaces';
 import useProduct from '../../hooks/useProduct';
 import { ProductList } from '../../../lib/data_gen/product.types';
-import { TitleContainer } from 'etendo-ui-library';
+import { EntityType } from '../../../lib/base/baseservice.types';
+import Table from '../../components/table';
 
 interface HomeProps {
   navigation: NavigationProp<any>;
@@ -22,7 +26,7 @@ interface HomeProps {
 
 const Home = ({ navigation, route, navigationContainer }: HomeProps) => {
   const { getFilteredProducts } = useProduct();
-  const [products, setProducts] = useState<ProductList>([]);
+  const [products, setProducts] = useState<EntityType[]>([]);
   const [inputValue, setInputValue] = useState<string | undefined>('');
   const { dataUser } = route.params;
   const [loading, setLoading] = useState<boolean>(true);
@@ -47,11 +51,11 @@ const Home = ({ navigation, route, navigationContainer }: HomeProps) => {
     await getFilteredProducts(nameFilter, page, size).then(
       (newData: ProductList) => {
         setLoading(false);
-        if (size !== newData.length) {
+        if (size !== newData.content.length) {
           setIsLoadingMoreData(false);
         }
-        setProducts(prevProducts => {
-          return newData ? [...prevProducts, ...newData] : [];
+        setProducts((prevProducts: Array<EntityType>) => {
+          return newData ? [...prevProducts, ...newData.content] : [];
         });
         setPageTable(page);
       },

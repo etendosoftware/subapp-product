@@ -35,7 +35,7 @@ const Search = ({ onSubmit, value }: SearchProps) => {
       <SearchContainer
         style={styles.container}
         placeholder={locale.t('Home.typeProduct')}
-        onSubmit={() => onSubmit(text)}
+        onSubmit={onSubmit}
         value={text}
         buttons={[
           <ButtonUI

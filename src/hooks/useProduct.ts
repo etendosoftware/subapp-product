@@ -1,17 +1,18 @@
 import {useState} from 'react';
-import {Product} from '../../lib/data_gen/product.types';
+import {Product, ProductList} from '../../lib/data_gen/product.types';
 import ProductService from '../../lib/data_gen/productservice';
-import {generateRandomNumber} from '../utils';
 
 export const useProduct = () => {
-  const [productsFiltered, setProductsFiltered] = useState<Product[]>([]);
+  const [productsFiltered, setProductsFiltered] = useState<ProductList | null>(
+    null,
+  );
 
   const getFilteredProducts = async (
     name: string = '%%',
     page?: number,
     size?: number,
   ) => {
-    const products = await ProductService.BACK.getFilteredProducts(
+    const products: ProductList = await ProductService.BACK.getFilteredProducts(
       name,
       page,
       size,
@@ -22,17 +23,8 @@ export const useProduct = () => {
 
   const createProduct = async (body: Product) => {
     const defaultValues: Product = {
-      active: true,
-      description: 'default',
       name: body.name,
-      organization: '/B843C30461EA4501935CB1D125C9C25A',
-      productCategory: '/DC7F246D248B4C54BFC5744D5C27704F',
-      productType: 'I',
-      productValue: 'default',
-      searchKey: `ES/00${generateRandomNumber()}`,
       uPCEAN: body.uPCEAN,
-      taxCategory: '/E020A69A1E784DC39BE57C41D6D5DB4E',
-      uOM: '/100',
     };
     const res = await ProductService.BACK.save(defaultValues);
     return res;

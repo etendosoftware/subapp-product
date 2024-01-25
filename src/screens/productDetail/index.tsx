@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Dimensions, StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import Navbar from '../../components/navbar';
 
 import {
@@ -16,10 +16,6 @@ import { isTablet } from '../../utils';
 import Camera from '../../components/camera';
 import locale from '../../localization/locale';
 import useProduct from '../../hooks/useProduct';
-import { Button, PermissionsAndroid, Platform, Text } from 'react-native';
-import Pdf from 'react-native-pdf';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import Share from 'react-native-share';
 import { show as showAlert } from 'etendo-ui-library';
 
 interface ProductDetailProps {
@@ -29,6 +25,7 @@ interface ProductDetailProps {
 const ProductDetail: React.FC<ProductDetailProps> = ({ navigation, route }) => {
   const [product, setProduct] = useState<string>('');
   const [barcode, setBarcode] = useState<string>('');
+  const [active, setActive] = useState<boolean>(true);
   const [id, setId] = useState<string>('');
   const [title, setTitle] = useState<string>('');
   const [show, setShow] = useState<boolean>(false);
@@ -44,7 +41,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ navigation, route }) => {
       setProduct(productItem.name);
       setBarcode(productItem.uPCEAN);
       setId(productItem.id);
-
+      setActive(productItem.active);
       setTitle(locale.t('ProductDetail.editProduct'));
     } else {
       setTitle(locale.t('ProductDetail.newProduct'));
@@ -63,6 +60,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ navigation, route }) => {
     setBarcode('');
     setId('');
     setShow(false);
+    setActive(true);
     navigation.goBack();
   };
 
@@ -80,15 +78,17 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ navigation, route }) => {
     try {
       if (id) {
         await updateProduct({
-          id: id,
+          id,
           name: product,
           uPCEAN: barcode,
+          active,
         });
         showAlert(locale.t('Success.updateProduct'), 'success');
       } else {
         await createProduct({
           name: product,
           uPCEAN: barcode,
+          active,
         });
         showAlert(locale.t('Success.saveProduct'), 'success');
       }

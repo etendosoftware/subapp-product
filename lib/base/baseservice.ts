@@ -12,11 +12,10 @@ export abstract class BaseService<E extends EntityType> {
     let method = 'POST';
     let urlId = '';
     if (entity.id !== undefined) {
-      method = 'PATCH';
-      urlId = entity.id;
+      method = 'PUT';
+      urlId = '/' + entity.id;
     }
-
-    const response = await fetch(`${this._url}/das/${_modelName}/${urlId}`, {
+    const response = await fetch(`${this._url}/das/${_modelName}${urlId}`, {
       method: method,
       body: JSON.stringify(entity),
       headers: {
@@ -35,6 +34,7 @@ export abstract class BaseService<E extends EntityType> {
 
   async delete(id: string | undefined): Promise<number> {
     const _modelName = this.getModelName();
+    console.log(`${this._url}/das/${_modelName}/${id}`);
     const response = await fetch(`${this._url}/das/${_modelName}/${id}`, {
       method: 'DELETE',
       headers: {
@@ -50,11 +50,32 @@ export abstract class BaseService<E extends EntityType> {
     let parsedParams: string = '';
     if (params) {
       parsedParams = Object.keys(params)
-        .map(k => `${k}=${params[k]}`)
+        .map(k => {
+          let v = params[k];
+          if (v === null) {
+            return '';
+          }
+          if (v instanceof Date) {
+            // Transform date to string dd/mm/yyyy
+            v = v.toLocaleDateString('es-AR');
+          }
+          if (k === 'page') {
+            if (v === undefined) {
+              v = 0;
+            }
+          }
+          if (k === 'size') {
+            if (v === undefined) {
+              v = 20;
+            }
+          }
+          return `${k}=${v}`;
+        })
         .join('&');
     }
+
     const res = await fetch(
-      `${this._url}/das/${_modelName}/search/${search}?${parsedParams}`,
+      `${this._url}/das/${_modelName}/searches/${search}?${parsedParams}`,
       {
         method: 'GET',
         headers: {
@@ -64,13 +85,19 @@ export abstract class BaseService<E extends EntityType> {
     );
 
     const data = await res.json();
-    const k = Object.keys(data._embedded);
-
-    const returnedData = data._embedded[k[0]].map((u: DASResponse) => {
-      delete u._links;
-      return u;
-    });
-    return returnedData;
+    const response: DASResponse<E> = {
+      content: data.content,
+      pageable: data.pageable,
+      totalElements: data.totalElements,
+      totalPages: data.totalPages,
+      last: data.last,
+      size: data.size,
+      sort: data.sort,
+      numberOfElements: data.numberOfElements,
+      first: data.first,
+      empty: data.empty,
+    };
+    return response;
   }
 
   public get authToken() {

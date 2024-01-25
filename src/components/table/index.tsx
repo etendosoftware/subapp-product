@@ -6,6 +6,7 @@ import {
   TrashIcon,
   PencilIcon,
   Button,
+  show,
 } from 'etendo-ui-library';
 import { isTablet } from '../../utils';
 import Modal from '../modal';
@@ -14,7 +15,6 @@ import { Product } from '../../../lib/data_gen/product.types';
 import useProduct from '../../hooks/useProduct';
 import { TableProps } from './types';
 import { ColumnsMetadata } from 'etendo-ui-library/dist-native/components/table/Table.types';
-import { show } from 'etendo-ui-library';
 
 const Table = ({
   navigation,
@@ -27,7 +27,7 @@ const Table = ({
   deleteData,
 }: TableProps) => {
   const [modalActive, setModalActive] = useState(false);
-  const [deleteId, setDeleteId] = useState<string>('');
+  const [deleteItem, setDeleteItem] = useState<Product | undefined>(undefined);
 
   const { updateProduct } = useProduct();
 
@@ -62,31 +62,30 @@ const Table = ({
           width={isTablet ? 50 : '120%'}
           typeStyle="white"
           onPress={item => {
-            const itemSelected = data.find(itemData => itemData.id === item.id);
-            if (!itemSelected) {
-              return;
-            }
             const productItem: Product = {
               id: item.id,
-              name: itemSelected.name,
-              uPCEAN: itemSelected.uPCEAN,
-              searchKey: itemSelected.searchKey,
+              name: item.name,
+              uPCEAN: item.uPCEAN,
+              active: item.active,
             };
-
             navigation.navigate('ProductDetail', { productItem });
           }}
-          text=""
           iconLeft={<PencilIcon style={styles.icon} />}
         />,
         <Button
           height={50}
           width={isTablet ? 50 : '120%'}
           typeStyle="white"
-          onPress={row => {
-            setDeleteId(row.id);
+          onPress={(item: any) => {
+            const productItem: Product = {
+              id: item.id,
+              name: item.name,
+              uPCEAN: item.uPCEAN,
+              active: item.active,
+            };
+            setDeleteItem(productItem);
             setModalActive(true);
           }}
-          text=""
           iconLeft={<TrashIcon style={styles.icon} />}
         />,
       ],
@@ -107,7 +106,7 @@ const Table = ({
   const functionConfirm = async () => {
     closeModal();
     try {
-      await updateProduct({ id: deleteId, active: false }).then(() => {
+      await updateProduct({ ...deleteItem, active: false }).then(() => {
         show(locale.t('Success.deleteProduct'), 'success');
         if (deleteData) {
           deleteData('');
