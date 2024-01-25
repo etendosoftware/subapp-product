@@ -1,15 +1,16 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { View } from 'react-native';
 import Navbar from '../../components/navbar';
 
 import {
   Button as ButtonUI,
+  CameraIcon,
   MoreIcon,
+  SearchContainer,
   TitleContainer,
 } from 'etendo-ui-library';
 
-import Search from '../../components/search';
-import { styles } from './style';
+import { styles, widthSearchButton } from './style';
 import { NavigationProp, useFocusEffect } from '@react-navigation/native';
 import locale from '../../localization/locale';
 import { INavigationContainerProps } from '../../interfaces';
@@ -17,6 +18,7 @@ import useProduct from '../../hooks/useProduct';
 import { ProductList } from '../../../lib/data_gen/product.types';
 import { EntityType } from '../../../lib/base/baseservice.types';
 import Table from '../../components/table';
+import Camera from '../../components/camera';
 
 interface HomeProps {
   navigation: NavigationProp<any>;
@@ -32,6 +34,8 @@ const Home = ({ navigation, route, navigationContainer }: HomeProps) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [pageTable, setPageTable] = useState<number>(0);
   const [isLoadingMoreData, setIsLoadingMoreData] = useState<boolean>(true);
+  // const [textSearch, setTextSearch] = useState<string>('');
+  const [showCamera, setShowCamera] = useState(false);
 
   const PAGE_SIZE = 20;
 
@@ -85,9 +89,26 @@ const Home = ({ navigation, route, navigationContainer }: HomeProps) => {
     }, []),
   );
 
+  const handleReadCode = (text: string) => {
+    if (text) {
+      setInputValue(text);
+      setShowCamera(false);
+      resetTable(text);
+    }
+  };
+
+  useEffect(() => {
+    setInputValue(inputValue ?? '');
+  }, [inputValue]);
+
   return (
     <View style={styles.container}>
       <View>
+        <Camera
+          show={showCamera}
+          setShow={setShowCamera}
+          handleReadCode={handleReadCode}
+        />
         <Navbar
           title={locale.t('Home.welcome')}
           username={dataUser?.username}
@@ -110,7 +131,24 @@ const Home = ({ navigation, route, navigationContainer }: HomeProps) => {
             />,
           ]}
         />
-        <Search onSubmit={resetTable} value={inputValue} />
+        <SearchContainer
+          style={styles.searchContainer}
+          placeholder={locale.t('Home.typeProduct')}
+          onSubmit={resetTable}
+          value={inputValue}
+          buttons={[
+            <ButtonUI
+              width={widthSearchButton}
+              height={50}
+              typeStyle="terciary"
+              iconLeft={<CameraIcon style={styles.icon} />}
+              onPress={() => {
+                setShowCamera(true);
+              }}
+              text={locale.t('Home.searchBarcode')}
+            />,
+          ]}
+        />
       </View>
       <Table
         navigation={navigation}
