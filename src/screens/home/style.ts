@@ -1,7 +1,10 @@
-import { StyleSheet } from 'react-native';
+import { DimensionValue, Dimensions, StyleSheet } from 'react-native';
 import { generalStyles } from '../../../styles';
 import { isTablet } from '../../utils';
 import { PRIMARY_100 } from '../../styles/colors';
+
+const width = Dimensions.get('screen').width;
+export const widthSearchButton: DimensionValue = isTablet ? '70%' : width - 48;
 
 export const styles = StyleSheet.create({
   ...generalStyles,
@@ -36,5 +39,11 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     color: 'white',
+  },
+  searchContainer: {
+    marginHorizontal: isTablet ? 32 : 24,
+  },
+  contentHeight: {
+    height: '100%',
   },
 });
