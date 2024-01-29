@@ -1,13 +1,17 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { Text, View } from 'react-native';
 import Navbar from '../../components/navbar';
 
 import {
   Button as ButtonUI,
+  Table as TableUI,
   CameraIcon,
   MoreIcon,
   SearchContainer,
   TitleContainer,
+  show,
+  PencilIcon,
+  TrashIcon,
 } from 'etendo-ui-library';
 
 import { styles, widthSearchButton } from './style';
@@ -15,10 +19,12 @@ import { NavigationProp, useFocusEffect } from '@react-navigation/native';
 import locale from '../../localization/locale';
 import { INavigationContainerProps } from '../../interfaces';
 import useProduct from '../../hooks/useProduct';
-import { ProductList } from '../../../lib/data_gen/product.types';
+import { Product, ProductList } from '../../../lib/data_gen/product.types';
 import { EntityType } from '../../../lib/base/baseservice.types';
-import Table from '../../components/table';
 import Camera from '../../components/camera';
+import Modal from '../../components/modal';
+import { ColumnsMetadata } from 'etendo-ui-library/dist-native/components/table/Table.types';
+import { isTablet } from '../../utils';
 
 interface HomeProps {
   navigation: NavigationProp<any>;
@@ -34,8 +40,10 @@ const Home = ({ navigation, route, navigationContainer }: HomeProps) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [pageTable, setPageTable] = useState<number>(0);
   const [isLoadingMoreData, setIsLoadingMoreData] = useState<boolean>(true);
-  // const [textSearch, setTextSearch] = useState<string>('');
+  const [deleteItem, setDeleteItem] = useState<Product | undefined>(undefined);
   const [showCamera, setShowCamera] = useState(false);
+  const [modalActive, setModalActive] = useState(false);
+  const { updateProduct } = useProduct();
 
   const PAGE_SIZE = 20;
 
@@ -101,6 +109,97 @@ const Home = ({ navigation, route, navigationContainer }: HomeProps) => {
     setInputValue(inputValue ?? '');
   }, [inputValue]);
 
+  const closeModal = () => {
+    setModalActive(false);
+  };
+
+  const functionConfirm = async () => {
+    closeModal();
+    try {
+      await updateProduct({ ...deleteItem, active: false }).then(() => {
+        show(locale.t('Success.deleteProduct'), 'success');
+        if (deleteDataTable) {
+          // TODO: improve this
+          deleteDataTable();
+        }
+      });
+    } catch (err: any) {
+      if (err.status === 500) {
+        show(locale.t('Error.deleteProduct'), 'error');
+        return;
+      }
+      show(locale.t('Error.connection'), 'error');
+    }
+  };
+
+  const dataColumns: ColumnsMetadata[] = [
+    {
+      key: 'id',
+      primary: true,
+      visible: false,
+    },
+    {
+      key: 'name',
+      label: locale.t('Table.products'),
+      visible: true,
+      width: '50%',
+    },
+    {
+      key: 'uPCEAN',
+      label: isTablet
+        ? locale.t('Table.barcode')
+        : locale.t('Table.barcodeShort'),
+      visible: true,
+      width: '25%',
+    },
+    {
+      visible: true,
+      key: 'about',
+      width: '25%',
+      label: 'Actions',
+      components: [
+        <ButtonUI
+          height={50}
+          width={isTablet ? 50 : '120%'}
+          typeStyle="white"
+          onPress={item => {
+            const productItem: Product = {
+              id: item.id,
+              name: item.name,
+              uPCEAN: item.uPCEAN,
+              active: item.active,
+            };
+            navigation.navigate('ProductDetail', { productItem });
+          }}
+          iconLeft={<PencilIcon style={styles.icon} />}
+        />,
+        <ButtonUI
+          height={50}
+          width={isTablet ? 50 : '120%'}
+          typeStyle="white"
+          onPress={(item: any) => {
+            const productItem: Product = {
+              id: item.id,
+              name: item.name,
+              uPCEAN: item.uPCEAN,
+              active: item.active,
+            };
+            setDeleteItem(productItem);
+            setModalActive(true);
+          }}
+          iconLeft={<TrashIcon style={styles.icon} />}
+        />,
+      ],
+      cellStyle: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100%',
+      },
+    },
+  ];
+
   return (
     <View style={styles.container}>
       <View>
@@ -149,17 +248,34 @@ const Home = ({ navigation, route, navigationContainer }: HomeProps) => {
             />,
           ]}
         />
+        <TableUI
+          columns={dataColumns}
+          data={products}
+          tableHeight={'100%'}
+          onRowPress={() => {}}
+          isLoading={loading}
+          onLoadMoreData={onLoadMoreData}
+          commentEmptyTable={locale.t('Table.textEmptyTable')}
+          textEmptyTable={locale.t('Table.commentEmptyTable')}
+          currentPage={pageTable}
+          pageSize={PAGE_SIZE}
+          isLoadingMoreData={isLoadingMoreData}
+          style={{
+            margin: isTablet ? 32 : 24,
+          }}
+        />
       </View>
-      <Table
-        navigation={navigation}
-        data={products}
-        isLoading={loading}
-        pageSize={PAGE_SIZE}
-        onLoadMoreData={onLoadMoreData}
-        currentPage={pageTable}
-        isLoadingMoreData={isLoadingMoreData}
-        deleteData={deleteDataTable}
-      />
+      {modalActive && (
+        <Modal
+          textModal={locale.t('Modal.messageDelete')}
+          textConfirm={locale.t('Common.accept')}
+          textCancel={locale.t('Common.cancel')}
+          visible={modalActive}
+          setVisible={closeModal}
+          functionConfirm={functionConfirm}
+          functionCancel={closeModal}
+        />
+      )}
     </View>
   );
 };
