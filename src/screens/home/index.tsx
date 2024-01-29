@@ -13,6 +13,7 @@ import {
   PencilIcon,
   TrashIcon,
   Cards,
+  Modal as ModalUI,
 } from 'etendo-ui-library';
 
 import { styles, widthSearchButton } from './style';
@@ -293,16 +294,14 @@ const Home = ({ navigation, route, navigationContainer }: HomeProps) => {
           </View>
         )}
       </View>
-
       {modalActive && (
-        <Modal
-          textModal={locale.t('Modal.messageDelete')}
-          textConfirm={locale.t('Common.accept')}
-          textCancel={locale.t('Common.cancel')}
+        <ModalUI
+          title={locale.t('Modal.messageDelete')}
+          labelActionButton={locale.t('Common.accept')}
+          labelCloseButton={locale.t('Common.cancel')}
           visible={modalActive}
-          setVisible={closeModal}
-          functionConfirm={functionConfirm}
-          functionCancel={closeModal}
+          showModal={closeModal}
+          handleAction={functionConfirm}
         />
       )}
     </View>
