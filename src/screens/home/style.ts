@@ -43,4 +43,7 @@ export const styles = StyleSheet.create({
   searchContainer: {
     marginHorizontal: isTablet ? 32 : 24,
   },
+  contentHeight: {
+    height: '100%',
+  },
 });

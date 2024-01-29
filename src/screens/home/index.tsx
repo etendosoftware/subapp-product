@@ -12,6 +12,7 @@ import {
   show,
   PencilIcon,
   TrashIcon,
+  Cards,
 } from 'etendo-ui-library';
 
 import { styles, widthSearchButton } from './style';
@@ -33,16 +34,16 @@ interface HomeProps {
 }
 
 const Home = ({ navigation, route, navigationContainer }: HomeProps) => {
-  const { getFilteredProducts } = useProduct();
-  const [products, setProducts] = useState<EntityType[]>([]);
-  const [inputValue, setInputValue] = useState<string | undefined>('');
-  const { dataUser } = route.params;
-  const [loading, setLoading] = useState<boolean>(true);
-  const [pageTable, setPageTable] = useState<number>(0);
-  const [isLoadingMoreData, setIsLoadingMoreData] = useState<boolean>(true);
   const [deleteItem, setDeleteItem] = useState<Product | undefined>(undefined);
-  const [showCamera, setShowCamera] = useState(false);
+  const [inputValue, setInputValue] = useState<string | undefined>('');
+  const [isLoadingMoreData, setIsLoadingMoreData] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(true);
   const [modalActive, setModalActive] = useState(false);
+  const [pageTable, setPageTable] = useState<number>(0);
+  const [products, setProducts] = useState<EntityType[]>([]);
+  const [showCamera, setShowCamera] = useState(false);
+  const { dataUser } = route.params;
+  const { getFilteredProducts } = useProduct();
   const { updateProduct } = useProduct();
 
   const PAGE_SIZE = 20;
@@ -132,6 +133,15 @@ const Home = ({ navigation, route, navigationContainer }: HomeProps) => {
     }
   };
 
+  const handleEditItem = async (item: any) => {
+    const productItem: Product = {
+      id: item.id,
+      name: item.name,
+      uPCEAN: item.uPCEAN,
+      active: item.active,
+    };
+    navigation.navigate('ProductDetail', { productItem });
+  };
   const dataColumns: ColumnsMetadata[] = [
     {
       key: 'id',
@@ -162,17 +172,10 @@ const Home = ({ navigation, route, navigationContainer }: HomeProps) => {
           height={50}
           width={isTablet ? 50 : '120%'}
           typeStyle="white"
-          onPress={item => {
-            const productItem: Product = {
-              id: item.id,
-              name: item.name,
-              uPCEAN: item.uPCEAN,
-              active: item.active,
-            };
-            navigation.navigate('ProductDetail', { productItem });
-          }}
+          onPress={item => handleEditItem(item)}
           iconLeft={<PencilIcon style={styles.icon} />}
         />,
+
         <ButtonUI
           height={50}
           width={isTablet ? 50 : '120%'}
@@ -248,23 +251,49 @@ const Home = ({ navigation, route, navigationContainer }: HomeProps) => {
             />,
           ]}
         />
-        <TableUI
-          columns={dataColumns}
-          data={products}
-          tableHeight={'100%'}
-          onRowPress={() => {}}
-          isLoading={loading}
-          onLoadMoreData={onLoadMoreData}
-          commentEmptyTable={locale.t('Table.textEmptyTable')}
-          textEmptyTable={locale.t('Table.commentEmptyTable')}
-          currentPage={pageTable}
-          pageSize={PAGE_SIZE}
-          isLoadingMoreData={isLoadingMoreData}
-          style={{
-            margin: isTablet ? 32 : 24,
-          }}
-        />
+        {isTablet ? (
+          <TableUI
+            columns={dataColumns}
+            data={products}
+            tableHeight={'100%'}
+            onRowPress={() => {}}
+            isLoading={loading}
+            onLoadMoreData={onLoadMoreData}
+            commentEmptyTable={locale.t('Table.textEmptyTable')}
+            textEmptyTable={locale.t('Table.commentEmptyTable')}
+            currentPage={pageTable}
+            pageSize={PAGE_SIZE}
+            isLoadingMoreData={isLoadingMoreData}
+            style={{
+              margin: isTablet ? 32 : 24,
+            }}
+          />
+        ) : (
+          <View style={styles.contentHeight}>
+            <Cards
+              title="Products"
+              metadata={dataColumns}
+              data={products}
+              isLoadingMoreData={isLoadingMoreData}
+              isLoading={loading}
+              pageSize={PAGE_SIZE}
+              currentPage={pageTable}
+              cardsHeight={450}
+              onPressCard={id => {
+                const fullItem = products.find(
+                  (product: any) => product.id === id,
+                );
+                handleEditItem(fullItem);
+              }}
+              onLoadMoreData={onLoadMoreData}
+              onAddNewData={() => {
+                navigation.navigate('ProductDetail');
+              }}
+            />
+          </View>
+        )}
       </View>
+
       {modalActive && (
         <Modal
           textModal={locale.t('Modal.messageDelete')}
