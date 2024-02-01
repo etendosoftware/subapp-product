@@ -3568,10 +3568,10 @@ etag@~1.8.1:
   resolved "https://registry.yarnpkg.com/etag/-/etag-1.8.1.tgz#41ae2eeb65efa62268aebfea83ac7d79299b0887"
   integrity sha512-aIL5Fx7mawVa300al2BnEE4iNvo1qETxLrPI/o05L7z6go7fCw1J6EQmbK4FmJ2AS7kgVF/KEZWufBfdClMcPg==
 
-etendo-ui-library@1.3.85:
-  version "1.3.85"
-  resolved "https://registry.yarnpkg.com/etendo-ui-library/-/etendo-ui-library-1.3.85.tgz#d7b0b96122e60df2229f564ed0a9b64065335afa"
-  integrity sha512-Q6HEnAMZ0JUuOw5R97SrcRPLCgb4MqDLrCVif7VrzTd9PRFcfaCzBEN9obhFpEykwDAKWY0SD6CnPF8m7olYzg==
+etendo-ui-library@1.3.86:
+  version "1.3.86"
+  resolved "https://registry.yarnpkg.com/etendo-ui-library/-/etendo-ui-library-1.3.86.tgz#5d4faa703c7f6d0b87faaf0bd39cb474fee614a9"
+  integrity sha512-UXWrgM6sryVG/2NmzR+F+tonHypGsfymQmhiYI4qucI6PTQmHv6OuTVWHeh1Ik6QsOX2xa65TpjKz+v07iGGdw==
 
 event-target-shim@^5.0.0, event-target-shim@^5.0.1:
   version "5.0.1"
