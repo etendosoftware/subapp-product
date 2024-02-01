@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { View } from 'react-native';
 import Navbar from '../../components/navbar';
 
@@ -13,7 +13,6 @@ import {
 import { styles } from './style';
 import { NavigationProp } from '@react-navigation/native';
 import { isTablet } from '../../utils';
-import Camera from '../../components/camera';
 import locale from '../../localization/locale';
 import useProduct from '../../hooks/useProduct';
 import { show as showAlert } from 'etendo-ui-library';
@@ -21,8 +20,13 @@ import { show as showAlert } from 'etendo-ui-library';
 interface ProductDetailProps {
   navigation: NavigationProp<any>;
   route: any;
+  Camera: FC<any>;
 }
-const ProductDetail: React.FC<ProductDetailProps> = ({ navigation, route }) => {
+const ProductDetail: React.FC<ProductDetailProps> = ({
+  navigation,
+  route,
+  Camera,
+}) => {
   const [product, setProduct] = useState<string>('');
   const [barcode, setBarcode] = useState<string>('');
   const [active, setActive] = useState<boolean>(true);

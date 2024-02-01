@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { FC, ReactNode } from 'react';
 import Home from './src/screens/home';
-import {createStackNavigator} from '@react-navigation/stack';
+import { createStackNavigator } from '@react-navigation/stack';
 import locale from './src/localization/locale';
 import ProductDetail from './src/screens/productDetail';
-import {IData, INavigationContainerProps} from './src/interfaces';
+import { IData, INavigationContainerProps } from './src/interfaces';
 import ProductService from './lib/data_gen/productservice';
 
 interface AppProps {
@@ -12,6 +12,7 @@ interface AppProps {
   navigationContainer: INavigationContainerProps;
   token: string;
   url: string;
+  Camera: FC<any>;
 }
 
 const App = ({
@@ -20,6 +21,7 @@ const App = ({
   dataUser,
   token,
   url,
+  Camera,
 }: AppProps) => {
   const Stack = createStackNavigator();
 
@@ -31,20 +33,26 @@ const App = ({
   return (
     <Stack.Navigator initialRouteName="Home">
       <Stack.Screen
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
         name="Home"
-        initialParams={{dataUser}}>
-        {props => <Home {...props} navigationContainer={navigationContainer} />}
+        initialParams={{ dataUser }}>
+        {props => (
+          <Home
+            {...props}
+            Camera={Camera}
+            navigationContainer={navigationContainer}
+          />
+        )}
       </Stack.Screen>
       <Stack.Screen
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
         name="ProductDetail"
-        initialParams={{dataUser}}>
-        {props => <ProductDetail {...props} />}
+        initialParams={{ dataUser }}>
+        {props => <ProductDetail Camera={Camera} {...props} />}
       </Stack.Screen>
     </Stack.Navigator>
   );
 };
 
-export {App};
+export { App };
 export default App;

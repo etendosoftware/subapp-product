@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { FC, ReactNode, useCallback, useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import Navbar from '../../components/navbar';
 
@@ -23,8 +23,6 @@ import { INavigationContainerProps } from '../../interfaces';
 import useProduct from '../../hooks/useProduct';
 import { Product, ProductList } from '../../../lib/data_gen/product.types';
 import { EntityType } from '../../../lib/base/baseservice.types';
-import Camera from '../../components/camera';
-import Modal from '../../components/modal';
 import { ColumnsMetadata } from 'etendo-ui-library/dist-native/components/table/Table.types';
 import { isTablet } from '../../utils';
 
@@ -32,9 +30,15 @@ interface HomeProps {
   navigation: NavigationProp<any>;
   route: any;
   navigationContainer: INavigationContainerProps;
+  Camera: FC<any>;
 }
 
-const Home = ({ navigation, route, navigationContainer }: HomeProps) => {
+const Home = ({
+  navigation,
+  route,
+  navigationContainer,
+  Camera,
+}: HomeProps) => {
   const [deleteItem, setDeleteItem] = useState<Product | undefined>(undefined);
   const [inputValue, setInputValue] = useState<string | undefined>('');
   const [isLoadingMoreData, setIsLoadingMoreData] = useState<boolean>(true);
