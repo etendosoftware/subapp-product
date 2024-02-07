@@ -22,6 +22,7 @@ export const styles = StyleSheet.create({
   },
   topSection: {
     margin: isTablet ? 32 : 24,
+    marginBottom: 0,
     gap: 12,
   },
   text: {

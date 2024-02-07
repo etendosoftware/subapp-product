@@ -1,13 +1,17 @@
-import {useState} from 'react';
-import {Product, ProductList} from '../../lib/data_gen/product.types';
+import { useState } from 'react';
+import { Product, ProductList } from '../../lib/data_gen/product.types';
 import ProductService from '../../lib/data_gen/productservice';
+import { EntityType } from '../../lib/base/baseservice.types';
 
 export const useProduct = () => {
-  const [productsFiltered, setProductsFiltered] = useState<ProductList | null>(
-    null,
-  );
+  const [dataFiltered, setDataFiltered] = useState<ProductList | null>(null);
+  const [inputValue, setInputValue] = useState<string | undefined>('');
+  const [isLoadingMoreData, setIsLoadingMoreData] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [pageTable, setPageTable] = useState<number>(0);
+  const [data, setData] = useState<EntityType[]>([]);
 
-  const getFilteredProducts = async (
+  const getFilteredItems = async (
     name: string = '%%',
     page?: number,
     size?: number,
@@ -17,11 +21,11 @@ export const useProduct = () => {
       page,
       size,
     );
-    setProductsFiltered(products);
+    setDataFiltered(products);
     return products;
   };
 
-  const createProduct = async (body: Product) => {
+  const createItem = async (body: Product) => {
     const defaultValues: Product = {
       name: body.name,
       uPCEAN: body.uPCEAN,
@@ -30,12 +34,61 @@ export const useProduct = () => {
     return res;
   };
 
-  const updateProduct = async (body: Product) => {
+  const updateItem = async (body: Product) => {
     const res = await ProductService.BACK.save(body);
     return res;
   };
 
-  return {productsFiltered, getFilteredProducts, createProduct, updateProduct};
+  const PAGE_SIZE = 20;
+
+  const handleData = async (
+    nameFilter?: string,
+    page: number = 0,
+    size: number = 20,
+    reset: boolean = false,
+  ) => {
+    setLoading(true);
+    setInputValue(nameFilter);
+    if (reset) {
+      setData([]);
+      setPageTable(0);
+      setIsLoadingMoreData(true);
+    }
+    await getFilteredItems(nameFilter, page, size).then(
+      (newData: ProductList) => {
+        setLoading(false);
+        if (size !== newData.content.length) {
+          setIsLoadingMoreData(false);
+        }
+        setData((prevProducts: Array<EntityType>) => {
+          return newData ? [...prevProducts, ...newData.content] : [];
+        });
+        setPageTable(page);
+      },
+    );
+  };
+
+  const resetTable = async (nameFilter?: string) => {
+    await handleData(nameFilter, 0, PAGE_SIZE, true);
+  };
+
+  const onLoadMoreData = async (currentPage: number, pageSize: number) => {
+    await handleData(inputValue, currentPage, pageSize);
+  };
+
+  return {
+    dataFiltered,
+    getFilteredItems,
+    createItem,
+    updateItem,
+    resetTable,
+    onLoadMoreData,
+    PAGE_SIZE,
+    loading,
+    isLoadingMoreData,
+    data,
+    pageTable,
+  };
 };
 
 export default useProduct;
