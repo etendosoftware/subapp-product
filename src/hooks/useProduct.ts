@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Product, ProductList } from '../../lib/data_gen/product.types';
 import ProductService from '../../lib/data_gen/productservice';
 import { EntityType } from '../../lib/base/baseservice.types';
+
+const PAGE_SIZE = 20;
 
 export const useProduct = () => {
   const [dataFiltered, setDataFiltered] = useState<ProductList | null>(null);
@@ -25,6 +27,10 @@ export const useProduct = () => {
     return products;
   };
 
+  useEffect(() => {
+    handleData();
+  }, []);
+
   const createItem = async (body: Product) => {
     const defaultValues: Product = {
       name: body.name,
@@ -38,8 +44,6 @@ export const useProduct = () => {
     const res = await ProductService.BACK.save(body);
     return res;
   };
-
-  const PAGE_SIZE = 20;
 
   const handleData = async (
     nameFilter?: string,
@@ -77,17 +81,18 @@ export const useProduct = () => {
   };
 
   return {
+    createItem,
+    data,
     dataFiltered,
     getFilteredItems,
-    createItem,
-    updateItem,
-    resetTable,
+    handleData,
+    isLoadingMoreData,
+    loading,
     onLoadMoreData,
     PAGE_SIZE,
-    loading,
-    isLoadingMoreData,
-    data,
     pageTable,
+    resetTable,
+    updateItem,
   };
 };
 

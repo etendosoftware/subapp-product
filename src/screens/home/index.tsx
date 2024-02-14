@@ -220,7 +220,7 @@ const Home = ({
           <TableUI
             columns={dataColumns}
             data={data}
-            tableHeight={50}
+            tableHeight={650}
             onRowPress={() => {}}
             isLoading={loading}
             onLoadMoreData={onLoadMoreData}
