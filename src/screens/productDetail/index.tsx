@@ -38,7 +38,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({
 
   const { dataUser, productItem } = route.params;
 
-  const { createProduct, updateProduct } = useProduct();
+  const { createItem, updateItem } = useProduct();
 
   useEffect(() => {
     if (productItem) {
@@ -81,7 +81,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({
 
     try {
       if (id) {
-        await updateProduct({
+        await updateItem({
           id,
           name: product,
           uPCEAN: barcode,
@@ -89,7 +89,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({
         });
         showAlert(locale.t('Success.updateProduct'), 'success');
       } else {
-        await createProduct({
+        await createItem({
           name: product,
           uPCEAN: barcode,
           active,
