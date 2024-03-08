@@ -1,9 +1,9 @@
 import React from 'react';
 import Home from './src/screens/home';
-import {createStackNavigator} from '@react-navigation/stack';
+import { createStackNavigator } from '@react-navigation/stack';
 import locale from './src/localization/locale';
 import ProductDetail from './src/screens/productDetail';
-import {IData, INavigationContainerProps} from './src/interfaces';
+import { IData, INavigationContainerProps } from './src/interfaces';
 import ProductService from './lib/data_gen/productservice';
 
 interface AppProps {
@@ -31,20 +31,20 @@ const App = ({
   return (
     <Stack.Navigator initialRouteName="Home">
       <Stack.Screen
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
         name="Home"
-        initialParams={{dataUser}}>
+        initialParams={{ dataUser }}>
         {props => <Home {...props} navigationContainer={navigationContainer} />}
       </Stack.Screen>
       <Stack.Screen
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
         name="ProductDetail"
-        initialParams={{dataUser}}>
+        initialParams={{ dataUser }}>
         {props => <ProductDetail {...props} />}
       </Stack.Screen>
     </Stack.Navigator>
   );
 };
 
-export {App};
+export { App };
 export default App;

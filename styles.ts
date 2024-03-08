@@ -5,9 +5,7 @@ export const generalStyles = StyleSheet.create({
   buttonContainer: {
     width: isTablet ? '30%' : '100%',
   },
-  icon: {
-    height: 15,
-  },
+
   full: {
     width: '100%',
     height: '100%',

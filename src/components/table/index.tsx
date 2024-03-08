@@ -4,7 +4,7 @@ import { View } from 'react-native';
 import {
   Table as TableUI,
   TrashIcon,
-  PencilIcon,
+  EditIcon,
   Button,
   show,
 } from 'etendo-ui-library';
@@ -14,7 +14,6 @@ import locale from '../../localization/locale';
 import { Product } from '../../../lib/data_gen/product.types';
 import useProduct from '../../hooks/useProduct';
 import { TableProps } from './types';
-import { ColumnsMetadata } from 'etendo-ui-library/dist-native/components/table/Table.types';
 
 const Table = ({
   navigation,
@@ -31,7 +30,7 @@ const Table = ({
 
   const { updateProduct } = useProduct();
 
-  const dataColumns: ColumnsMetadata[] = [
+  const dataColumns: any[] = [
     {
       key: 'id',
       primary: true,
@@ -70,7 +69,7 @@ const Table = ({
             };
             navigation.navigate('ProductDetail', { productItem });
           }}
-          iconLeft={<PencilIcon style={styles.icon} />}
+          iconLeft={<EditIcon style={styles.icon} />}
         />,
         <Button
           height={50}
