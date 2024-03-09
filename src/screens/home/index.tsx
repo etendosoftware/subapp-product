@@ -106,7 +106,7 @@ const Home = ({ navigation, route, navigationContainer }: HomeProps) => {
                 navigation.navigate('ProductDetail');
               }}
               text={locale.t('Home.newProduct')}
-              iconLeft={<PlusIcon />}
+              iconLeft={<PlusIcon style={styles.icon} />}
             />,
           ]}
         />

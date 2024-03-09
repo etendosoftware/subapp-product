@@ -3,8 +3,8 @@ import { styles } from './style';
 import { View } from 'react-native';
 import {
   Table as TableUI,
-  TrashIcon,
-  EditIcon,
+  Trash2Icon,
+  Edit2Icon,
   Button,
   show,
 } from 'etendo-ui-library';
@@ -69,7 +69,7 @@ const Table = ({
             };
             navigation.navigate('ProductDetail', { productItem });
           }}
-          iconLeft={<EditIcon style={styles.icon} />}
+          iconLeft={<Edit2Icon style={styles.icon} />}
         />,
         <Button
           height={50}
@@ -85,7 +85,7 @@ const Table = ({
             setDeleteItem(productItem);
             setModalActive(true);
           }}
-          iconLeft={<TrashIcon style={styles.icon} />}
+          iconLeft={<Trash2Icon style={styles.icon} />}
         />,
       ],
       cellStyle: {

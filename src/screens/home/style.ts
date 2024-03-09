@@ -37,4 +37,8 @@ export const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'white',
   },
+  icon: {
+    height: 20,
+    width: 20,
+  },
 });
