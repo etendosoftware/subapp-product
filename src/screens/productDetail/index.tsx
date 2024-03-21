@@ -106,7 +106,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ navigation, route }) => {
       <Camera show={show} setShow={setShow} handleReadCode={handleReadCode} />
       <View style={styles.container}>
         <Navbar
-          title={'ProductDetail.welcome'}
+          title={locale.t('Home.welcome')}
           username={dataUser?.username}
           onOptionSelected={(route: any) => {
             navigation?.navigate(route);
@@ -114,7 +114,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ navigation, route }) => {
         />
         <TitleContainer
           title={title}
-          style={styles.topSection}
+          styleContainer={styles.topSection}
           buttons={[
             <ButtonUI
               height={50}
@@ -124,7 +124,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ navigation, route }) => {
                 handleCancel();
               }}
               text={locale.t('Common.cancel')}
-              iconLeft={<XIcon />}
+              iconLeft={<XIcon style={styles.icon}/>}
             />,
             <ButtonUI
               height={50}
@@ -135,7 +135,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ navigation, route }) => {
               }}
               loading={loading}
               text={locale.t('Common.save')}
-              iconLeft={<CheckIcon />}
+              iconLeft={<CheckIcon  style={styles.icon}/>}
             />,
           ]}
         />
@@ -201,7 +201,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ navigation, route }) => {
                   setShow(true);
                 }}
                 text=""
-                iconLeft={<CameraIcon />}
+                iconLeft={<CameraIcon style={styles.iconCamera}/>}
               />
             </View>
           </View>

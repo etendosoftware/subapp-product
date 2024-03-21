@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, View, Modal as ModalRN } from 'react-native';
 import { styles } from './style';
 import { Button as ButtonUI, XIcon, CheckIcon } from 'etendo-ui-library';
-import { generalStyles } from '../../../styles';
+
 interface ModalProps {
   textModal: string;
   textConfirm: string;

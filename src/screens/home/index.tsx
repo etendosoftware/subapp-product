@@ -97,7 +97,8 @@ const Home = ({ navigation, route, navigationContainer }: HomeProps) => {
         />
         <TitleContainer
           title={locale.t('Home.productList')}
-          style={styles.topSection}
+          buttonsGap={20}
+          styleContainer={{ padding: 32 }}
           buttons={[
             <ButtonUI
               height={50}

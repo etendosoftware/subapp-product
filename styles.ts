@@ -22,4 +22,12 @@ export const generalStyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  icon: {
+    width: 24,
+    height: 24,
+  },
+  iconCamera:{
+    width: 22,
+    height: 22,
+  }
 });
