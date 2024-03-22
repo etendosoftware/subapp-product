@@ -1,0 +1,48 @@
+{
+  "Home": {
+    "welcome": "Welcome To Etendo",
+    "productList": "Product list",
+    "newProduct": "Add new product",
+    "typeProduct": "Product finder",
+    "searchBarcode": "Scan"
+  },
+  "ProductDetail": {
+    "welcome": "Bienvenido a Etendo",
+    "newProduct": "Add new product",
+    "editProduct": "Edit product",
+    "products": "Products",
+    "productExample": "Eg. tuna can",
+    "searchKeyExample": "Eg. ES/0003",
+    "barcode": "Barcode",
+    "searchKey": "Search Key",
+    "barcodePlaceholder": "Type or scan the code"
+  },
+  "Table": {
+    "products": "Products",
+    "searchKey": "Search Key",
+    "barcode": "Barcode",
+    "barcodeShort": "Barcode",
+    "actions": "Actions",
+    "textEmptyTable": "There are no records to display.",
+    "commentEmptyTable": "Start adding new records and they will be displayed here."
+  },
+  "Modal": {
+    "messageDelete": "Are you sure to remove the product?"
+  },
+  "Common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "accept": "Accept",
+    "goBack": "Go back"
+  },
+  "Error": {
+    "product": "Enter the product name",
+    "deleteProduct": "An error occurred while deleting the product",
+    "connection": "Network connection error"
+  },
+  "Success": {
+    "saveProduct": "Product successfully created",
+    "updateProduct": "Product successfully edited",
+    "deleteProduct": "Product successfully deleted"
+  }
+}

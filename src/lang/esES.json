@@ -1,0 +1,48 @@
+{
+  "Home": {
+    "welcome": "Bienvenido a Etendo",
+    "productList": "Lista de productos",
+    "newProduct": "Añadir nuevo producto",
+    "typeProduct": "Buscador de productos",
+    "searchBarcode": "Escanear"
+  },
+  "ProductDetail": {
+    "welcome": "Bienvenido a Etendo",
+    "newProduct": "Añade un nuevo producto",
+    "editProduct": "Editar producto",
+    "products": "Productos",
+    "productExample": "Ej. Lata de atún",
+    "searchKeyExample": "Eg. ES/0003",
+    "barcode": "Código de barras",
+    "searchKey": "Clave de Búsqueda",
+    "barcodePlaceholder": "Escribe o escanea el código"
+  },
+  "Table": {
+    "products": "Productos",
+    "searchKey": "Clave de Búsqueda",
+    "barcode": "Código de Barras",
+    "barcodeShort": "Cód. Barras",
+    "actions": "Acciones",
+    "textEmptyTable": "Aún no has creado ningún registro.",
+    "commentEmptyTable": "Empieza añadiendo nuevos registros y se verán aquí."
+  },
+  "Modal": {
+    "messageDelete": "Esta seguro de eliminar el producto?"
+  },
+  "Common": {
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "accept": "Aceptar",
+    "goBack": "Volver"
+  },
+  "Error": {
+    "product": "Ingrese el nombre del producto",
+    "deleteProduct": "Ocurrió un error al eliminar el producto",
+    "connection": "Error de conexión a la red"
+  },
+  "Success": {
+    "saveProduct": "Producto creado correctamente",
+    "updateProduct": "Producto editado correctamente",
+    "deleteProduct": "Producto borrado correctamente"
+  }
+}
