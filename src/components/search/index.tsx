@@ -42,7 +42,7 @@ const Search = ({ onSubmit, value }: SearchProps) => {
             width={widthButton}
             height={50}
             typeStyle="terciary"
-            iconLeft={<CameraIcon style={styles.icon} />}
+            iconLeft={<CameraIcon style={styles.iconCamera} />}
             onPress={() => {
               setShow(true);
             }}

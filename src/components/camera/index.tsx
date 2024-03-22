@@ -1,9 +1,9 @@
 import React from 'react';
-import {Modal, View} from 'react-native';
+import { Modal, View } from 'react-native';
 import CameraBarCode from '../cameraBarCode';
-import {Button as ButtonUI, CancelIcon} from 'etendo-ui-library';
-import {generalStyles} from '../../../styles';
-import {isTablet} from '../../utils';
+import { Button as ButtonUI, XIcon } from 'etendo-ui-library';
+import { generalStyles } from '../../../styles';
+import { isTablet } from '../../utils';
 import locale from '../../localization/locale';
 
 interface CameraProps {
@@ -12,7 +12,7 @@ interface CameraProps {
   handleReadCode: (code: string) => void;
 }
 
-const Camera: React.FC<CameraProps> = ({show, setShow, handleReadCode}) => {
+const Camera: React.FC<CameraProps> = ({ show, setShow, handleReadCode }) => {
   return show ? (
     <Modal animationType="slide" transparent={true} visible={show}>
       <View
@@ -45,7 +45,7 @@ const Camera: React.FC<CameraProps> = ({show, setShow, handleReadCode}) => {
             setShow(false);
           }}
           text={locale.t('Common.cancel')}
-          iconLeft={<CancelIcon style={generalStyles.icon} />}
+          iconLeft={<XIcon style={generalStyles.icon} />}
         />
       </View>
     </Modal>

@@ -1,18 +1,21 @@
 import React from 'react';
-import {Button as ButtonUI, Navbar as NavbarUI} from 'etendo-ui-library';
-import {SafeAreaView} from 'react-native';
-import {styles} from './style';
-import {BackIcon} from 'etendo-ui-library';
+import {
+  Button as ButtonUI,
+  Navbar as NavbarUI,
+  CornerDownLeftIcon,
+} from 'etendo-ui-library';
+import { SafeAreaView } from 'react-native';
+import { styles } from './style';
 import locale from '../../localization/locale';
-import {isTablet} from '../../utils';
-import {generalStyles} from '../../../styles';
+import { isTablet } from '../../utils';
+import { generalStyles } from '../../../styles';
 interface NavbarProps {
   username: string;
   title: string;
   onOptionSelected?: (route: any) => void;
 }
 
-const Navbar = ({username, title, onOptionSelected}: NavbarProps) => {
+const Navbar = ({ username, title, onOptionSelected }: NavbarProps) => {
   return (
     <SafeAreaView style={styles.container}>
       <NavbarUI
@@ -23,7 +26,7 @@ const Navbar = ({username, title, onOptionSelected}: NavbarProps) => {
             ? [
                 {
                   title: locale.t('Common.goBack'),
-                  image: <BackIcon />,
+                  image: <CornerDownLeftIcon />,
                   route: 'Home',
                 },
               ]
@@ -35,14 +38,14 @@ const Navbar = ({username, title, onOptionSelected}: NavbarProps) => {
             component: (
               <ButtonUI
                 typeStyle="primary"
-                iconLeft={<BackIcon style={generalStyles.icon} />}
+                iconLeft={<CornerDownLeftIcon style={generalStyles.icon} />}
                 paddingVertical={16}
                 width={120}
                 onPress={() => onOptionSelected && onOptionSelected('Home')}
                 text={locale.t('Common.goBack')}
               />
             ),
-            inOptions: {title: locale.t('Common.goBack')},
+            inOptions: { title: locale.t('Common.goBack') },
           },
         ]}
       />

@@ -1,8 +1,8 @@
 import React from 'react';
-import {Text, View, Modal as ModalRN} from 'react-native';
-import {styles} from './style';
-import {Button as ButtonUI, CancelIcon, CheckIcon} from 'etendo-ui-library';
-import {generalStyles} from '../../../styles';
+import { Text, View, Modal as ModalRN } from 'react-native';
+import { styles } from './style';
+import { Button as ButtonUI, XIcon, CheckIcon } from 'etendo-ui-library';
+
 interface ModalProps {
   textModal: string;
   textConfirm: string;
@@ -43,7 +43,7 @@ const Modal = ({
                   functionCancel();
                 }}
                 text={textCancel}
-                iconLeft={<CancelIcon style={generalStyles.icon} />}
+                iconLeft={<XIcon />}
               />
             </View>
 
@@ -56,7 +56,7 @@ const Modal = ({
                   functionConfirm();
                 }}
                 text={textConfirm}
-                iconLeft={<CheckIcon style={generalStyles.icon} />}
+                iconLeft={<CheckIcon />}
               />
             </View>
           </View>

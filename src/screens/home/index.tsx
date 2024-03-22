@@ -4,7 +4,7 @@ import Navbar from '../../components/navbar';
 
 import {
   Button as ButtonUI,
-  MoreIcon,
+  PlusIcon,
   TitleContainer,
 } from 'etendo-ui-library';
 
@@ -97,7 +97,8 @@ const Home = ({ navigation, route, navigationContainer }: HomeProps) => {
         />
         <TitleContainer
           title={locale.t('Home.productList')}
-          style={styles.topSection}
+          buttonsGap={20}
+          styleContainer={{ padding: 32 }}
           buttons={[
             <ButtonUI
               height={50}
@@ -106,7 +107,7 @@ const Home = ({ navigation, route, navigationContainer }: HomeProps) => {
                 navigation.navigate('ProductDetail');
               }}
               text={locale.t('Home.newProduct')}
-              iconLeft={<MoreIcon style={styles.icon} />}
+              iconLeft={<PlusIcon style={styles.icon} />}
             />,
           ]}
         />

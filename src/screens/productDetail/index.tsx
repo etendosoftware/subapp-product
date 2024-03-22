@@ -3,12 +3,13 @@ import { View } from 'react-native';
 import Navbar from '../../components/navbar';
 
 import {
+  show as showAlert,
   Button as ButtonUI,
   Input as InputUI,
-  CancelIcon,
   CheckIcon,
   CameraIcon,
   TitleContainer,
+  XIcon,
 } from 'etendo-ui-library';
 import { styles } from './style';
 import { NavigationProp } from '@react-navigation/native';
@@ -16,7 +17,7 @@ import { isTablet } from '../../utils';
 import Camera from '../../components/camera';
 import locale from '../../localization/locale';
 import useProduct from '../../hooks/useProduct';
-import { show as showAlert } from 'etendo-ui-library';
+import { NEUTRAL_100 } from '../../styles/colors';
 
 interface ProductDetailProps {
   navigation: NavigationProp<any>;
@@ -105,7 +106,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ navigation, route }) => {
       <Camera show={show} setShow={setShow} handleReadCode={handleReadCode} />
       <View style={styles.container}>
         <Navbar
-          title={'ProductDetail.welcome'}
+          title={locale.t('Home.welcome')}
           username={dataUser?.username}
           onOptionSelected={(route: any) => {
             navigation?.navigate(route);
@@ -113,7 +114,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ navigation, route }) => {
         />
         <TitleContainer
           title={title}
-          style={styles.topSection}
+          styleContainer={styles.topSection}
           buttons={[
             <ButtonUI
               height={50}
@@ -123,7 +124,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ navigation, route }) => {
                 handleCancel();
               }}
               text={locale.t('Common.cancel')}
-              iconLeft={<CancelIcon style={styles.icon} />}
+              iconLeft={<XIcon style={styles.icon}/>}
             />,
             <ButtonUI
               height={50}
@@ -134,7 +135,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ navigation, route }) => {
               }}
               loading={loading}
               text={locale.t('Common.save')}
-              iconLeft={<CheckIcon style={styles.icon} />}
+              iconLeft={<CheckIcon  style={styles.icon}/>}
             />,
           ]}
         />
@@ -145,7 +146,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ navigation, route }) => {
               marginRight: isTablet ? 28 : 0,
             }}>
             <InputUI
-              backgroundColor=""
+              backgroundColor={NEUTRAL_100}
               helperText=""
               maxLength={60}
               height={50}
@@ -172,7 +173,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ navigation, route }) => {
                 width: isTablet ? '88%' : '80%',
               }}>
               <InputUI
-                backgroundColor=""
+                backgroundColor={NEUTRAL_100}
                 helperText=""
                 maxLength={30}
                 height={50}
@@ -200,7 +201,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ navigation, route }) => {
                   setShow(true);
                 }}
                 text=""
-                iconLeft={<CameraIcon style={styles.icon} />}
+                iconLeft={<CameraIcon style={styles.iconCamera}/>}
               />
             </View>
           </View>

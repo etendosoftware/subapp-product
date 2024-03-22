@@ -5,9 +5,7 @@ export const generalStyles = StyleSheet.create({
   buttonContainer: {
     width: isTablet ? '30%' : '100%',
   },
-  icon: {
-    height: 15,
-  },
+
   full: {
     width: '100%',
     height: '100%',
@@ -24,4 +22,12 @@ export const generalStyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  icon: {
+    width: 24,
+    height: 24,
+  },
+  iconCamera:{
+    width: 22,
+    height: 22,
+  }
 });

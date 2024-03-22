@@ -1,6 +1,6 @@
-import {StyleSheet} from 'react-native';
-import {isTablet} from '../../utils';
-import {generalStyles} from '../../../styles';
+import { StyleSheet } from 'react-native';
+import { isTablet } from '../../utils';
+import { generalStyles } from '../../../styles';
 
 export const styles = StyleSheet.create({
   ...generalStyles,
@@ -12,5 +12,6 @@ export const styles = StyleSheet.create({
   },
   icon: {
     height: isTablet ? 25 : 20,
+    width: isTablet ? 25 : 20,
   },
 });
