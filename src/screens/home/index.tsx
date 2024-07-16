@@ -1,4 +1,4 @@
-import React, { FC, ReactNode, useCallback, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { View } from 'react-native';
 import Navbar from '../../components/navbar';
 
@@ -6,11 +6,11 @@ import {
   Button as ButtonUI,
   Table as TableUI,
   CameraIcon,
-  MoreIcon,
+  PlusIcon,
   SearchContainer,
   TitleContainer,
   show,
-  PencilIcon,
+  EditIcon,
   TrashIcon,
   Cards,
   Modal as ModalUI,
@@ -85,7 +85,7 @@ const Home = ({
           width={isTablet ? 50 : '120%'}
           typeStyle="white"
           onPress={item => handleEditItem(item)}
-          iconLeft={<PencilIcon style={styles.icon} />}
+          iconLeft={<EditIcon style={styles.icon} />}
         />,
 
         <ButtonUI
@@ -185,7 +185,7 @@ const Home = ({
         />
         <TitleContainer
           title={locale.t('Home.productList')}
-          style={styles.topSection}
+          styleContainer={styles.topSection}
           buttons={[
             <ButtonUI
               height={50}
@@ -194,12 +194,12 @@ const Home = ({
                 navigation.navigate('ProductDetail');
               }}
               text={locale.t('Home.newProduct')}
-              iconLeft={<MoreIcon style={styles.icon} />}
+              iconLeft={<PlusIcon style={styles.icon} />}
             />,
           ]}
         />
         <SearchContainer
-          style={styles.searchContainer}
+          styleContainer={styles.searchContainer}
           placeholder={locale.t('Home.typeProduct')}
           onSubmit={resetTable}
           value={inputValue}

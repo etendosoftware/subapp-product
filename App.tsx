@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from 'react';
+import React, { FC } from 'react';
 import Home from './src/screens/home';
 import { createStackNavigator } from '@react-navigation/stack';
 import locale from './src/localization/locale';

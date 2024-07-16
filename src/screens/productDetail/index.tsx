@@ -5,7 +5,8 @@ import Navbar from '../../components/navbar';
 import {
   Button as ButtonUI,
   Input as InputUI,
-  CancelIcon,
+  show as showAlert,
+  XIcon,
   CheckIcon,
   CameraIcon,
   TitleContainer,
@@ -15,7 +16,6 @@ import { NavigationProp } from '@react-navigation/native';
 import { isTablet } from '../../utils';
 import locale from '../../localization/locale';
 import useProduct from '../../hooks/useProduct';
-import { show as showAlert } from 'etendo-ui-library';
 
 interface ProductDetailProps {
   navigation: NavigationProp<any>;
@@ -117,7 +117,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({
         />
         <TitleContainer
           title={title}
-          style={styles.topSection}
+          styleContainer={styles.topSection}
           buttons={[
             <ButtonUI
               height={50}
@@ -127,7 +127,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({
                 handleCancel();
               }}
               text={locale.t('Common.cancel')}
-              iconLeft={<CancelIcon style={styles.icon} />}
+              iconLeft={<XIcon style={styles.icon} />}
             />,
             <ButtonUI
               height={50}

@@ -1,8 +1,7 @@
 import React from 'react';
-import {Button as ButtonUI, Navbar as NavbarUI} from 'etendo-ui-library';
+import {Button as ButtonUI, Navbar as NavbarUI,CornerLeftUpIcon} from 'etendo-ui-library';
 import {SafeAreaView} from 'react-native';
 import {styles} from './style';
-import {BackIcon} from 'etendo-ui-library';
 import locale from '../../localization/locale';
 import {isTablet} from '../../utils';
 import {generalStyles} from '../../../styles';
@@ -23,7 +22,7 @@ const Navbar = ({username, title, onOptionSelected}: NavbarProps) => {
             ? [
                 {
                   title: locale.t('Common.goBack'),
-                  image: <BackIcon />,
+                  image: <CornerLeftUpIcon />,
                   route: 'Home',
                 },
               ]
@@ -35,7 +34,7 @@ const Navbar = ({username, title, onOptionSelected}: NavbarProps) => {
             component: (
               <ButtonUI
                 typeStyle="primary"
-                iconLeft={<BackIcon style={generalStyles.icon} />}
+                iconLeft={<CornerLeftUpIcon style={generalStyles.icon} />}
                 paddingVertical={16}
                 width={120}
                 onPress={() => onOptionSelected && onOptionSelected('Home')}

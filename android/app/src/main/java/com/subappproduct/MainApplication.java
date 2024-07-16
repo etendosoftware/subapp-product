@@ -1,4 +1,4 @@
-package com.cometendorxsubappbase;
+package com.subappproduct;
 
 import android.app.Application;
 import com.facebook.react.PackageList;
