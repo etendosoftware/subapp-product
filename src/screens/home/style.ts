@@ -1,7 +1,10 @@
-import { StyleSheet } from 'react-native';
+import { DimensionValue, Dimensions, StyleSheet } from 'react-native';
 import { generalStyles } from '../../../styles';
 import { isTablet } from '../../utils';
 import { PRIMARY_100 } from '../../styles/colors';
+
+const width = Dimensions.get('screen').width;
+export const widthSearchButton: DimensionValue = isTablet ? '70%' : width - 48;
 
 export const styles = StyleSheet.create({
   ...generalStyles,
@@ -19,6 +22,7 @@ export const styles = StyleSheet.create({
   },
   topSection: {
     margin: isTablet ? 32 : 24,
+    marginBottom: 0,
     gap: 12,
   },
   text: {
@@ -37,8 +41,10 @@ export const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'white',
   },
-  icon: {
-    height: 20,
-    width: 20,
+  searchContainer: {
+    marginHorizontal: isTablet ? 32 : 24,
+  },
+  contentHeight: {
+    height: '100%',
   },
 });

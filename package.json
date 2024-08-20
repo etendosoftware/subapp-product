@@ -32,10 +32,8 @@
     "react-native-share": "^10.0.2",
     "react-native-svg-transformer": "^1.0.0",
     "react-native-svg": "^14.0.0",
-    "react-native-vision-camera": "2.15.2",
     "react-native": "0.70.6",
-    "react": "18.1.0",
-    "vision-camera-code-scanner": "0.2.0"
+    "react": "18.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

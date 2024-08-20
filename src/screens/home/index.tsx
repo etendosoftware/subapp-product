@@ -1,81 +1,148 @@
-import React, { useCallback, useState } from 'react';
+import React, { FC, ReactNode, useCallback, useEffect, useState } from 'react';
 import { View } from 'react-native';
 import Navbar from '../../components/navbar';
 
 import {
   Button as ButtonUI,
-  PlusIcon,
+  Table as TableUI,
+  CameraIcon,
+  MoreIcon,
+  SearchContainer,
   TitleContainer,
+  show,
+  PencilIcon,
+  TrashIcon,
+  Cards,
+  Modal as ModalUI,
 } from 'etendo-ui-library';
 
-import Search from '../../components/search';
-import { styles } from './style';
+import { styles, widthSearchButton } from './style';
 import { NavigationProp, useFocusEffect } from '@react-navigation/native';
 import locale from '../../localization/locale';
 import { INavigationContainerProps } from '../../interfaces';
 import useProduct from '../../hooks/useProduct';
-import { ProductList } from '../../../lib/data_gen/product.types';
-import { EntityType } from '../../../lib/base/baseservice.types';
-import Table from '../../components/table';
+import { Product } from '../../../lib/data_gen/product.types';
+import { ColumnsMetadata } from 'etendo-ui-library/dist-native/components/table/Table.types';
+import { isTablet } from '../../utils';
 
 interface HomeProps {
   navigation: NavigationProp<any>;
   route: any;
   navigationContainer: INavigationContainerProps;
+  Camera: FC<any>;
 }
 
-const Home = ({ navigation, route, navigationContainer }: HomeProps) => {
-  const { getFilteredProducts } = useProduct();
-  const [products, setProducts] = useState<EntityType[]>([]);
+const Home = ({
+  navigation,
+  route,
+  navigationContainer,
+  Camera,
+}: HomeProps) => {
+  const [deleteItem, setDeleteItem] = useState<Product | undefined>(undefined);
   const [inputValue, setInputValue] = useState<string | undefined>('');
+  const [modalActive, setModalActive] = useState(false);
+  const [showCamera, setShowCamera] = useState(false);
   const { dataUser } = route.params;
-  const [loading, setLoading] = useState<boolean>(true);
-  const [pageTable, setPageTable] = useState<number>(0);
-  const [isLoadingMoreData, setIsLoadingMoreData] = useState<boolean>(true);
+  const {
+    updateItem,
+    resetTable,
+    onLoadMoreData,
+    PAGE_SIZE,
+    loading,
+    data,
+    pageTable,
+    isLoadingMoreData,
+  } = useProduct();
 
-  const PAGE_SIZE = 20;
+  const dataColumns: ColumnsMetadata[] = [
+    {
+      key: 'id',
+      primary: true,
+      visible: false,
+    },
+    {
+      key: 'name',
+      label: locale.t('Table.products'),
+      visible: true,
+      width: '50%',
+    },
+    {
+      key: 'uPCEAN',
+      label: isTablet
+        ? locale.t('Table.barcode')
+        : locale.t('Table.barcodeShort'),
+      visible: true,
+      width: '25%',
+    },
+    {
+      visible: true,
+      key: 'about',
+      width: '25%',
+      label: 'Actions',
+      components: [
+        <ButtonUI
+          height={50}
+          width={isTablet ? 50 : '120%'}
+          typeStyle="white"
+          onPress={item => handleEditItem(item)}
+          iconLeft={<PencilIcon style={styles.icon} />}
+        />,
 
-  const handleData = async (
-    nameFilter?: string,
-    page: number = 0,
-    size: number = 20,
-    reset: boolean = false,
-  ) => {
-    setLoading(true);
-    setInputValue(nameFilter);
-    if (reset) {
-      setProducts([]);
-      setPageTable(0);
-      setIsLoadingMoreData(true);
-    }
-    await getFilteredProducts(nameFilter, page, size).then(
-      (newData: ProductList) => {
-        setLoading(false);
-        if (size !== newData.content.length) {
-          setIsLoadingMoreData(false);
-        }
-        setProducts((prevProducts: Array<EntityType>) => {
-          return newData ? [...prevProducts, ...newData.content] : [];
-        });
-        setPageTable(page);
+        <ButtonUI
+          height={50}
+          width={isTablet ? 50 : '120%'}
+          typeStyle="white"
+          onPress={(item: any) => {
+            const productItem: Product = {
+              id: item.id,
+              name: item.name,
+              uPCEAN: item.uPCEAN,
+              active: item.active,
+            };
+            setDeleteItem(productItem);
+            setModalActive(true);
+          }}
+          iconLeft={<TrashIcon style={styles.icon} />}
+        />,
+      ],
+      cellStyle: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100%',
       },
-    );
-  };
-
-  const deleteDataTable = async () => {
-    await handleData(inputValue, 0, PAGE_SIZE, true);
-  };
-
-  const resetTable = async (nameFilter?: string) => {
-    await handleData(nameFilter, 0, PAGE_SIZE, true);
-  };
-
-  const onLoadMoreData = async (currentPage: number, pageSize: number) => {
-    await handleData(inputValue, currentPage, pageSize);
-  };
+    },
+  ];
 
   const resetInput = () => {
     setInputValue('');
+  };
+
+  const functionConfirm = async () => {
+    closeModal();
+    try {
+      await updateItem({ ...deleteItem, active: false }).then(() => {
+        show(locale.t('Success.deleteProduct'), 'success');
+        resetTable();
+      });
+    } catch (err: any) {
+      if (err.status === 500) {
+        show(locale.t('Error.deleteProduct'), 'error');
+        return;
+      }
+      show(locale.t('Error.connection'), 'error');
+    }
+  };
+
+  const handleEditItem = async (item: any) => {
+    const productItem: Product = {
+      id: item.id,
+      name: item.name,
+      uPCEAN: item.uPCEAN,
+      active: item.active,
+    };
+    navigation.navigate('ProductDetail', { productItem });
   };
 
   useFocusEffect(
@@ -85,9 +152,30 @@ const Home = ({ navigation, route, navigationContainer }: HomeProps) => {
     }, []),
   );
 
+  const handleReadCode = (text: string) => {
+    if (text) {
+      setInputValue(text);
+      setShowCamera(false);
+      resetTable(text);
+    }
+  };
+
+  useEffect(() => {
+    setInputValue(inputValue ?? '');
+  }, [inputValue]);
+
+  const closeModal = () => {
+    setModalActive(false);
+  };
+
   return (
     <View style={styles.container}>
       <View>
+        <Camera
+          show={showCamera}
+          setShow={setShowCamera}
+          handleReadCode={handleReadCode}
+        />
         <Navbar
           title={locale.t('Home.welcome')}
           username={dataUser?.username}
@@ -111,18 +199,72 @@ const Home = ({ navigation, route, navigationContainer }: HomeProps) => {
             />,
           ]}
         />
-        <Search onSubmit={resetTable} value={inputValue} />
+        <SearchContainer
+          style={styles.searchContainer}
+          placeholder={locale.t('Home.typeProduct')}
+          onSubmit={resetTable}
+          value={inputValue}
+          buttons={[
+            <ButtonUI
+              width={widthSearchButton}
+              height={50}
+              typeStyle="terciary"
+              iconLeft={<CameraIcon style={styles.icon} />}
+              onPress={() => {
+                setShowCamera(true);
+              }}
+              text={locale.t('Home.searchBarcode')}
+            />,
+          ]}
+        />
+        {isTablet ? (
+          <TableUI
+            columns={dataColumns}
+            data={data}
+            tableHeight={650}
+            onRowPress={() => {}}
+            isLoading={loading}
+            onLoadMoreData={onLoadMoreData}
+            commentEmptyTable={locale.t('Table.textEmptyTable')}
+            textEmptyTable={locale.t('Table.commentEmptyTable')}
+            currentPage={pageTable}
+            pageSize={PAGE_SIZE}
+            isLoadingMoreData={isLoadingMoreData}
+            style={{
+              margin: isTablet ? 32 : 24,
+              height: 50,
+            }}
+          />
+        ) : (
+          <View style={styles.contentHeight}>
+            <Cards
+              title="Products"
+              metadata={dataColumns}
+              data={data}
+              isLoadingMoreData={isLoadingMoreData}
+              isLoading={loading}
+              pageSize={PAGE_SIZE}
+              currentPage={pageTable}
+              cardsHeight={500}
+              onPressCard={id => {
+                const fullItem = data.find((product: any) => product.id === id);
+                handleEditItem(fullItem);
+              }}
+              onLoadMoreData={onLoadMoreData}
+            />
+          </View>
+        )}
       </View>
-      <Table
-        navigation={navigation}
-        data={products}
-        isLoading={loading}
-        pageSize={PAGE_SIZE}
-        onLoadMoreData={onLoadMoreData}
-        currentPage={pageTable}
-        isLoadingMoreData={isLoadingMoreData}
-        deleteData={deleteDataTable}
-      />
+      {modalActive && (
+        <ModalUI
+          title={locale.t('Modal.messageDelete')}
+          labelActionButton={locale.t('Common.accept')}
+          labelCloseButton={locale.t('Common.cancel')}
+          visible={modalActive}
+          showModal={closeModal}
+          handleAction={functionConfirm}
+        />
+      )}
     </View>
   );
 };
