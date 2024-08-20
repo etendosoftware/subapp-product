@@ -8,7 +8,8 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
-    "dev": "http-server -p 3000 ../web/com.etendorx.subapp.product/",
+    "dev": "nodemon",
+    "dev-server": "node start-server.js",
     "build": "rollup -c"
   },
   "dependencies": {
