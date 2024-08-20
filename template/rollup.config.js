@@ -1,37 +1,37 @@
-import typescript from '@rollup/plugin-typescript';
-import peerDepsExternal from 'rollup-plugin-peer-deps-external';
-import json from '@rollup/plugin-json';
-import image from '@rollup/plugin-image';
+import typescript from "@rollup/plugin-typescript";
+import peerDepsExternal from "rollup-plugin-peer-deps-external";
+import json from "@rollup/plugin-json";
+import fs from "fs";
+import path from "path";
 
 const pkg = JSON.parse(
-  require('fs').readFileSync(
-    require('path').resolve('./package.json'),
-    'utf-8',
-  ),
+  require("fs").readFileSync(require("path").resolve("./package.json"), "utf-8")
 );
+
+const configPath = path.resolve("./etendo.config.json");
+
+// Check if the external configuration file exists
+if (!fs.existsSync(configPath)) {
+  throw new Error(
+    `The configuration file ${configPath} does not exist. Please create the file and define the output path.`
+  );
+}
+
+const config = JSON.parse(fs.readFileSync(configPath, "utf-8"));
 
 const external = Object.keys(pkg.dependencies || {});
 
 export default {
-  input: './App.tsx',
+  input: "./App.tsx",
   output: [
     {
-      file: '../web/com.etendorx.subapp.product/productSubapp.js',
-      format: 'cjs',
-      exports: 'auto',
+      file: config.outputPath + "/" + config.bundleFileName,
+      format: "cjs",
+      exports: "auto",
       strict: false,
-      sourcemap: 'inline',
+      sourcemap: "inline",
     },
   ],
-  plugins: [
-    peerDepsExternal(),
-    json({compact: true}),
-    typescript(),
-    image({
-      extensions: /\.(png|jpg|jpeg|gif|svg)$/,
-      limit: 10000,
-      output: '../web/com.etendorx.subapp.base/images',
-    }),
-  ],
+  plugins: [peerDepsExternal(), json({ compact: true }), typescript()],
   external,
 };
