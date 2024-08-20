@@ -185,7 +185,8 @@ const Home = ({
         />
         <TitleContainer
           title={locale.t('Home.productList')}
-          style={styles.topSection}
+          buttonsGap={20}
+          styleContainer={{ padding: 32 }}
           buttons={[
             <ButtonUI
               height={50}
@@ -194,7 +195,7 @@ const Home = ({
                 navigation.navigate('ProductDetail');
               }}
               text={locale.t('Home.newProduct')}
-              iconLeft={<MoreIcon style={styles.icon} />}
+              iconLeft={<PlusIcon style={styles.icon} />}
             />,
           ]}
         />
