@@ -11,12 +11,12 @@ import {
 import { isTablet } from '../../utils';
 import Modal from '../modal';
 import locale from '../../localization/locale';
-import { Product } from '../../../lib/data_gen/product.types';
-import useProduct from '../../hooks/useProduct';
 import { TableProps } from './types';
+import logger from '../../utils/log';
 
 const Table = ({
   navigation,
+  route,
   data,
   isLoading,
   onLoadMoreData,
@@ -24,32 +24,15 @@ const Table = ({
   currentPage,
   isLoadingMoreData,
   deleteData,
+  columns,
+  labels,
+  deleteDataItem
 }: TableProps) => {
+  const [currentItem, setCurrentItem] = useState<any>();
   const [modalActive, setModalActive] = useState(false);
-  const [deleteItem, setDeleteItem] = useState<Product | undefined>(undefined);
-
-  const { updateProduct } = useProduct();
 
   const dataColumns: any[] = [
-    {
-      key: 'id',
-      primary: true,
-      visible: false,
-    },
-    {
-      key: 'name',
-      label: locale.t('Table.products'),
-      visible: true,
-      width: '50%',
-    },
-    {
-      key: 'uPCEAN',
-      label: isTablet
-        ? locale.t('Table.barcode')
-        : locale.t('Table.barcodeShort'),
-      visible: true,
-      width: '25%',
-    },
+    ...columns,
     {
       visible: true,
       key: 'about',
@@ -57,32 +40,22 @@ const Table = ({
       label: 'Actions',
       components: [
         <Button
+          key={'edit'}
           height={50}
           width={isTablet ? 50 : '120%'}
           typeStyle="white"
           onPress={item => {
-            const productItem: Product = {
-              id: item.id,
-              name: item.name,
-              uPCEAN: item.uPCEAN,
-              active: item.active,
-            };
-            navigation.navigate('ProductDetail', { productItem });
+            navigation.navigate(labels.dataName + 'Detail', { item });
           }}
           iconLeft={<Edit2Icon style={styles.icon} />}
         />,
         <Button
+          key={'delete'}
           height={50}
           width={isTablet ? 50 : '120%'}
           typeStyle="white"
           onPress={(item: any) => {
-            const productItem: Product = {
-              id: item.id,
-              name: item.name,
-              uPCEAN: item.uPCEAN,
-              active: item.active,
-            };
-            setDeleteItem(productItem);
+            setCurrentItem(item);
             setModalActive(true);
           }}
           iconLeft={<Trash2Icon style={styles.icon} />}
@@ -105,15 +78,16 @@ const Table = ({
   const functionConfirm = async () => {
     closeModal();
     try {
-      await updateProduct({ ...deleteItem, active: false }).then(() => {
-        show(locale.t('Success.deleteProduct'), 'success');
+      await deleteDataItem(currentItem).then(() => {
+        show(labels.successfulDelete, 'success');
         if (deleteData) {
           deleteData('');
         }
       });
     } catch (err: any) {
+      logger('Error', JSON.stringify(err));
       if (err.status === 500) {
-        show(locale.t('Error.deleteProduct'), 'error');
+        show(labels.errorDelete, 'error');
         return;
       }
       show(locale.t('Error.connection'), 'error');

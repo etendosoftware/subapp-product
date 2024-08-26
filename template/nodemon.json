@@ -1,0 +1,6 @@
+{
+  "watch": ["src", "config"],
+  "ext": "js,json,ts,tsx",
+  "ignore": ["node_modules", "dist", "build", "*.log"],
+  "exec": "yarn build && yarn dev-server"
+}
