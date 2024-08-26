@@ -3,7 +3,6 @@ const fs = require('fs');
 const path = require('path');
 const url = require('url');
 
-// Cargar la configuración
 const configPath = path.resolve(__dirname, './etendo.config.json');
 if (!fs.existsSync(configPath)) {
   console.error(`The configuration file ${configPath} does not exist. Please create the file and define the output path.`);
@@ -18,7 +17,6 @@ if (!outputPath) {
   process.exit(1);
 }
 
-// Crear servidor HTTP
 const server = http.createServer((req, res) => {
   console.log(`${req.method} ${req.url}`);
   const parsedUrl = url.parse(req.url);
@@ -26,7 +24,6 @@ const server = http.createServer((req, res) => {
   let filePath = path.join(outputPath, sanitizedPath);
 
   if (req.method === 'GET') {
-    // Manejar solicitudes GET para servir archivos estáticos
     if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
       const ext = path.extname(filePath).slice(1);
       const map = {
@@ -52,7 +49,6 @@ const server = http.createServer((req, res) => {
       res.end('404 Not Found');
     }
   } else if (req.method === 'POST' && sanitizedPath === '/log') {
-    // Manejar solicitudes POST a la URI /log para mostrar y registrar el payload
     let body = '';
     req.on('data', chunk => {
       body += chunk.toString();
@@ -73,7 +69,6 @@ const server = http.createServer((req, res) => {
   }
 });
 
-// Iniciar el servidor
 const port = 3000;
 server.listen(port, () => {
   console.log(`Server started on port ${port}`);
