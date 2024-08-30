@@ -1,10 +1,10 @@
 import React from 'react';
-import Home from './src/screens/home';
 import { createStackNavigator } from '@react-navigation/stack';
 import locale from './src/localization/locale';
 import ProductDetail from './src/screens/productDetail';
 import { IData, INavigationContainerProps } from './src/interfaces';
-import ProductService from './lib/data_gen/productservice';
+import ProductService from './src/lib/data_gen/productservice';
+import Home from './src/screens/home';
 
 interface AppProps {
   language: string;
@@ -35,12 +35,6 @@ const App = ({
         name="Home"
         initialParams={{ dataUser }}>
         {props => <Home {...props} navigationContainer={navigationContainer} />}
-      </Stack.Screen>
-      <Stack.Screen
-        options={{ headerShown: false }}
-        name="ProductDetail"
-        initialParams={{ dataUser }}>
-        {props => <ProductDetail {...props} />}
       </Stack.Screen>
     </Stack.Navigator>
   );

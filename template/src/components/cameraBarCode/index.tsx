@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {Camera, CameraDevice} from 'react-native-vision-camera';
-import {useScanBarcodes, BarcodeFormat} from 'vision-camera-code-scanner';
 
 const CAMERA_STATUS = 'authorized';
 const SIDE_CAMERA = 'back';
@@ -23,11 +22,6 @@ const CameraBarCode = ({ableToRead, handleReadCode}: CameraBarCodeProps) => {
     setCameraPermission(true);
   };
 
-  const [frameProcessor, barcodes] = useScanBarcodes(
-    [BarcodeFormat.ALL_FORMATS],
-    {checkInverted: true},
-  );
-
   useEffect(() => {
     (async () => {
       const cameraPermissions = await Camera.getCameraPermissionStatus();
@@ -44,18 +38,8 @@ const CameraBarCode = ({ableToRead, handleReadCode}: CameraBarCodeProps) => {
     handleCameraPermission();
   }, []);
 
-  useEffect(() => {
-    if (ableToRead) {
-      handleBarcode();
-    }
-  }, [ableToRead, barcodes]);
 
   const handleBarcode = () => {
-    if (barcodes.length) {
-      const code = barcodes.shift()?.displayValue;
-      setIsReading(false);
-      handleReadCode(code!);
-    }
   };
 
   return isReading && deviceSelected && cameraPermission ? (
@@ -63,7 +47,6 @@ const CameraBarCode = ({ableToRead, handleReadCode}: CameraBarCodeProps) => {
       style={StyleSheet.absoluteFill}
       device={deviceSelected}
       isActive={isReading}
-      frameProcessor={frameProcessor}
       frameProcessorFps={5}
     />
   ) : null;

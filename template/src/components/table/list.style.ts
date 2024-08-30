@@ -3,7 +3,7 @@ import { generalStyles } from '../../../styles';
 import { isTablet } from '../../utils';
 import { PRIMARY_100 } from '../../styles/colors';
 
-export const styles = StyleSheet.create({
+export const TableListStyle = StyleSheet.create({
   ...generalStyles,
   container: {
     width: '100%',

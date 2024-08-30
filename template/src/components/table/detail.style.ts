@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 import { generalStyles } from '../../../styles';
 import { isTablet } from '../../utils';
 
-export const styles = StyleSheet.create({
+export const TableDetailStyle = StyleSheet.create({
   ...generalStyles,
   container: {
     width: '100%',

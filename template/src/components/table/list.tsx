@@ -9,24 +9,44 @@ import {
 } from 'etendo-ui-library';
 
 import Search from '../../components/search';
-import { styles } from './style';
 import { NavigationProp, useFocusEffect } from '@react-navigation/native';
-import locale from '../../localization/locale';
 import { INavigationContainerProps } from '../../interfaces';
-import useProduct from '../../hooks/useProduct';
-import { ProductList } from '../../../lib/data_gen/product.types';
-import { EntityType } from '../../../lib/base/baseservice.types';
+import { EntityType } from '../../lib/base/baseservice.types';
 import Table from '../../components/table';
+import { TableListStyle } from './list.style';
 
-interface HomeProps {
+interface TableListProps {
   navigation: NavigationProp<any>;
   route: any;
   navigationContainer: INavigationContainerProps;
+  getData: (
+    name: string | undefined,
+    page?: number,
+    size?: number,
+  ) => Promise<any>;
+  labels: {
+    dataName: string;
+    navbarTitle: string;
+    containerTitle: string;
+    buttonNew: string;
+    searchPlaceholder: string;
+    successfulDelete: string;
+    errorDelete: string;
+  };
+  columns: any[];
+  deleteDataItem: any;
 }
 
-const Home = ({ navigation, route, navigationContainer }: HomeProps) => {
-  const { getFilteredProducts } = useProduct();
-  const [products, setProducts] = useState<EntityType[]>([]);
+const TableList = ({
+  navigation,
+  route,
+  navigationContainer,
+  getData,
+  labels,
+  columns,
+  deleteDataItem,
+}: TableListProps) => {
+  const [rows, setRows] = useState<EntityType[]>([]);
   const [inputValue, setInputValue] = useState<string | undefined>('');
   const { dataUser } = route.params;
   const [loading, setLoading] = useState<boolean>(true);
@@ -44,22 +64,20 @@ const Home = ({ navigation, route, navigationContainer }: HomeProps) => {
     setLoading(true);
     setInputValue(nameFilter);
     if (reset) {
-      setProducts([]);
+      setRows([]);
       setPageTable(0);
       setIsLoadingMoreData(true);
     }
-    await getFilteredProducts(nameFilter, page, size).then(
-      (newData: ProductList) => {
-        setLoading(false);
-        if (size !== newData.content.length) {
-          setIsLoadingMoreData(false);
-        }
-        setProducts((prevProducts: Array<EntityType>) => {
-          return newData ? [...prevProducts, ...newData.content] : [];
-        });
-        setPageTable(page);
-      },
-    );
+    await getData(nameFilter, page, size).then((newData: any) => {
+      setLoading(false);
+      if (size !== newData.content.length) {
+        setIsLoadingMoreData(false);
+      }
+      setRows((prevRows: Array<EntityType>) => {
+        return newData ? [...prevRows, ...newData.content] : [];
+      });
+      setPageTable(page);
+    });
   };
 
   const deleteDataTable = async () => {
@@ -86,45 +104,53 @@ const Home = ({ navigation, route, navigationContainer }: HomeProps) => {
   );
 
   return (
-    <View style={styles.container}>
+    <View style={TableListStyle.container}>
       <View>
         <Navbar
-          title={locale.t('Home.welcome')}
+          title={labels.navbarTitle}
           username={dataUser?.username}
           onOptionSelected={() => {
             navigationContainer.navigate('Home');
           }}
         />
         <TitleContainer
-          title={locale.t('Home.productList')}
-          buttonsGap={20}
+          title={labels.containerTitle}
           styleContainer={{ padding: 32 }}
           buttons={[
             <ButtonUI
+              key={'newData'}
               height={50}
               typeStyle="secondary"
               onPress={() => {
-                navigation.navigate('ProductDetail');
+                navigation.navigate(labels.dataName + 'Detail');
               }}
-              text={locale.t('Home.newProduct')}
-              iconLeft={<PlusIcon style={styles.icon} />}
+              text={labels.buttonNew}
+              iconLeft={<PlusIcon style={TableListStyle.icon} />}
             />,
           ]}
         />
-        <Search onSubmit={resetTable} value={inputValue} />
+        <Search
+          onSubmit={resetTable}
+          value={inputValue}
+          labels={{ searchPlaceholder: labels.searchPlaceholder }}
+        />
       </View>
       <Table
         navigation={navigation}
-        data={products}
+        route={route}
+        data={rows}
         isLoading={loading}
         pageSize={PAGE_SIZE}
         onLoadMoreData={onLoadMoreData}
         currentPage={pageTable}
         isLoadingMoreData={isLoadingMoreData}
         deleteData={deleteDataTable}
+        columns={columns}
+        labels={{ dataName: labels.dataName, successfulDelete: labels.successfulDelete, errorDelete: labels.errorDelete }}
+        deleteDataItem={deleteDataItem}
       />
     </View>
   );
 };
 
-export default Home;
+export default TableList;
